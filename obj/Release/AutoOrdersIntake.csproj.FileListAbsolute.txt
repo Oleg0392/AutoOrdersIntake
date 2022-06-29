@@ -1,0 +1,8 @@
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\Release\app.config
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\Release\AutoOrdersIntake.exe.config
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\Release\AutoOrdersIntake.exe
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\Release\AutoOrdersIntake.pdb
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\Release\Interop.VSTOEE100.dll
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\Release\AutoOrdersIntake.exe
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\Release\AutoOrdersIntake.pdb

@@ -1,0 +1,184 @@
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\app.config
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.dll
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojResolveAssemblyReference.cache
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\app.config
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.dll
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojResolveAssemblyReference.cache
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojFakesResolveAssemblyReference.cache
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.0.85.5.452.Fakes.fakesconfig
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Microsoft.QualityTools.Testing.Fakes.dll
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\app.config
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.0.85.5.452.Fakes.fakesconfig
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.dll
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Microsoft.QualityTools.Testing.Fakes.dll
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojFakesResolveAssemblyReference.cache
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojResolveAssemblyReference.cache
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\app.config
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.0.85.5.452.Fakes.fakesconfig
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.dll
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Microsoft.QualityTools.Testing.Fakes.dll
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojFakesResolveAssemblyReference.cache
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojResolveAssemblyReference.cache
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\app.config
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.0.85.5.452.Fakes.fakesconfig
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.dll
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Microsoft.QualityTools.Testing.Fakes.dll
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojFakesResolveAssemblyReference.cache
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csprojResolveAssemblyReference.cache
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\app.config
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.xml
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.AssemblyReference.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.SuggestedBindingRedirects.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CoreCompileInputs.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CopyComplete
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.AssemblyReference.cache
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.SuggestedBindingRedirects.cache
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CoreCompileInputs.cache
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\app.config
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.dll
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.xml
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+C:\Projects\AutoOrdersIntake_V1_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CopyComplete
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\bin\x64\Release\app.config
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.dll
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.xml
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.AssemblyReference.cache
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.SuggestedBindingRedirects.cache
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CoreCompileInputs.cache
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CopyComplete
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+C:\Projects\AutoOrdersIntake_V2_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\bin\x64\Release\app.config
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.xml
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.AssemblyReference.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.SuggestedBindingRedirects.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CoreCompileInputs.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CopyComplete
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V3_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\bin\x64\Release\app.config
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.xml
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.AssemblyReference.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.SuggestedBindingRedirects.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CoreCompileInputs.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CopyComplete
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V4_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\app.config
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.xml
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.AssemblyReference.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.SuggestedBindingRedirects.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CoreCompileInputs.cache
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CopyComplete
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+C:\ДИСК D\Olga\РАЗРАБОТКА\Исходники\ИСХОДНИКИ_Магнитогорск\Разработка\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\app.config
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe.config
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.exe
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\AutoOrdersIntake.pdb
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.dll
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.xml
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.AssemblyReference.cache
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.SuggestedBindingRedirects.cache
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CoreCompileInputs.cache
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.CopyComplete
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.exe
+C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.pdb

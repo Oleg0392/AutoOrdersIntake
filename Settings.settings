@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AutoOrdersIntake" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ConnStringOptimum" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=OPTIMUM-MGN;Initial Catalog=Mobile_Optimum;Persist Security Info=True;User ID=sa;Password=456123</Value>
+    </Setting>
+    <Setting Name="ConnStringISPRO" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=ISPRO7srv-mgn;Initial Catalog=dfirm002_gmk;Persist Security Info=True;User ID=sa;Password=456123</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,42 @@
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.exe.config
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\Interop.VSTOEE100.dll
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.csproj.ResolveComReference.cache
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\app.config
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.exe
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.pdb
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\Excel.4.5.dll
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\Excel.4.5.pdb
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.exe
+C:\Users\SletnevAP\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.pdb
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.csprojResolveAssemblyReference.cache
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.exe.config
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\Interop.VSTOEE100.dll
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.csproj.ResolveComReference.cache
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.exe
+D:\Desktop\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.pdb
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.exe.config
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\Interop.VSTOEE100.dll
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.csproj.ResolveComReference.cache
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.exe
+D:\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.pdb
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.exe.config
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\Interop.VSTOEE100.dll
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.csproj.ResolveComReference.cache
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.exe
+E:\OLD\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.pdb
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.exe.config
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\Interop.VSTOEE100.dll
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.csproj.ResolveComReference.cache
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.exe
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.pdb
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\app.config
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.exe
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\AutoOrdersIntake.pdb
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\ICSharpCode.SharpZipLib.0.85.5.452.Fakes.fakesconfig
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\Excel.4.5.dll
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\ICSharpCode.SharpZipLib.dll
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\Microsoft.QualityTools.Testing.Fakes.dll
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\bin\x64\Debug\Excel.4.5.pdb
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.csprojFakesResolveAssemblyReference.cache
+\\nas-mgn\Yuskina\Documents\Конструктор\ЧГМК\Прием заказов\EXE\Исходники\AutoOrdersIntake\AutoOrdersIntake\obj\x64\Debug\AutoOrdersIntake.csprojResolveAssemblyReference.cache

@@ -1,0 +1,3024 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DiadocApi</name>
+    </assembly>
+    <members>
+        <member name="T:Diadoc.Api.AggregateException">
+            <summary>Represents one or more errors that occur during application execution.</summary> 
+            <remarks>
+            <see cref="T:Diadoc.Api.AggregateException"/> is used to consolidate multiple failures into a single, throwable
+            exception object.
+            </remarks> 
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Diadoc.Api.AggregateException"/> class. 
+            </summary>
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Diadoc.Api.AggregateException"/> class with 
+            a specified error message.
+            </summary> 
+            <param name="message">The error message that explains the reason for the exception.</param> 
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Diadoc.Api.AggregateException"/> class with a specified error 
+            message and a reference to the inner exception that is the cause of this exception. 
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param> 
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerException"/> argument
+            is null.</exception>
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor(System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary> 
+            Initializes a new instance of the <see cref="T:Diadoc.Api.AggregateException"/> class with 
+            references to the inner exceptions that are the cause of this exception.
+            </summary> 
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument
+            is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is 
+            null.</exception>
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor(System.Exception[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Diadoc.Api.AggregateException"/> class with
+            references to the inner exceptions that are the cause of this exception. 
+            </summary>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param> 
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument 
+            is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is 
+            null.</exception>
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary> 
+            Initializes a new instance of the <see cref="T:Diadoc.Api.AggregateException"/> class with a specified error
+            message and references to the inner exceptions that are the cause of this exception. 
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument 
+            is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is 
+            null.</exception> 
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor(System.String,System.Exception[])">
+            <summary> 
+            Initializes a new instance of the <see cref="T:Diadoc.Api.AggregateException"/> class with a specified error
+            message and references to the inner exceptions that are the cause of this exception. 
+            </summary> 
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param> 
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument
+            is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is
+            null.</exception> 
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor(System.String,System.Collections.Generic.IList{System.Exception})">
+            <summary>
+            Allocates a new aggregate exception with the specified message and list of inner exceptions.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param> 
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument 
+            is null.</exception> 
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is
+            null.</exception> 
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary> 
+            Initializes a new instance of the <see cref="T:Diadoc.Api.AggregateException"/> class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds
+            the serialized object data about the exception being thrown.</param> 
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that
+            contains contextual information about the source or destination. </param> 
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> argument is null.</exception> 
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The exception could not be deserialized correctly.</exception>
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary> 
+            Sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with information about
+            the exception.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds 
+            the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that 
+            contains contextual information about the source or destination. </param> 
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> argument is null.</exception>
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.GetBaseException">
+            <summary> 
+            Returns the <see cref="T:Diadoc.Api.AggregateException"/> that is the root cause of this exception. 
+            </summary>
+        </member>
+        <member name="P:Diadoc.Api.AggregateException.InnerExceptions">
+            <summary> 
+            Gets a read-only collection of the <see cref="T:System.Exception"/> instances that caused the 
+            current exception.
+            </summary> 
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.Handle(System.Func{System.Exception,System.Boolean})">
+            <summary> 
+            Invokes a handler on each <see cref="T:System.Exception"/> contained by this <see
+            cref="T:Diadoc.Api.AggregateException"/>. 
+            </summary>
+            <param name="predicate">The predicate to execute for each exception. The predicate accepts as an
+            argument the <see cref="T:System.Exception"/> to be processed and returns a Boolean to indicate
+            whether the exception was handled.</param> 
+            <remarks>
+            Each invocation of the <paramref name="predicate"/> returns true or false to indicate whether the 
+            <see cref="T:System.Exception"/> was handled. After all invocations, if any exceptions went 
+            unhandled, all unhandled exceptions will be put into a new <see cref="T:Diadoc.Api.AggregateException"/>
+            which will be thrown. Otherwise, the <see cref="M:Diadoc.Api.AggregateException.Handle(System.Func{System.Exception,System.Boolean})"/> method simply returns. If any 
+            invocations of the <paramref name="predicate"/> throws an exception, it will halt the processing
+            of any more exceptions and immediately propagate the thrown exception as-is.
+            </remarks>
+            <exception cref="T:Diadoc.Api.AggregateException">An exception contained by this <see 
+            cref="T:Diadoc.Api.AggregateException"/> was not handled.</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="predicate"/> argument is 
+            null.</exception> 
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.Flatten">
+            <summary> 
+            Flattens an <see cref="T:Diadoc.Api.AggregateException"/> instances into a single, new instance.
+            </summary> 
+            <returns>A new, flattened <see cref="T:Diadoc.Api.AggregateException"/>.</returns>
+            <remarks>
+            If any inner exceptions are themselves instances of
+            <see cref="T:Diadoc.Api.AggregateException"/>, this method will recursively flatten all of them. The 
+            inner exceptions returned in the new <see cref="T:Diadoc.Api.AggregateException"/>
+            will be the union of all of the the inner exceptions from exception tree rooted at the provided 
+            <see cref="T:Diadoc.Api.AggregateException"/> instance. 
+            </remarks>
+        </member>
+        <member name="M:Diadoc.Api.AggregateException.ToString">
+            <summary>
+            Creates and returns a string representation of the current <see cref="T:Diadoc.Api.AggregateException"/>. 
+            </summary>
+            <returns>A string representation of the current exception.</returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.Bytes.Compare(System.Byte[],System.Byte[])">
+            <summary>
+            Сравнение двух массивов байт
+            </summary>
+            <param name="d1"></param>
+            <param name="d2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.CertificateWithPrivateKeyFinder.GetCertificateWithPrivateKey(System.Byte[])">
+            <summary>
+            Поиск сертификата с закрытым ключом по содержимому
+            </summary>
+            <param name="certificateContent">Содержимое сертификата</param>
+            <returns>Указатель на сертификат</returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.CertificateWithPrivateKeyFinder.GetDefaultStores">
+            <summary>
+            Получение списка хранилищ по-умлочанию
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.CertificateWithPrivateKeyFinder.HasPrivateKey(System.IntPtr)">
+            <summary>
+            Проверка на наличие закрытого ключа у сертификата
+            </summary>
+            <param name="certificate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.CertificateWithPrivateKeyFinder.FindCertificateWithPrivateKey(System.IntPtr)">
+            <summary>
+            Поиск сертификата, совпрадающего с исходным в известных хранилищах
+            </summary>
+            <param name="initialCertificate">Исходный сертификат</param>
+            <returns>Сертификат с закрытым ключом. IntPtr.Zero, если не найден</returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.CertificateWithPrivateKeyFinder.GetStoreHandle(System.Int32,System.String)">
+            <summary>
+            Получение указателя на хранилище сертификатов
+            </summary>
+            <param name="store"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.CertificateWithPrivateKeyFinder.GetCertificatesFromStore(System.IntPtr)">
+            <summary>
+            Возвращает список сертификатов из хранилища
+            </summary>
+            <param name="storeHandle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.CertificateWithPrivateKeyFinder.GetHash(System.IntPtr)">
+            <summary>
+            Хэш для сертификата
+            </summary>
+            <param name="certificate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.WinApiCrypt.VerifySignature(System.Byte[],System.Byte[])">
+            <summary>
+            Проверка подписи
+            </summary>
+            <param name="content">Подписанные данные</param>
+            <param name="signatures">Содержимое подписи</param>
+            <returns>Список сертификатов из подписи</returns>
+        </member>
+        <member name="M:Diadoc.Api.Cryptography.WinApiCrypt.Sign(System.Byte[],System.Byte[])">
+            <summary>
+            Подписывание данных
+            </summary>
+            <param name="content">Содержимое</param>
+            <param name="certificateContent">Содержимое сертификата</param>
+            <returns>Подпись</returns>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.OtherIssuer">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.OtherIssuer.Position">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.OtherIssuer.EmployeeInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.OtherIssuer.EmployeeBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.OtherIssuer.OrganizationName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.OtherIssuer.OrganizationBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.OtherIssuer.LastName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.OtherIssuer.FirstName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.OtherIssuer.MiddleName">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Employee">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Employee.Position">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Employee.EmployeeInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Employee.EmployeeBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Employee.LastName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Employee.FirstName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Employee.MiddleName">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.AdditionalInfoId.AdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.AdditionalInfoId.InfoFileId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.AdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.AdditionalInfo.Id">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.AdditionalInfo.Value">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetailsBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.LastName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.FirstName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.MiddleName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.Position">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.Inn">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.RegistrationCertificate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.SignerType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.SignerOrganizationName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.SignerInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.SignerPowersBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetailsBase.SignerOrgPowersBase">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetailsBaseSignerType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetailsBaseSignerType.LegalEntity">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetailsBaseSignerType.IndividualEntity">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetailsBaseSignerType.PhysicalPerson">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820.SignerStatus">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerPowers.PersonMadeOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerPowers.MadeAndSignOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerPowers.PersonDocumentedOperation">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerStatus">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerStatus.OtherOrganizationEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerStatus.AuthorizedPerson">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerStatus.BuyerEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle820SignerStatus.InformationCreatorBuyerEmployee">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetails.SignerStatus">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetailsSignerStatus">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetailsSignerStatus.SellerEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetailsSignerStatus.InformationCreatorEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetailsSignerStatus.OtherOrganizationEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetailsSignerStatus.AuthorizedPerson">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_551_552">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetails_551_552.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_551_552SignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_551_552SignerPowers.PersonMadeOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_551_552SignerPowers.MadeAndSignOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_551_552SignerPowers.PersonDocumentedOperation">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionBuyerTitle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionBuyerTitle.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionBuyerTitleSignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionBuyerTitleSignerPowers.PersonDocumentedOperation">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionSellerTitle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionSellerTitle.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionSellerTitleSignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionSellerTitleSignerPowers.InvoiceSigner">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionSellerTitleSignerPowers.PersonDocumentedOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_CorrectionSellerTitleSignerPowers.ResponsibleForOperationAndSignerForInvoice">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitle.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitleSignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitleSignerPowers.PersonMadeOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitleSignerPowers.MadeAndSignOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_BuyerTitleSignerPowers.PersonDocumentedOperation">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitle.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitleSignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitleSignerPowers.InvoiceSigner">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitleSignerPowers.PersonMadeOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitleSignerPowers.MadeAndSignOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitleSignerPowers.PersonDocumentedOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitleSignerPowers.MadeOperationAndSignedInvoice">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitleSignerPowers.MadeAndResponsibleForOperationAndSignedInvoice">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ExtendedSignerDetails_SellerTitleSignerPowers.ResponsibleForOperationAndSignerForInvoice">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.SignerReference">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.SignerReference.BoxId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.SignerReference.CertificateBytes">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.SignerReference.CertificateThumbprint">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.SignerReference.PowerOfAttorney">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.PowerOfAttorney">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.PowerOfAttorney.FullId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.PowerOfAttorney.UseDefault">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.PowerOfAttorneyFullId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.PowerOfAttorneyFullId.RegistrationNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.PowerOfAttorneyFullId.IssuerInn">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.PowerOfAttorneyUseDefault">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.PowerOfAttorneyUseDefault.true">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.PowerOfAttorneyUseDefault.false">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.AdditionalInfoId736">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.AdditionalInfoId736.AdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.AdditionalInfoId736.InfoFileId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.WithoutVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.Zero">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.TenPercent">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.EighteenPercent">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.TwentyPercent">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.TenFraction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.EighteenFraction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.TwentyFraction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.TaxRateWithTwentyPercentAndTaxedByAgent.TaxedByAgent">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ItemsChoiceType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ItemsChoiceType.PackageId">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.ItemsChoiceType.Unit">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.RussianAddress">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.ZipCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.Region">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.Territory">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.City">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.Locality">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.Street">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.Building">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.Block">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.RussianAddress.Apartment">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.ForeignAddress">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ForeignAddress.Country">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.ForeignAddress.Address">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Address">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Address.Item">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.OrganizationType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.OrganizationType.LegalEntity">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.OrganizationType.IndividualEntity">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.OrganizationType.ForeignEntity">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.OrganizationType.PhysicalEntity">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentBuyerTitle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentBuyerTitle.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentBuyerTitle.Signers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentBuyerTitle.DocumentCreator">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentBuyerTitle.DocumentCreatorBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentBuyerTitle.OperationContent">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentBuyerTitle.AcceptanceDate">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.LastName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.FirstName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.MiddleName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.Position">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.Inn">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.RegistrationCertificate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.SignerType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.SignerOrganizationName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.SignerInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.SignerPowersBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736.SignerOrgPowersBase">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736SignerType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736SignerType.LegalEntity">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736SignerType.IndividualEntity">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetailsBase736SignerType.PhysicalPerson">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails736">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails736.SignerStatus">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails736SignerStatus">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails736SignerStatus.OtherOrganizationEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails736SignerStatus.AuthorizedPerson">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails736SignerStatus.BuyerEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails736SignerStatus.InformationCreatorBuyerEmployee">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_CorrectionBuyerTitle736">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_CorrectionBuyerTitle736.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_CorrectionBuyerTitle736SignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_CorrectionBuyerTitle736SignerPowers.InvoiceSigner">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_CorrectionBuyerTitle736SignerPowers.PersonDocumentedOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_CorrectionBuyerTitle736SignerPowers.ResponsibleForOperationAndSignerForInvoice">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_CorrectionBuyerTitle736SignerPowers.Other">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.Invoices">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.Seller">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.Buyer">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.Table">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.EventContent">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.Signers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.Function">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.DocumentName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.DocumentDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.DocumentNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.Currency">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.CurrencyName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.CurrencyRate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.CurrencyRateSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.CorrectionRevisionDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.CorrectionRevisionNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.DocumentCreator">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.DocumentCreatorBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocument.GovernmentContractInfo">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.InvoiceForCorrectionInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceForCorrectionInfo.Revision">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceForCorrectionInfo.Date">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceForCorrectionInfo.Number">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.InvoiceForCorrectionInfoRevision">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceForCorrectionInfoRevision.Date">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceForCorrectionInfoRevision.Number">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfo.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfo.SignerStatus">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerPowers.PersonApprovedDocument">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerPowers.PersonConfirmedDocument">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerPowers.PersonAgreedOnDocument">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerPowers.PersonOtherPower">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerStatus">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerStatus.SellerEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerStatus.OtherOrganizationEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerStatus.AuthorizedPerson">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerStatus.BuyerEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2AdditionalInfoSignerStatus.InformationCreatorBuyerEmployee">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2Buyer">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2Buyer.SignerPowers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2Buyer.SignerStatus">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerPowers">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerPowers.PersonMadeOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerPowers.MadeAndSignOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerPowers.PersonDocumentedOperation">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerPowers.ChairmanCommission">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerPowers.MemberCommission">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerStatus">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerStatus.OtherOrganizationEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerStatus.AuthorizedPerson">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerStatus.BuyerEmployee">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedSignerDetails_Torg2BuyerSignerStatus.InformationCreatorBuyerEmployee">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.DocType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.DocType.BaseDocumentName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.DocType.BaseDocumentNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.DocType.BaseDocumentDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.DocType.AdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.DocType.BaseIdFile">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.EventContent">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.EventContent.TransferDocDetails">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.EventContent.CorrectionBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.EventContent.CostChangeInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.EventContent.OperationContent">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.EventContent.NotificationDate">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736.TotalWithVatExcluded">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736.Vat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736.VatSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736.WithoutVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736.WithoutVatSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736.Total">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736.TotalSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736WithoutVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.InvoiceTotalsDiff736WithoutVat.true">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.TaxRate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.UnitName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.Unit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.Quantity">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.Price">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.Excise">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.SubtotalWithVatExcluded">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.Vat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.WithoutVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.Subtotal">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.ItemTracingInfos">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.OriginalItemIdentificationNumbers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.CorrectedItemIdentificationNumbers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.AdditionalInfos">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.Product">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.ItemCharact">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.ItemKind">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.ItemArticle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.ItemVendorCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.ItemTypeCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItem.OriginalNumber">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemTaxRate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemTaxRate.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemTaxRate.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemUnitName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemUnitName.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemUnitName.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemUnit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemUnit.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemUnit.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemQuantity">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemQuantity.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemQuantity.OriginalValueSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemQuantity.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemQuantity.CorrectedValueSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemPrice">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemPrice.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemPrice.OriginalValueSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemPrice.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemPrice.CorrectedValueSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExcise">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExcise.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExcise.ItemElementName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExcise.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExcise.OriginalValueSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExcise.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExcise.CorrectedValueSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExciseDiffType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExciseDiffType.AmountsDec">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemExciseDiffType.AmountsInc">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcluded">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcluded.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcluded.ItemElementName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcluded.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcluded.OriginalValueSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcluded.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcluded.CorrectedValueSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcludedDiffType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcludedDiffType.AmountsDec">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalWithVatExcludedDiffType.AmountsInc">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVat.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVat.ItemElementName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVat.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVat.OriginalValueSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVat.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVat.CorrectedValueSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVatDiffType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVatDiffType.AmountsDec">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemVatDiffType.AmountsInc">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVat.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVat.OriginalValueSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVat.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVat.CorrectedValueSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVatOriginalValue">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVatOriginalValue.true">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVatCorrectedValue">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemWithoutVatCorrectedValue.true">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotal">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotal.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotal.ItemElementName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotal.OriginalValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotal.OriginalValueSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotal.CorrectedValue">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotal.CorrectedValueSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalDiffType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalDiffType.AmountsDec">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemSubtotalDiffType.AmountsInc">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfo.QuantityDiff">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfo.RegNumberUnit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfo.Unit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfo.ItemAddInfo">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfoQuantityDiff">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfoQuantityDiff.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfoQuantityDiff.ItemElementName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfoQuantityDiff.OriginalQuantity">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfoQuantityDiff.CorrectedQuantity">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfoQuantityDiffType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfoQuantityDiffType.QuantityDec">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedInvoiceCorrectionItemItemTracingInfoQuantityDiffType.QuantityInc">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ItemIdentificationNumbersItemIdentificationNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ItemIdentificationNumbersItemIdentificationNumber.Items">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ItemIdentificationNumbersItemIdentificationNumber.ItemsElementName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ItemIdentificationNumbersItemIdentificationNumber.TransPackageId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.InvoiceCorrectionTable">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceCorrectionTable.Items">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceCorrectionTable.TotalsInc">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.InvoiceCorrectionTable.TotalsDec">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ForeignAddress1000">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ForeignAddress1000.Country">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ForeignAddress1000.Address">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.Address_ForeignAddress1000">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.Address_ForeignAddress1000.Item">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.OrgType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.Okopf">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.Okpo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.Okdp">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.Phone">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.Email">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.CorrespondentAccount">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.BankAccountNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.BankName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.BankId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.Department">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.OrganizationAdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.OrganizationOrPersonInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.IndividualEntityRegistrationCertificate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.LegalEntityId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.ShortOrgName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ManualFilling.Country">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationReference">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationReference.BoxId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ForeignAddress1000">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ForeignAddress1000.Address">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ForeignAddress1000.OrgName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ForeignAddress1000.Inn">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ForeignAddress1000.Kpp">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails_ForeignAddress1000.FnsParticipantId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails.Address">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails.OrgName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails.Inn">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails.Kpp">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetails.FnsParticipantId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetailsWithHyphens">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetailsWithHyphens.HyphenInn">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetailsWithHyphensHyphenInn">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetailsWithHyphensHyphenInn.true">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationDetailsWithHyphensHyphenInn.false">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationInfo_ForeignAddress1000">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Ucd736.ExtendedOrganizationInfo_ForeignAddress1000.Item">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentFunction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentFunction.КСЧФ">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentFunction.КСЧФДИС">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentFunction.ДИС">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentFunction.СвИСРК">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentFunction.СвИСЗК">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentCurrencyName">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentCurrencyName.GetCurrencyNameByCode">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Ucd736.UniversalCorrectionDocumentCurrencyName.DoNotGetCurrencyNameByCode">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.Sellers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.Buyers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.Shippers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.Consignees">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.Signers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.PaymentDocuments">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.Table">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.TransferInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.FactorInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.MainAssignMonetaryClaim">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.SellerInfoCircumPublicProc">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.DocumentShipments">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.Function">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.ApprovedStructureAdditionalInfoFields">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.SenderFnsParticipantId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.RecipientFnsParticipantId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.DocumentName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.DocumentDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.DocumentNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.Currency">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.CurrencyRate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.CurrencyRateSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.RevisionDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.HyphenRevisionDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.RevisionNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.HyphenRevisionNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.DocumentCreator">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.DocumentCreatorBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.GovernmentContractInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.CircumFormatInvoice">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphens.CircumFormatInvoiceSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationInfoWithHyphens">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationInfoWithHyphens.Item">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetailsWithHyphens">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetailsWithHyphens.HyphenInn">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetailsWithHyphensHyphenInn">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetailsWithHyphensHyphenInn.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetailsWithHyphensHyphenInn.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails.Address">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails.OrgName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails.Inn">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails.Kpp">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails.FnsParticipantId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer.Position">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer.EmployeeInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer.EmployeeBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer.OrganizationName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer.OrganizationBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer.LastName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer.FirstName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.OtherIssuer.MiddleName">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.Employee">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.Employee.Position">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.Employee.EmployeeInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.Employee.EmployeeBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.Employee.LastName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.Employee.FirstName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.Employee.MiddleName">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.TransferBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferBase.BaseDocumentName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferBase.BaseDocumentNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferBase.BaseDocumentDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferBase.BaseDocumentInfo">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.TransferBase820">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferBase820.BaseDocumentId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.TransferBases">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.Waybills">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.Carrier">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.Employee">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.OtherIssuer">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.OperationInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.OperationType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.TransferDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.TransferStartDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.TransferEndDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.TransferTextInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.CreatedThingTransferDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.TransferInfo.CreatedThingInfo">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.WaybillsWaybill">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.WaybillsWaybill.TransferDocumentNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.WaybillsWaybill.TransferDocumentDate">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.AdditionalInfoId.AdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.AdditionalInfoId.InfoFileId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.AdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.AdditionalInfo.Id">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.AdditionalInfo.Value">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.CustomsDeclarationWithHyphens">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.CustomsDeclarationWithHyphens.Country">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.CustomsDeclarationWithHyphens.HyphenCountry">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.CustomsDeclarationWithHyphens.DeclarationNumber">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.CustomsDeclarationWithHyphensHyphenCountry">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.CustomsDeclarationWithHyphensHyphenCountry.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.CustomsDeclarationWithHyphensHyphenCountry.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.TotalWithVatExcluded">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.TotalWithVatExcludedSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.Vat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.VatSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.WithoutVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.HyphenVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.Total">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.TotalSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.HyphenTotal">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.TotalNet">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTable.TotalNetSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.CustomsDeclarations">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.AdditionalInfos">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemTracingInfos">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemIdentificationNumbers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.Product">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.Unit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.HyphenUnit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.UnitName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.Quantity">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.QuantitySpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.Price">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.PriceSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.Excise">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ExciseSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.TaxRate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.SubtotalWithVatExcluded">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.SubtotalWithVatExcludedSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.Vat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.VatSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.WithoutVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.HyphenVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.Subtotal">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.SubtotalSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.HyphenSubtotal">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemMark">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemMarkSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.AdditionalProperty">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemVendorCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemToRelease">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemToReleaseSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemCharact">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemArticle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemKind">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.CatalogCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItem.ItemTypeCode">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemTracingInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemTracingInfo.RegNumberUnit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemTracingInfo.Unit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemTracingInfo.Quantity">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemTracingInfo.ItemAddInfo">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemIdentificationNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemIdentificationNumber.Items">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemIdentificationNumber.ItemsElementName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemIdentificationNumber.TransPackageId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenUnit">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenUnit.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenUnit.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.WithoutVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.Zero">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.TenPercent">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.EighteenPercent">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.TwentyPercent">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.TenFraction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.EighteenFraction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.TwentyFraction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.TaxRateWithTwentyPercentAndTaxedByAgent.TaxedByAgent">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemWithoutVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemWithoutVat.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemWithoutVat.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenVat.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenVat.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenSubtotal">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenSubtotal.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemHyphenSubtotal.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemMark">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemMark.Property">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemMark.Job">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemMark.Service">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemMark.PropertyRights">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableItemItemMark.Other">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableWithoutVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableWithoutVat.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableWithoutVat.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableHyphenVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableHyphenVat.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableHyphenVat.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableHyphenTotal">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableHyphenTotal.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.InvoiceTableHyphenTotal.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.PaymentDocumentInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.PaymentDocumentInfo.Date">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.PaymentDocumentInfo.Number">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.PaymentDocumentInfo.Total">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.PaymentDocumentInfo.TotalSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.OrgType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.Okopf">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.Okpo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.Okdp">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.Phone">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.Email">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.CorrespondentAccount">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.BankAccountNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.BankName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.BankId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.Department">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.OrganizationAdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.OrganizationOrPersonInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.IndividualEntityRegistrationCertificate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.LegalEntityId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.ShortOrgName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationDetails_ManualFilling.Country">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationReference">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.ExtendedOrganizationReference.BoxId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensShipper">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensShipper.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensShipper.SameAsSeller">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensShipperSameAsSeller">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensShipperSameAsSeller.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensShipperSameAsSeller.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensSellerInfoCircumPublicProc">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensSellerInfoCircumPublicProc.DateStateContract">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensSellerInfoCircumPublicProc.NumberStateContract">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensSellerInfoCircumPublicProc.PersonalAccountSeller">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensSellerInfoCircumPublicProc.SellerBudjetClassCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensSellerInfoCircumPublicProc.SellerTargetCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensSellerInfoCircumPublicProc.SellerTreasuryCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensSellerInfoCircumPublicProc.SellerTreasuryName">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensDocumentShipment">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensDocumentShipment.Name">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensDocumentShipment.Number">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensDocumentShipment.Date">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensFunction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensFunction.СЧФ">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensFunction.ДОП">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensFunction.СЧФДОП">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensFunction.СвРК">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensFunction.СвЗК">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensHyphenRevisionDate">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensHyphenRevisionDate.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensHyphenRevisionDate.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensHyphenRevisionNumber">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensHyphenRevisionNumber.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensHyphenRevisionNumber.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice.ItemsRealization">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice.PaymentsRecieve">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice.AgentSchema">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice.СommissionAgentSales">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice.AgentCommissionReturn">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice.AgentCommissionPurchase">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice.СommissionAgentReturn">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.Hyphens.UniversalTransferDocumentWithHyphensCircumFormatInvoice.BuyerSellerReturn">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.Employee">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.OtherIssuer">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.Signers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.ContentOperCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.BuyerInfoCircumPublicProc">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.DocumentCreator">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.DocumentCreatorBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.OperationCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.OperationContent">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitle.AcceptanceDate">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCode.TotalCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCode.NameDiscrepDocument">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCode.TypeDiscrepDocument">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCode.TypeDiscrepDocumentSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCode.NumberDiscrepDocument">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCode.DateDiscrepDocument">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCode.IdDiscrepDocument">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCodeTotalCode">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCodeTotalCode.Accepted">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCodeTotalCode.AcceptedWithDiscrepancies">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCodeTotalCode.NotAccepted">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCodeTypeDiscrepDocument">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCodeTypeDiscrepDocument.DiscrepanciesAcceptance">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleContentOperCodeTypeDiscrepDocument.Discrepancies">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.InfoFundsLiab">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.ProcCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.PersonalAccountBuyer">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.NameFinAuthority">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.BuyerRegistryEntryNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.BuyerLiabNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.BuyerTreasuryCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.BuyerTreasuryName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.OKTMOBuy">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.OKTMOPlaceDelivery">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.PayDeadLine">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.NumberFundsLiab">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.PaymentPriority">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.PaymentType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProc.PaymentTypeSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiab">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiab.NumberString">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiab.ObjectCodeFAIP">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiab.FundsSourceType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiab.BuyerBudjetClassCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiab.BuyerTargetCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiab.AmountAdvance">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiabFundsSourceType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiabFundsSourceType.Budjet">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiabFundsSourceType.UntitledSourceType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiabFundsSourceType.AdditionalFunding">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiabFundsSourceType.InvestigatingActivitiesFunding">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiabFundsSourceType.TemporaryGovernmentSources">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcInfoFundsLiabFundsSourceType.LegalEntitiesSources">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcPaymentType">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcPaymentType.Empty">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentBuyerTitleBuyerInfoCircumPublicProcPaymentType.Urgent">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.Sellers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.Buyers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.Shippers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.Consignees">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.Signers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.PaymentDocuments">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.Table">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.TransferInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.FactorInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.MainAssignMonetaryClaim">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.SellerInfoCircumPublicProc">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.DocumentShipments">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.Function">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.ApprovedStructureAdditionalInfoFields">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.DocumentName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.DocumentDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.DocumentNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.Currency">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.CurrencyRate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.CurrencyRateSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.RevisionDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.RevisionNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.DocumentCreator">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.DocumentCreatorBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.GovernmentContractInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.CircumFormatInvoice">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocument.CircumFormatInvoiceSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationInfo.Item">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails.Address">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails.OrgName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails.Inn">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails.Kpp">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails.FnsParticipantId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.TransferBase">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferBase.BaseDocumentName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferBase.BaseDocumentNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferBase.BaseDocumentDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferBase.BaseDocumentInfo">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.TransferBase820">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferBase820.BaseDocumentId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.TransferInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.TransferBases">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.Waybills">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.AdditionalInfoId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.Carrier">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.Employee">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.OtherIssuer">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.OperationInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.OperationType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.TransferDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.TransferStartDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.TransferEndDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.TransferTextInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.CreatedThingTransferDate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.TransferInfo.CreatedThingInfo">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.WaybillsWaybill">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.WaybillsWaybill.TransferDocumentNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.WaybillsWaybill.TransferDocumentDate">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.CustomsDeclaration">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.CustomsDeclaration.Country">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.CustomsDeclaration.DeclarationNumber">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.InvoiceTable">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.TotalWithVatExcluded">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.TotalWithVatExcludedSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.Vat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.VatSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.WithoutVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.Total">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.TotalSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.TotalNet">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTable.TotalNetSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.InvoiceTableItem">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.CustomsDeclarations">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.AdditionalInfos">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemTracingInfos">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemIdentificationNumbers">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.Product">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.Unit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.UnitName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.Quantity">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.QuantitySpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.Price">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.PriceSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.Excise">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ExciseSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.TaxRate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.SubtotalWithVatExcluded">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.SubtotalWithVatExcludedSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.Vat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.VatSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.WithoutVat">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.Subtotal">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.SubtotalSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemMark">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemMarkSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.AdditionalProperty">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemVendorCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemToRelease">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemToReleaseSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemCharact">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemArticle">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemKind">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.CatalogCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItem.ItemTypeCode">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemTracingInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemTracingInfo.RegNumberUnit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemTracingInfo.Unit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemTracingInfo.Quantity">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemTracingInfo.ItemAddInfo">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemIdentificationNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemIdentificationNumber.Unit">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemIdentificationNumber.PackageId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemIdentificationNumber.TransPackageId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.InvoiceTableItemWithoutVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableItemWithoutVat.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableItemWithoutVat.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemMark">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemMark.Property">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemMark.Job">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemMark.Service">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemMark.PropertyRights">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableItemItemMark.Other">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.InvoiceTableWithoutVat">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableWithoutVat.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.InvoiceTableWithoutVat.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.PaymentDocumentInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.PaymentDocumentInfo.Date">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.PaymentDocumentInfo.Number">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.PaymentDocumentInfo.Total">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.PaymentDocumentInfo.TotalSpecified">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.OrgType">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.Okopf">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.Okpo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.Okdp">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.Phone">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.Email">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.CorrespondentAccount">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.BankAccountNumber">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.BankName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.BankId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.Department">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.OrganizationAdditionalInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.OrganizationOrPersonInfo">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.IndividualEntityRegistrationCertificate">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.LegalEntityId">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.ShortOrgName">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationDetails_ManualFilling.Country">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationReference">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.ExtendedOrganizationReference.BoxId">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentShipper">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentShipper.Item">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentShipper.SameAsSeller">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentShipperSameAsSeller">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentShipperSameAsSeller.True">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentShipperSameAsSeller.False">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentSellerInfoCircumPublicProc">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentSellerInfoCircumPublicProc.DateStateContract">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentSellerInfoCircumPublicProc.NumberStateContract">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentSellerInfoCircumPublicProc.PersonalAccountSeller">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentSellerInfoCircumPublicProc.SellerBudjetClassCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentSellerInfoCircumPublicProc.SellerTargetCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentSellerInfoCircumPublicProc.SellerTreasuryCode">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentSellerInfoCircumPublicProc.SellerTreasuryName">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentDocumentShipment">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentDocumentShipment.Name">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentDocumentShipment.Number">
+            <remarks/>
+        </member>
+        <member name="P:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentDocumentShipment.Date">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentFunction">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentFunction.СЧФ">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentFunction.ДОП">
+            <remarks/>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentFunction.СЧФДОП">
+            <remarks/>
+        </member>
+        <member name="T:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentCircumFormatInvoice">
+            <remarks>
+            Обстоятельства формирования счета-фактуры, применяемого при расчетах по налогу на добавленную стоимость
+            </remarks>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentCircumFormatInvoice.ItemsRealization">
+            <remarks>
+            Cчет-фактура, выставляемый при реализации товаров (работ, услуг), передаче имущественных прав
+            </remarks>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentCircumFormatInvoice.PaymentsRecieve">
+            <remarks>
+            Счет-фактура, выставляемый при получении оплаты, частичной оплаты в счет предстоящих
+            поставок товаров (выполнения работ, оказания услуг), передачи имущественных прав
+            </remarks>
+        </member>
+        <member name="F:Diadoc.Api.DataXml.Utd820.UniversalTransferDocumentCircumFormatInvoice.AgentSchema">
+            <remarks>
+            Счет-фактура, применяемый в случае реализации комиссионером (агентом, экспедитором, застройщиком или заказчиком, выполняющим функции застройщика)
+            двум и более покупателям (приобретения у двух и более продавцов) товаров (работ, услуг), имущественных прав от своего имени
+            </remarks>
+        </member>
+        <member name="P:Diadoc.Api.DiadocApi.UsingSystemProxy">
+            <summary>
+              The default value is true
+            </summary>
+        </member>
+        <member name="P:Diadoc.Api.Http.HttpClient.UseSystemProxy">
+            <summary>
+                The default value is true
+            </summary>
+        </member>
+        <member name="P:Diadoc.Api.Http.HttpClient.ClientCertificate">
+            <summary>
+                Client certificate used to establish https requests
+            </summary>
+        </member>
+        <member name="P:Diadoc.Api.IDiadocApi.UsingSystemProxy">
+            <summary>
+            The default value is true
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,7 @@
+c:\users\sletnevap\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\Debug\AutoOrdersIntake.exe.config
+c:\users\sletnevap\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\Debug\AutoOrdersIntake.exe
+c:\users\sletnevap\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\Debug\AutoOrdersIntake.pdb
+c:\users\sletnevap\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\Debug\AutoOrdersIntakeEDI-SKB.csprojResolveAssemblyReference.cache
+c:\users\sletnevap\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\Debug\AutoOrdersIntake.exe
+c:\users\sletnevap\documents\visual studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\obj\Debug\AutoOrdersIntake.pdb
+C:\Users\SletnevAP\Documents\Visual Studio 2012\Projects\AutoOrdersIntake\AutoOrdersIntake\bin\Debug\app.config
