@@ -3184,6 +3184,8 @@ namespace AutoOrdersIntake
             //получение данных
             object[] DelivInfo = Verifiacation.GetDataFromPtn_Rcd(Convert.ToString(infoSf[4]));   //10 = формат
             object[] PlatInfo = Verifiacation.GetDataFromPtn_Rcd(Convert.ToString(infoSf[2]));
+            object KonturPlatGLN = Verifiacation.GetGLNGR(Convert.ToString(infoSf[2]));
+            if (String.IsNullOrEmpty(KonturPlatGLN.ToString())) KonturPlatGLN = PlatInfo[2];
 
             Program.WriteLine("DelivInfo " + Convert.ToString(infoSf[4]) + " PlatInfo " + Convert.ToString(infoSf[2]));
             Program.WriteLine("DelivInfo GLN " + Convert.ToString(DelivInfo[2]) + " PlatInfo GLN " + Convert.ToString(PlatInfo[2]));
@@ -3268,7 +3270,7 @@ namespace AutoOrdersIntake
 
             //------interchangeHeader---------------
             XElement sender = new XElement("sender", ILN_Edi);
-            XElement recipient = new XElement("recipient", Convert.ToString(PlatInfo[2]));
+            XElement recipient = new XElement("recipient", KonturPlatGLN);       //глн группы либо протсо глн (Convert.ToString(PlatInfo[2]))
             XElement documentType = new XElement("documentType", "COINVOIC");
 
             interchangeHeader.Add(sender);
@@ -3398,7 +3400,7 @@ namespace AutoOrdersIntake
                 russianAddress.Add(postalCode);
             }
             //--------buyer------------------
-            XElement glnbuyer = new XElement("gln", Convert.ToString(PlatInfo[2]));
+            XElement glnbuyer = new XElement("gln", KonturPlatGLN);           //глн группы либо протсо глн (Convert.ToString(PlatInfo[2]))
             buyer.Add(glnbuyer);
             string BuyerISOCode;
 
