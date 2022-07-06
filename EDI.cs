@@ -845,8 +845,8 @@ namespace AutoOrdersIntake
                 //получение данных
                 object[] DelivInfo = Verifiacation.GetDataFromPtnCD(Convert.ToString(CurrDataInvoice[8]));   //10 = формат
                 object[] PlatInfo = Verifiacation.GetDataFromPtnCD(Convert.ToString(CurrDataInvoice[9]));
-                object KonturPlatGLN = Verifiacation.GetGLNGR(Convert.ToString(CurrDataInvoice[9]));              //  глн группы
-                if (String.IsNullOrEmpty(KonturPlatGLN.ToString())) KonturPlatGLN = PlatInfo[2];                  //  если глн группы отсутствует, то просто глн
+                object KonturPlatGLN = Verifiacation.GetGLNGR(Convert.ToString(CurrDataInvoice[9]));                                        //  глн группы
+                if (String.IsNullOrEmpty(KonturPlatGLN.ToString()) || KonturPlatGLN.ToString().Equals("0")) KonturPlatGLN = PlatInfo[2];    //  если глн группы отсутствует, то просто глн
 
                 //какой gln номер использовать
                 string check = Convert.ToString(DelivInfo[8]);
@@ -861,6 +861,7 @@ namespace AutoOrdersIntake
                 object[] FirmInfo, FirmInfo_G;
                 object[] FirmAdr, FirmAdr_G;
                 object[] FirmInfoGrOt; //данные грузоотправителя
+                object[] infoFirmAdrGrOt = Verifiacation.GetFirmAdr();  //адрес грузоотправителя
 
                 if (UseMasterGLN == true) //используем данные головного предприятия
                 {
@@ -1027,42 +1028,45 @@ namespace AutoOrdersIntake
                 XElement gln = new XElement("gln", ILN_Edi);
                 seller.Add(gln);
 
-            /*    if (iso == true)//костыли для азбуки вкуса
-                {
-                    XElement organization = new XElement("organization");
-                    XElement russianAddress = new XElement("russianAddress");
-
-                    seller.Add(organization);
-                    seller.Add(russianAddress);
-                    //--------organization------------------
-                    XElement name = new XElement("name", FirmInfo[0]);
-                    XElement inn = new XElement("inn", FirmInfo[1]);
-                    XElement kpp = new XElement("kpp", FirmInfo[2]);
-
-                    organization.Add(name);
-                    organization.Add(inn);
-                    organization.Add(kpp);
-
-                    //---------russianAddress----------------
-                    XElement city = new XElement("city", Convert.ToString(FirmAdr[1]));
-                    XElement street = new XElement("street", Convert.ToString(FirmAdr[0]));
-                    XElement regionISOCode = new XElement("regionISOCode", sellerISOCode);
-                    XElement postalCode = new XElement("postalCode", Convert.ToString(FirmAdr[3]));
-
-                    russianAddress.Add(city);
-                    russianAddress.Add(street);
-                    russianAddress.Add(regionISOCode);
-                    russianAddress.Add(postalCode);
-                }
-                else
-                {*/
-                    if (UseMasterGLN == false)
+                /*    if (iso == true)//костыли для азбуки вкуса
                     {
                         XElement organization = new XElement("organization");
                         XElement russianAddress = new XElement("russianAddress");
 
                         seller.Add(organization);
                         seller.Add(russianAddress);
+                        //--------organization------------------
+                        XElement name = new XElement("name", FirmInfo[0]);
+                        XElement inn = new XElement("inn", FirmInfo[1]);
+                        XElement kpp = new XElement("kpp", FirmInfo[2]);
+
+                        organization.Add(name);
+                        organization.Add(inn);
+                        organization.Add(kpp);
+
+                        //---------russianAddress----------------
+                        XElement city = new XElement("city", Convert.ToString(FirmAdr[1]));
+                        XElement street = new XElement("street", Convert.ToString(FirmAdr[0]));
+                        XElement regionISOCode = new XElement("regionISOCode", sellerISOCode);
+                        XElement postalCode = new XElement("postalCode", Convert.ToString(FirmAdr[3]));
+
+                        russianAddress.Add(city);
+                        russianAddress.Add(street);
+                        russianAddress.Add(regionISOCode);
+                        russianAddress.Add(postalCode);
+                    }
+                    else
+                    {*/
+
+                XElement organization = new XElement("organization");
+                XElement russianAddress = new XElement("russianAddress");
+
+                seller.Add(organization);
+                seller.Add(russianAddress);
+
+                if (UseMasterGLN == false)
+                    {
+                        
                         //--------organization------------------
                         XElement name = new XElement("name", "АО \"Группа Компаний \"Российское Молоко\" (АО \"ГК \"РОСМОЛ\")");
                         XElement inn = new XElement("inn", FirmInfo_G[1]);
@@ -1083,6 +1087,28 @@ namespace AutoOrdersIntake
                         russianAddress.Add(street);
                         russianAddress.Add(regionISOCode);
                         russianAddress.Add(postalCode);
+                    }
+                else
+                    {
+                        //--------organization------------------
+                        XElement nameFrom = new XElement("name", FirmInfo[0]);
+                        XElement innFrom = new XElement("inn", FirmInfo[1]);
+                        XElement kppFrom = new XElement("kpp", FirmInfo[2]);
+
+                        organization.Add(nameFrom);
+                        organization.Add(innFrom);
+                        organization.Add(kppFrom);
+
+                        //---------russianAddress----------------
+                        XElement cityFrom = new XElement("city", Convert.ToString(FirmAdr[1]));
+                        XElement streetFrom = new XElement("street", Convert.ToString(FirmAdr[0]));
+                        XElement regionISOCodeFrom = new XElement("regionISOCode", sellerISOCode);
+                        XElement postalCodeFrom = new XElement("postalCode", Convert.ToString(FirmAdr[3]));
+
+                        russianAddress.Add(cityFrom);
+                        russianAddress.Add(streetFrom);
+                        russianAddress.Add(regionISOCodeFrom);
+                        russianAddress.Add(postalCodeFrom);
                     }
                 //}
 
@@ -1175,12 +1201,32 @@ namespace AutoOrdersIntake
                     organizationFrom.Add(kppFrom);
 
                     //---------russianAddress----------------
-                    XElement regionISOCodeFrom = new XElement("regionISOCode", sellerISOCode);
 
-                    russianAddressFrom.Add(regionISOCodeFrom);
+                    if (infoFirmAdrGrOt[1].ToString() != "")
+                    {
+                        XElement cityFrom = new XElement("city", "г." + infoFirmAdrGrOt[1].ToString());      //город
+                        russianAddressFrom.Add(cityFrom);
+                    }
+
+                    if (infoFirmAdrGrOt[5].ToString() != "")     
+                    {
+                       
+                        XElement streetFrom = new XElement("street", "ул." + infoFirmAdrGrOt[0].ToString());      //улица + дом
+                        russianAddressFrom.Add(streetFrom);
+                    }
+
+                    XElement regionISOCodeFrom = new XElement("regionISOCode", sellerISOCode);
+                    russianAddressFrom.Add(regionISOCodeFrom);                                                      //ISO-code
+
+                    if (infoFirmAdrGrOt[3].ToString() != "")                                                                
+                    {
+                        XElement postalCodeFrom = new XElement("postalCode", infoFirmAdrGrOt[3].ToString());
+                        russianAddressFrom.Add(postalCodeFrom);                                                         //индекс
+                    }
+
                 }
 
-                if (iso == true)//костыли для азбуки вкуса
+                /*if (iso == true)//костыли для азбуки вкуса
                 {
                     XElement organizationFrom = new XElement("organization");
                     XElement russianAddressFrom = new XElement("russianAddress");
@@ -1207,7 +1253,7 @@ namespace AutoOrdersIntake
                     russianAddressFrom.Add(streetFrom);
                     russianAddressFrom.Add(regionISOCodeFrom);
                     russianAddressFrom.Add(postalCodeFrom);
-                }
+                }*/
 
                 //---------ShipTo-------------------------
                 XElement glnTo = new XElement("gln", DelivInfo[2]);
@@ -3372,13 +3418,13 @@ namespace AutoOrdersIntake
             XElement gln = new XElement("gln", ILN_Edi);
             seller.Add(gln);
 
+            XElement organization = new XElement("organization");
+            XElement russianAddress = new XElement("russianAddress");
+            seller.Add(organization);
+            seller.Add(russianAddress);
+
             if (UseMasterGLN == false)
             {
-                XElement organization = new XElement("organization");
-                XElement russianAddress = new XElement("russianAddress");
-                
-                seller.Add(organization);
-                seller.Add(russianAddress);
                 //--------organization------------------
                 XElement name = new XElement("name", "АО \"Группа Компаний \"Российское Молоко\" (АО \"ГК \"РОСМОЛ\")");
                 XElement inn = new XElement("inn", FirmInfo_G[1]);
@@ -3399,6 +3445,29 @@ namespace AutoOrdersIntake
                 russianAddress.Add(regionISOCode);
                 russianAddress.Add(postalCode);
             }
+            else
+            {
+                XElement name = new XElement("name", FirmInfo[0]);
+                XElement inn = new XElement("inn", FirmInfo[1]);
+                XElement kpp = new XElement("kpp", FirmInfo[2]);
+
+                organization.Add(name);
+                organization.Add(inn);
+                organization.Add(kpp);
+
+                //---------russianAddress----------------
+                XElement city = new XElement("city", Convert.ToString(FirmAdr[1]));
+                XElement street = new XElement("street", Convert.ToString(FirmAdr[0]));
+                XElement regionISOCode = new XElement("regionISOCode", sellerISOCode);
+                XElement postalCode = new XElement("postalCode", Convert.ToString(FirmAdr[3]));
+
+                russianAddress.Add(city);
+                russianAddress.Add(street);
+                russianAddress.Add(regionISOCode);
+                russianAddress.Add(postalCode);
+            }
+
+
             //--------buyer------------------
             XElement glnbuyer = new XElement("gln", KonturPlatGLN);           //глн группы либо протсо глн (Convert.ToString(PlatInfo[2]))
             buyer.Add(glnbuyer);
