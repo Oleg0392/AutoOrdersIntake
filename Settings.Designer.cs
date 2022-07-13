@@ -48,5 +48,22 @@ namespace AutoOrdersIntake {
                 this["ConnStringISPRO"] = value;
             }
         }
+
+        /*//-----------------------------------------------------------добавлен тестовый сервер server4 (для отладок)
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=SERVER4-MGN;Initial Catalog=dfirm002_gmk;Persist Security Info=True" +
+            ";User ID=sa;Password=456123")]
+        public string ConnStringServer4
+        {
+            get
+            {
+                return ((string)(this["ConnStringServer4"]));
+            }
+            set
+            {
+                this["ConnStringServer4"] = value;
+            }
+        }*/
     }
 }

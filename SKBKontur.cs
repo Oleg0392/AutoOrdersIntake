@@ -148,7 +148,7 @@ namespace AutoOrdersIntake
                                                         }
                                                         catch
                                                         {
-                                                            DispOrders.WriteErrorLog("Ошибка процедуры CheckBuyerCode в СКБ-Контур");
+                                                            DispOrders.WriteErrorLog("Ошибка процедуры CheckBuyerCode в СКБ-Контур. Buyer code: " + buyer_code + ", товар: " + res_verf_item[2] + ", PtnCd: " + res_verf_buyer[0]);
                                                         }
                                                     }
                                                 }
