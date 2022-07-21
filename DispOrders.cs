@@ -394,7 +394,8 @@ namespace AutoOrdersIntake
             try
             {
                 SkladId = DispOrders.GetSkladId(PtnGroup, TypeSkln);
-                MarId = DispOrders.GetMarID(Ptn_Cd, TypeSkln);
+                MarId = DispOrders.GetRouteSchedule(Ptn_Cd);
+                if (MarId == 199999) MarId = DispOrders.GetMarID(Ptn_Cd, TypeSkln);
                 Jur = Verifiacation.GetJurOrder(PtnGroup, TypeSkln);
             }
             catch (IOException e)
@@ -742,6 +743,8 @@ namespace AutoOrdersIntake
             SqlDataReader dr = command.ExecuteReader();
             int n = dr.VisibleFieldCount;
             object[,] result = new object[cnt, 15];
+            dr.Close();
+            dr = command.ExecuteReader();
             while (dr.Read())
             {
                 try
@@ -918,6 +921,9 @@ namespace AutoOrdersIntake
             }
             SqlCommand command = new SqlCommand(CMDGetSF, conn);
             SqlDataReader dr = command.ExecuteReader();
+
+            dr.Close();
+            dr = command.ExecuteReader();   
 
             int recordCount = 0;
             while (dr.Read()) recordCount++;
@@ -1456,7 +1462,7 @@ namespace AutoOrdersIntake
                            + " end "
                            + " else "
                            + " begin "
-                           + "    insert into UFSpr (UFS_Rcd,UFS_CdS,UFS_NmK,UFS_Nm) values ((SELECT top 1 UFLstSpr.UFS_Rcd FROM UFLstSpr JOIN UFSpr ON UFSpr.UFS_Rcd = UFLstSpr.UFS_Rcd WHERE UFS_CdSpr = '" + CdSpr + "'),'" + Code + "','" + BuyerCode + "','" + BuyerCode + "') "
+                           + "    insert into UFSpr (UFS_Rcd,UFS_CdS,UFS_NmK,UFS_Nm) values ((SELECT top 1 UFLstSpr.UFS_Rcd FROM UFLstSpr WHERE UFS_CdSpr = '" + CdSpr + "'),'" + Code + "','" + BuyerCode + "','" + BuyerCode + "') "      // убрал JOIN UFSpr ON UFSpr.UFS_Rcd = UFLstSpr.UFS_Rcd (при первой вставке не сработает)
                            + " end "
                            + " commit tran ";
                 SqlConnection conn = new SqlConnection();
@@ -2594,6 +2600,55 @@ namespace AutoOrdersIntake
             while (dr.Read()) dr.GetValues(result);
             conn.Close();
             return result[0];
+        }
+
+
+        public static int GetRouteSchedule(string PtnCd)  // возвращает номер текущего маршрута согласно графику маршрутов в карточке контрагента
+        {
+            string connString = Settings.Default.ConnStringISPRO;
+            string schedulesQuery = "SELECT prv.UF_RkValS "
+                                  + "FROM UFPRV prv "
+                                  + "LEFT JOIN UFRKV rkv ON prv.UF_RkRcd = rkv.UFR_RkRcd "
+                                  + "LEFT JOIN PTNRK ptn ON prv.UF_TblRcd = ptn.Ptn_Rcd "
+                                  + "WHERE prv.UF_RkRcd = rkv.UFR_RkRcd AND prv.UF_TblId = 1126 AND rkv.UFR_Id = 'U_GR_MAR' "
+                                  + "AND ptn.Ptn_Cd = '" + PtnCd + "' ";
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = connString;
+            conn.Open();
+            SqlCommand command = new SqlCommand(schedulesQuery, conn);
+            SqlDataReader dataReader = command.ExecuteReader();
+            int result = 199999;
+
+            if (dataReader.Read())
+            {
+                object[] scheduleResult = new object[dataReader.VisibleFieldCount];
+                dataReader.GetValues(scheduleResult);
+
+                string routeScheduleString = scheduleResult[0].ToString();
+                int weekDay = (int)DateTime.Now.DayOfWeek;
+                string[] routes = routeScheduleString.Split(';');
+                string Route = routes[weekDay - 1];
+
+                dataReader.Close();
+                try
+                {
+                    string getTrdRcd = "SELECT TrdRt_Rcd FROM TRDRT WHERE TrdRt_Cd = '" + Route + "' ";
+                    command = new SqlCommand(getTrdRcd, conn);
+                    SqlDataReader trdReader = command.ExecuteReader();
+                    if (trdReader.Read())
+                    {
+                        object[] routeCode = new object[trdReader.VisibleFieldCount];
+                        trdReader.GetValues(routeCode);
+                        result = Convert.ToInt32(routeCode[0]);
+                    }
+                }catch (Exception ex)
+                {
+                    result = 199999;
+                }
+                
+
+            }
+            return result;
         }
 
 

@@ -15,11 +15,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
-    <StartArguments>-invoice</StartArguments>
+    <StartArguments>
+    </StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <EnableSQLServerDebugging>true</EnableSQLServerDebugging>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <StartArguments>-invoice</StartArguments>
+    <StartArguments>-desadv</StartArguments>
   </PropertyGroup>
 </Project>

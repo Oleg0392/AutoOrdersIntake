@@ -1170,10 +1170,12 @@ namespace AutoOrdersIntake
 
                 //---------deliveryInfo------------------------------------
                 XElement estimatedDeliveryDateTime = new XElement("estimatedDeliveryDateTime", CurrDataInvoice[15]);
+                XElement actualDeliveryDateTime = new XElement("actualDeliveryDateTime", CurrDataInvoice[15]);
                 XElement shipFrom = new XElement("shipFrom");
                 XElement shipTo = new XElement("shipTo");
 
                 deliveryInfo.Add(estimatedDeliveryDateTime);
+                deliveryInfo.Add(actualDeliveryDateTime);
                 deliveryInfo.Add(shipFrom);
                 deliveryInfo.Add(shipTo);
 
