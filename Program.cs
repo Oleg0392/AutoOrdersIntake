@@ -19,6 +19,7 @@ namespace AutoOrdersIntake
         static void Main(string[] args) //string[] args
         {
             Program.WriteLine("Начало----------------------------------------------------------");
+            
             if (args.Length != 0)
                 {
                     switch (args[0])

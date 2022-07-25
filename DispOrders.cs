@@ -337,7 +337,7 @@ namespace AutoOrdersIntake
         public static int GetMarID(string Ptn_Cd,string TypeSkln)
         {
             string verification;
-            int MarId;
+            int MarId = 199999;
             string NameTypeSkln = DispOrders.GetNameTypeSkln(TypeSkln);
 
             if (NameTypeSkln.ToUpper() == "МОЛОКО")
@@ -359,29 +359,34 @@ namespace AutoOrdersIntake
                 MarId = 199999;
                 return MarId;
             }
-            string connString = Settings.Default.ConnStringISPRO;
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = connString;
-            conn.Open();
-            SqlCommand command = new SqlCommand(verification, conn);
-            SqlDataReader dr = command.ExecuteReader();
-            int i = 0;
-            object[] result = new object[i];
-            while (dr.Read())
+
+            if (MarId == 199999)
             {
-                Array.Resize(ref result, result.Length + 1);
-                result[i] = dr.GetValue(0);
-                i++;
+                string connString = Settings.Default.ConnStringISPRO;
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = connString;
+                conn.Open();
+                SqlCommand command = new SqlCommand(verification, conn);
+                SqlDataReader dr = command.ExecuteReader();
+                int i = 0;
+                object[] result = new object[i];
+                while (dr.Read())
+                {
+                    Array.Resize(ref result, result.Length + 1);
+                    result[i] = dr.GetValue(0);
+                    i++;
+                }
+                conn.Close();
+                if (result.Length == 0)
+                {
+                    MarId = 199999;
+                }
+                else
+                {
+                    MarId = Convert.ToInt32(result[0]);
+                }
             }
-            conn.Close();
-            if (result.Length == 0)
-            {
-                MarId = 199999;
-            }
-            else
-            {
-                MarId = Convert.ToInt32(result[0]);
-            }
+            
             return MarId;
         }
 
@@ -389,13 +394,16 @@ namespace AutoOrdersIntake
         internal static void CreateOrder(string PrdZkg_Rcd,string TypeSkln/*,string DocNumber*/, string DocSum, string DocSumTax, string PrcRcd,string Ptn_Cd,string PtnGroup)//создание заказа - создание записи в таблице prdzkg
         {
             string SkladId, UsID, Jur;
-            int MarId;
+            int MarId = 199999;
 
             try
             {
                 SkladId = DispOrders.GetSkladId(PtnGroup, TypeSkln);
-                MarId = DispOrders.GetRouteSchedule(Ptn_Cd);
+
+                if (TypeSkln == "5") MarId = DispOrders.GetRouteSchedule(Ptn_Cd); // если у к/а есть график маршрутов, то MarId получит соответсвующий Rcd маршрута, иначе 199999
+
                 if (MarId == 199999) MarId = DispOrders.GetMarID(Ptn_Cd, TypeSkln);
+
                 Jur = Verifiacation.GetJurOrder(PtnGroup, TypeSkln);
             }
             catch (IOException e)
@@ -2605,7 +2613,7 @@ namespace AutoOrdersIntake
 
         public static int GetRouteSchedule(string PtnCd)  // возвращает номер текущего маршрута согласно графику маршрутов в карточке контрагента
         {
-            string connString = Settings.Default.ConnStringISPRO;
+            string connString = Settings.Default.ConnStringISPRO;      // запрос на график маршрутов
             string schedulesQuery = "SELECT prv.UF_RkValS "
                                   + "FROM UFPRV prv "
                                   + "LEFT JOIN UFRKV rkv ON prv.UF_RkRcd = rkv.UFR_RkRcd "
@@ -2618,21 +2626,47 @@ namespace AutoOrdersIntake
             SqlCommand command = new SqlCommand(schedulesQuery, conn);
             SqlDataReader dataReader = command.ExecuteReader();
             int result = 199999;
+            DateTime DateExp = new DateTime();
 
             if (dataReader.Read())
             {
                 object[] scheduleResult = new object[dataReader.VisibleFieldCount];
                 dataReader.GetValues(scheduleResult);
 
-                string routeScheduleString = scheduleResult[0].ToString();
-                int weekDay = (int)DateTime.Now.DayOfWeek;
-                string[] routes = routeScheduleString.Split(';');
-                string Route = routes[weekDay - 1];
+                string routeScheduleString = scheduleResult[0].ToString();     // график маршрутов - строка в которой ч/з ';' указаны номера маршрутов на каждый день недели
 
                 dataReader.Close();
                 try
                 {
-                    string getTrdRcd = "SELECT TrdRt_Rcd FROM TRDRT WHERE TrdRt_Cd = '" + Route + "' ";
+                    string getDocDateExp = "SELECT TOP 1 DocDateExp FROM U_CHTMPZKG";   // запрос на дату отгрузки заказа
+                    command = new SqlCommand(getDocDateExp, conn);
+                    SqlDataReader dateExpReader = command.ExecuteReader();
+                    if (dateExpReader.Read())
+                    {
+                        object[] DocDateExp = new object[dateExpReader.VisibleFieldCount];
+                        dateExpReader.GetValues(DocDateExp);
+                        DateExp = (DateTime)DocDateExp[0];
+                        dateExpReader.Close();
+                    }
+                    else DateExp = DateTime.Now;     // на случай, если вдруг не получилось достать дату отгрузки
+                }
+                catch (Exception ex)
+                {
+                    DateExp = DateTime.Now;
+                }
+
+                int weekDay = (int)DateExp.DayOfWeek;      // получаем день недели
+                string[] routes = routeScheduleString.Split(';');     // разделние строки маршрутов на массив
+                string Route;
+                if (weekDay == 0)                  // в америке неделя начинается с воскресенья, DayOfWeek не содержит 7-ки, первый день = 0
+                    Route = routes[6];
+                else
+                    Route = routes[weekDay - 1];
+
+                
+                try
+                {
+                    string getTrdRcd = "SELECT TrdRt_Rcd FROM TRDRT WHERE TrdRt_Cd = '" + Route + "' ";   // запрос на Rcd маршрута
                     command = new SqlCommand(getTrdRcd, conn);
                     SqlDataReader trdReader = command.ExecuteReader();
                     if (trdReader.Read())
