@@ -576,7 +576,7 @@ namespace AutoOrdersIntake
 
         public static Boolean GetUseMasterGln(string PtnRcd)
         {
-            int i = 0;
+            //int i = 0;
             bool UseMG;
             string connString = Settings.Default.ConnStringISPRO;
             string sql = "select RCD from U_CHGLNUSE where Ptn_rcd = "+PtnRcd+"";
@@ -587,10 +587,11 @@ namespace AutoOrdersIntake
             SqlDataReader dr = command.ExecuteReader();
             int n = dr.VisibleFieldCount;
             object[] result = new object[n];
-            while (dr.Read())
+            if (dr.Read())
             {
-                result[i] = dr.GetValue(0);
-                i++;
+                //result[i] = dr.GetValue(0);
+                //i++;
+                dr.GetValues(result);
             }
             conn.Close();
 
@@ -2322,6 +2323,29 @@ namespace AutoOrdersIntake
                 default: EdIzm = "шт"; break;
             }
             return EdIzm;
+        }
+
+
+        public static DateTime GetEdoSvodDate(string SklSfRcd)
+        {
+            string getSvodDate = "SELECT tar.PtnTr_Date FROM PTNTARK tar\n";
+            getSvodDate += "LEFT JOIN PTNRK ptn ON ptn.Ptn_Rcd = tar.Ptn_Rcd\n";
+            getSvodDate += "LEFT JOIN SKLSF sf ON sf.SklSf_KAgID = ptn.Ptn_Rcd\n";
+            getSvodDate += $"WHERE tar.PtnTr_Type = 'edo-svod' AND sf.SklSf_Rcd = {SklSfRcd}\n";
+
+            SqlConnection conn = new SqlConnection(Settings.Default.ConnStringISPRO);
+            SqlCommand command = new SqlCommand(getSvodDate, conn);
+
+            conn.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                object[] results = new object[reader.VisibleFieldCount];
+                reader.GetValues(results);
+                return Convert.ToDateTime(results[0]);
+            }
+
+            return DateTime.MinValue;
         }
 
     }

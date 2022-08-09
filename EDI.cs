@@ -1304,6 +1304,7 @@ namespace AutoOrdersIntake
                     object[] BICode = Verifiacation.GetBuyerItemCode(Convert.ToString(PlatInfo[5]), Convert.ToString(Item[i, 1]));
                     if (Convert.ToString(DelivInfo[10]) == "MDOU") // для садиков надо мнемокод
                         BICode[0] = Verifiacation.GetMnemoCode(Convert.ToString(Item[i, 0]), Convert.ToString(PlatInfo[8])); // это для садиков, мнемокод запихан сюда. берём его, если нет другого артикула покупателя. чтобы не испортить.
+                    int quantityItem = 0;
 
                     XElement orderLineNumber = new XElement("orderLineNumber", i + 1);
                     EAN_F = Convert.ToString(Item[i, 0]).Substring(0, 13);  //Обрезаем штрих-код до 13 символов
@@ -1323,6 +1324,7 @@ namespace AutoOrdersIntake
                         unitOfMeasure = new XAttribute("unitOfMeasure", "KGM");  // им ВСЁ надо в КГ
                         netPrice = new XElement("netPrice", (Convert.ToDecimal(Item[i, 12]) / Convert.ToDecimal(Item[i, 14])));
                         netPriceWithVAT = new XElement("netPriceWithVAT", ((Convert.ToDecimal(Item[i, 11]) + Convert.ToDecimal(Item[i, 12])) / Convert.ToDecimal(Item[i, 14])));
+                        quantityItem = Convert.ToInt32(Item[i, 14]);
                     }
                     else
                     {
@@ -1330,6 +1332,7 @@ namespace AutoOrdersIntake
                         unitOfMeasure = new XAttribute("unitOfMeasure", Item[i, 7]);
                         netPrice = new XElement("netPrice", Item[i, 5]);
                         netPriceWithVAT = new XElement("netPriceWithVAT", Item[i, 6]);
+                        quantityItem = Convert.ToInt32(Item[i, 4]);
                     }
 
                     XElement netAmount = new XElement("netAmount", Item[i, 12]);
@@ -1354,6 +1357,17 @@ namespace AutoOrdersIntake
                     LineItem.Add(vATRate);
                     LineItem.Add(vATAmount);
                     LineItem.Add(amount);
+
+                    if (Convert.ToString(DelivInfo[10]) == "BaseMark")
+                    {
+                        XElement controlIdentificationMarks;
+                        XAttribute controlIdentificationMarks_type;
+                        controlIdentificationMarks = new XElement("controlIdentificationMarks", "020" + EAN_F + "37" + Convert.ToString(quantityItem));
+                        controlIdentificationMarks_type = new XAttribute("type", "Group");
+                        LineItem.Add(controlIdentificationMarks);
+                        controlIdentificationMarks.Add(controlIdentificationMarks_type);
+                    }
+
                     if (Convert.ToString(DelivInfo[10]) == "MDOU")
                     {
                         XElement comment = new XElement("comment", BICode[0]);
@@ -1363,6 +1377,8 @@ namespace AutoOrdersIntake
                 lineItems.Add(totalSumExcludingTaxes);
                 lineItems.Add(totalVATAmount);
                 lineItems.Add(totalAmount);
+
+                
 
                 //------сохранение документа-----------
                 try
@@ -3840,11 +3856,30 @@ namespace AutoOrdersIntake
                     LineItem.Add(amountIncrease);
                     LineItem.Add(amountDecrease);
 
+                    if (Convert.ToString(DelivInfo[10]) == "BaseMark")
+                    {
+                        int quantityItemBefore = Convert.ToInt32(prevItem[0, 4]);
+                        int quantityItemAfter = Convert.ToInt32(prevItem[0, 4]) + Convert.ToInt32(Item[i, 4]);
+                        XElement controlIdentificationMarksBefore;
+                        XElement controlIdentificationMarksAfter;
+                        XAttribute controlIdentificationMarksBefore_type;
+                        XAttribute controlIdentificationMarksAfter_type;
+                        controlIdentificationMarksBefore = new XElement("controlIdentificationMarksBefore", "020" + EAN_F + "37" + Convert.ToString(quantityItemBefore));
+                        controlIdentificationMarksBefore_type = new XAttribute("type", "Group");
+                        controlIdentificationMarksAfter = new XElement("controlIdentificationMarksAfter", "020" + EAN_F + "37" + Convert.ToString(quantityItemAfter));
+                        controlIdentificationMarksAfter_type = new XAttribute("type", "Group");
+                        LineItem.Add(controlIdentificationMarksBefore);
+                        controlIdentificationMarksBefore.Add(controlIdentificationMarksBefore_type);
+                        LineItem.Add(controlIdentificationMarksAfter);
+                        controlIdentificationMarksBefore.Add(controlIdentificationMarksAfter_type);
+                    }
+
                     if (Convert.ToString(DelivInfo[10]) == "MDOU")
                     {
                         XElement comment = new XElement("comment", BICode[0]);
                         LineItem.Add(comment);
                     }
+
                 }
                 catch (Exception e)
                 {
@@ -5452,10 +5487,18 @@ namespace AutoOrdersIntake
                         for (int j = 0; j < ListSF.GetLength(1); j++) CurrDataSF.Add(ListSF[i, j]);
                         if (ListSF[i, 4].ToString() == "0") //УПД
                         {
-                            if (ListSF[i, 2].ToString() == "Base")
+                            if (ListSF[i, 2].ToString().Contains("Base"))
                             {
                                 try
                                 {
+                                    //проверка на признак сводного счета фактоуры
+                                    /*DateTime SvodSfDt = Verifiacation.GetEdoSvodDate(ListSF[i, 3].ToString());
+                                    if (SvodSfDt != DateTime.MinValue)
+                                    {
+                                        Console.WriteLine("eto svodnii sf!");
+
+                                    }*/
+                                    
                                     SKBKontur.CreateKonturBase_UPD(CurrDataSF);
                                     CheckSentInv(Convert.ToString(CurrDataSF[3]));
                                 }
@@ -5468,7 +5511,7 @@ namespace AutoOrdersIntake
                         }
                         if (ListSF[i, 4].ToString() == "3") //УКД
                         {
-                            if (ListSF[i, 2].ToString() == "Base")
+                            if (ListSF[i, 2].ToString().Contains("Base"))
                             {
                                 try
                                 {
