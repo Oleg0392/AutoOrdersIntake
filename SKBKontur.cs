@@ -1139,7 +1139,23 @@ namespace AutoOrdersIntake
                         SvedTov.Add(DopSvedTov);
                         DopSvedTov.Add(PrTovRav);
                         DopSvedTov.Add(NaimEdIzm);
-                        
+
+                        // TODO:  (отправка маркировки)
+                        /*
+                         * <ДопСведТов АртикулТов="03020000000000000218" НаимЕдИзм="шт" ПрТовРаб="1">
+				                <НомСредИдентТов>
+					                    <НомУпак>[02][gtin][37][количество]</НомУпак>
+				                </НомСредИдентТов>
+			                </ДопСведТов>
+                         */
+
+                        string nomUpakValue = "02" + Item[i, 0] + "37";
+                        nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]))).ToString();
+                        XElement NomSredIdent = new XElement("НомСредИдентТов");
+                        XElement NomUpak = new XElement("НомУпак",nomUpakValue);
+                        DopSvedTov.Add(NomSredIdent);
+                        NomSredIdent.Add(NomUpak);
+
                         //<Документ><ТаблСчФакт><СведТов><ИнфПолФХЖ2>
                         /* //у ИП нет таблиц соответствия продукции
                         string nomBuyerCd = Verifiacation.GetBuyerItemCodeRcd(Convert.ToString(infoKag[5]), Convert.ToInt64(Item[i, 1]));
@@ -1150,7 +1166,7 @@ namespace AutoOrdersIntake
                         SvedTov.Add(InfPolFHJ21);
                         InfPolFHJ21.Add(ItmTxtInf1Identif);
                         InfPolFHJ21.Add(ItmTxtInf1Znachen);*/
-                        
+
                         //<Документ><ТаблСчФакт><СведТов><ИнфПолФХЖ2>
                         XElement InfPolFHJ22 = new XElement("ИнфПолФХЖ2");
                         XAttribute ItmTxtInf2Identif = new XAttribute("Идентиф", "штрихкод");
@@ -1946,6 +1962,23 @@ namespace AutoOrdersIntake
                         SvedTov.Add(DopSvedTov);
                         DopSvedTov.Add(NaimEdIzmDo);
                         DopSvedTov.Add(NaimEdIzmPosle);
+
+                        // TODO:  (отправка маркировки)
+                        /*
+                         * <ДопСведТов АртикулТов="03020000000000000218" НаимЕдИзм="шт" ПрТовРаб="1">
+				                <НомСредИдентТов>
+					                    <НомУпак>[02][gtin][37][количество]</НомУпак>
+				                </НомСредИдентТов>
+			                </ДопСведТов>
+                         
+
+                        string nomUpakValue = "02" + Item[i, 0] + "37";
+                        nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]), 2)).ToString();     // здесь нужно разобраться Item[i,8] или Item[i,18] кол до или после
+                                                                                                       // так как для одной позиции допускается указание рег.выражения не более 1-го раза 
+                        XElement NomSredIdent = new XElement("НомСредИдентТов");
+                        XElement NomUpak = new XElement("НомУпак", nomUpakValue);
+                        DopSvedTov.Add(NomSredIdent);
+                        NomSredIdent.Add(NomUpak);    */
                     }
 
                     if (sumWthNds_V > 0)

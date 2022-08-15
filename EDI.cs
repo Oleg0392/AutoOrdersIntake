@@ -3871,7 +3871,7 @@ namespace AutoOrdersIntake
                         LineItem.Add(controlIdentificationMarksBefore);
                         controlIdentificationMarksBefore.Add(controlIdentificationMarksBefore_type);
                         LineItem.Add(controlIdentificationMarksAfter);
-                        controlIdentificationMarksBefore.Add(controlIdentificationMarksAfter_type);
+                        controlIdentificationMarksAfter.Add(controlIdentificationMarksAfter_type);
                     }
 
                     if (Convert.ToString(DelivInfo[10]) == "MDOU")

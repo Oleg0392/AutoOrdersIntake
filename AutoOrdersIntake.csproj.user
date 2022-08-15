@@ -21,6 +21,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <EnableSQLServerDebugging>true</EnableSQLServerDebugging>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <StartArguments>-desadv</StartArguments>
+    <StartArguments>-diadoc</StartArguments>
   </PropertyGroup>
 </Project>
