@@ -1358,7 +1358,7 @@ namespace AutoOrdersIntake
                     LineItem.Add(vATAmount);
                     LineItem.Add(amount);
 
-                    if (Convert.ToString(DelivInfo[10]) == "BaseMark")
+                    if (Convert.ToString(DelivInfo[10]) == "BaseMark" && Convert.ToInt32(Item[i, 9]) == 10)
                     {
                         XElement controlIdentificationMarks;
                         XAttribute controlIdentificationMarks_type;
@@ -3856,7 +3856,7 @@ namespace AutoOrdersIntake
                     LineItem.Add(amountIncrease);
                     LineItem.Add(amountDecrease);
 
-                    if (Convert.ToString(DelivInfo[10]) == "BaseMark")
+                    if (Convert.ToString(DelivInfo[10]) == "BaseMark" && Convert.ToInt32(Item[i,9]) == 10)
                     {
                         int quantityItemBefore = Convert.ToInt32(prevItem[0, 4]);
                         int quantityItemAfter = Convert.ToInt32(prevItem[0, 4]) + Convert.ToInt32(Item[i, 4]);
@@ -5420,7 +5420,7 @@ namespace AutoOrdersIntake
                         for (int j = 0; j < ListSF.GetLength(1); j++) CurrDataSF.Add(ListSF[i, j]);
                         if (ListSF[i, 4].ToString() == "0") //УПД
                         {
-                            if (ListSF[i, 2].ToString() == "X5")
+                            if (ListSF[i, 2].ToString().Contains("X5"))        // ...Mark добавлен
                             {
                                 EDIformat.CreateEdiX5UPD(CurrDataSF, ListSF[i, 10].ToString());
                             }
@@ -5428,7 +5428,7 @@ namespace AutoOrdersIntake
                             {
                                 EDIformat.CreateEdiAuchanUPD(CurrDataSF, ListSF[i, 10].ToString());
                             }
-                            if (ListSF[i, 2].ToString() == "Lenta")
+                            if (ListSF[i, 2].ToString().Contains("Lenta"))     // ...Mark добавлен
                             {
                                 EDIformat.CreateEdiLenta_UPD(CurrDataSF, ListSF[i, 10].ToString());
                             }
@@ -5439,7 +5439,7 @@ namespace AutoOrdersIntake
                         }
                         if (ListSF[i, 4].ToString() == "3") //УКД
                         {
-                            if (ListSF[i, 2].ToString() == "X5")
+                            if (ListSF[i, 2].ToString().Contains("X5"))        // ...Mark добавлен
                             {
                                 EDIformat.CreateEdiX5UKD(CurrDataSF);
                             }
@@ -5447,7 +5447,7 @@ namespace AutoOrdersIntake
                             {
                                 EDIformat.CreateEdiAuchanUKD(CurrDataSF);
                             }
-                            if (ListSF[i, 2].ToString() == "Lenta")
+                            if (ListSF[i, 2].ToString().Contains("Lenta"))       // ...Mark добавлен
                             {
                                 EDIformat.CreateEdiLenta_UKD(CurrDataSF);
                             }
@@ -5492,14 +5492,16 @@ namespace AutoOrdersIntake
                                 try
                                 {
                                     //проверка на признак сводного счета фактоуры
-                                    /*DateTime SvodSfDt = Verifiacation.GetEdoSvodDate(ListSF[i, 3].ToString());
+                                    DateTime SvodSfDt = Verifiacation.GetEdoSvodDate(ListSF[i, 3].ToString());
                                     if (SvodSfDt != DateTime.MinValue)
                                     {
-                                        Console.WriteLine("eto svodnii sf!");
-
-                                    }*/
-                                    
-                                    SKBKontur.CreateKonturBase_UPD(CurrDataSF);
+                                        if (i == 0) SKBKontur.CreateKonturBaseSvod_UPD(CurrDataSF);    // сводный УПД, их может быть несколько с одним Rcd, нужно обработать только 1 раз такой УПД
+                                        else
+                                        {
+                                            if (!ListSF[i-1, 3].ToString().Equals(CurrDataSF[3].ToString())) SKBKontur.CreateKonturBaseSvod_UPD(CurrDataSF);
+                                        }
+                                    }
+                                    else {    SKBKontur.CreateKonturBase_UPD(CurrDataSF);   }   // обычный УПД
                                     CheckSentInv(Convert.ToString(CurrDataSF[3]));
                                 }
                                 catch (Exception err)

@@ -173,7 +173,6 @@ C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x6
 C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.dll
 C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\ICSharpCode.SharpZipLib.dll
 C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\DiadocApi.xml
-C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\bin\x64\Release\Excel.4.5.pdb
 C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.AssemblyReference.cache
 C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\AutoOrdersIntake.csproj.SuggestedBindingRedirects.cache
 C:\Projects\AutoOrdersIntake_V5_Магнитогорск\AutoOrdersIntake\obj\x64\Release\Interop.VSTOEE100.dll

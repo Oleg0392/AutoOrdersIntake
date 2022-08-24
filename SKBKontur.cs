@@ -36,6 +36,7 @@ namespace AutoOrdersIntake
                 DispOrders.ClearTmpZkg();//очищаем временную таблицу с заказом от конкретной точки 
                 string gln_buyer, gln_delivery, date_order, date_delivery, status;//общее поле заказа - gln плательщика, gln грузополучателя, номер заказа, дата заказа, дата отгрузки, комментарий.
                 string gtin, quantity, buyer_code;
+                //int typeSkln = 5;
 
                 try
                 {
@@ -115,6 +116,15 @@ namespace AutoOrdersIntake
                                     {
                                         if (res_verf_deliv[0] != null)//успешная верификация - такая точка доставки есть
                                         {
+                                            XmlNode firstItemNode = doc.SelectSingleNode("/eDIMessage/order/lineItems/lineItem");  // проверка на отсутствие прейскуранта по мороженному
+                                            object[] firstItem = Verifiacation.Verification_gtin(firstItemNode.SelectSingleNode("gtin").InnerText);
+                                            object[] checkPreiskurant = Verifiacation.GetPriceList(res_verf_deliv[0], Convert.ToInt32(firstItem[5]));
+                                            if (checkPreiskurant[0].ToString().Equals("56") && checkPreiskurant[1].ToString().Equals("226"))
+                                            {
+                                                DispOrders.WriteErrorLog("Отсутствует прейскурант по мороженному! У контрагента с кодом: " + res_verf_deliv[0]);
+                                                Program.WriteLine("СКБ-Контур, [Ошибка]: Отсутствует прейскурант по мороженному! У контрагента с кодом: " + res_verf_deliv[0]);
+                                                continue;
+                                            }
                                             foreach (XmlNode n in doc.SelectNodes("/eDIMessage/order/lineItems/lineItem"))//проход по позициям заказа
                                             {
                                                 //EI = n.ChildNodes[3].Attributes["unitOfMeasure"].Value;//единицы измерения из заказа!
@@ -140,7 +150,7 @@ namespace AutoOrdersIntake
 
                                                         //quantity = n.SelectSingleNode("requestedQuantity").InnerText;
                                                         i++;
-                                                        object[] PriceList = Verifiacation.GetPriceList(res_verf_deliv[0], Convert.ToInt32(res_verf_item[5]));
+                                                        object[] PriceList = Verifiacation.GetPriceList(res_verf_deliv[0], Convert.ToInt32(res_verf_item[5])); 
                                                         DispOrders.RecordToTmpZkg(Convert.ToString(res_verf_buyer[0]), Convert.ToString(res_verf_deliv[0]), date_delivery, Convert.ToString(res_verf_item[1]), Convert.ToString(res_verf_item[4]), quantity, date_order, number_order, Convert.ToString(PriceList[0]), Convert.ToInt16(res_verf_item[5]), Path.GetFileName(doc.BaseURI), Convert.ToString(PriceList[1]), "0", PriceOrder);
                                                         try
                                                         {
@@ -186,6 +196,7 @@ namespace AutoOrdersIntake
                                 //перенос заказов в постоянку
                                 if (error == false)
                                 {
+                                    
                                     DispOrders.TMPtoPrdZkg(res_verf_buyer, res_verf_deliv, Path.GetFileName(doc.BaseURI), "СКБ-Контур", number_order);
                                     VolumeDoc++;
 
@@ -658,14 +669,18 @@ namespace AutoOrdersIntake
                 {
                     string guid = Convert.ToString(Guid.NewGuid());
                     //string fileName = "ON_SCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
-                    string fileName = "ON_NSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+                    string idName;
+                    if (CurrDataUPD[2].ToString().Equals("BaseMark")) idName = "ON_NSCHFDOPPRMARK_";
+                    else idName = "ON_NSCHFDOPPR_";
                     
+                    string fileName = idName + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+
                     /************************** 1 уровень. <Файл> ******************************/
 
                     XDocument xdoc = new XDocument(new XDeclaration("1.0", "windows-1251", ""));
 
                     XElement File = new XElement("Файл");
-                    XAttribute IdFile = new XAttribute("ИдФайл", "ON_NSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid/*fileName*/);
+                    XAttribute IdFile = new XAttribute("ИдФайл", idName + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid/*fileName*/);
                     XAttribute VersForm = new XAttribute("ВерсФорм", "5.01");
                     XAttribute VersProg = new XAttribute("ВерсПрог", "Diadoc 1.0");
 
@@ -1140,21 +1155,24 @@ namespace AutoOrdersIntake
                         DopSvedTov.Add(PrTovRav);
                         DopSvedTov.Add(NaimEdIzm);
 
-                        // TODO:  (отправка маркировки)
-                        /*
-                         * <ДопСведТов АртикулТов="03020000000000000218" НаимЕдИзм="шт" ПрТовРаб="1">
-				                <НомСредИдентТов>
-					                    <НомУпак>[02][gtin][37][количество]</НомУпак>
-				                </НомСредИдентТов>
-			                </ДопСведТов>
-                         */
+                        if (CurrDataUPD[2].ToString().Equals("BaseMark") && Item[i, 9].ToString().Equals("10%"))
+                        {
+                            // TODO:  (отправка маркировки)
+                            /*
+                             * <ДопСведТов АртикулТов="03020000000000000218" НаимЕдИзм="шт" ПрТовРаб="1">
+                                    <НомСредИдентТов>
+                                            <НомУпак>[02][gtin][37][количество]</НомУпак>
+                                    </НомСредИдентТов>
+                                </ДопСведТов>
+                             */
 
-                        string nomUpakValue = "02" + Item[i, 0] + "37";
-                        nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]))).ToString();
-                        XElement NomSredIdent = new XElement("НомСредИдентТов");
-                        XElement NomUpak = new XElement("НомУпак",nomUpakValue);
-                        DopSvedTov.Add(NomSredIdent);
-                        NomSredIdent.Add(NomUpak);
+                            string nomUpakValue = "020" + Item[i, 0] + "37";
+                            nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]))).ToString();
+                            XElement NomSredIdent = new XElement("НомСредИдентТов");
+                            XElement NomUpak = new XElement("НомУпак", nomUpakValue);
+                            DopSvedTov.Add(NomSredIdent);
+                            NomSredIdent.Add(NomUpak);
+                        }
 
                         //<Документ><ТаблСчФакт><СведТов><ИнфПолФХЖ2>
                         /* //у ИП нет таблиц соответствия продукции
@@ -1506,14 +1524,18 @@ namespace AutoOrdersIntake
 
                     string guid = Convert.ToString(Guid.NewGuid());
                     //string fileName = "ON_SCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
-                    string fileName = "ON_NKORSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+                    string idName;
+                    if (CurrDataUKD[2].ToString().Equals("BaseMark")) idName = "ON_NKORSCHFDOPPRMARK_";
+                    else idName = "ON_NKORSCHFDOPPR_";
+                    
+                    string fileName = idName + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
 
                     /************************** 1 уровень. <Файл> ******************************/
 
                     XDocument xdoc = new XDocument(new XDeclaration("1.0", "windows-1251", ""));
 
                     XElement File = new XElement("Файл");
-                    XAttribute IdFile = new XAttribute("ИдФайл", "ON_NKORSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid/*fileName*/);
+                    XAttribute IdFile = new XAttribute("ИдФайл", idName + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid/*fileName*/);
                     XAttribute VersForm = new XAttribute("ВерсФорм", "5.01");
                     XAttribute VersProg = new XAttribute("ВерсПрог", "Diadoc 1.0");
 
@@ -1963,22 +1985,20 @@ namespace AutoOrdersIntake
                         DopSvedTov.Add(NaimEdIzmDo);
                         DopSvedTov.Add(NaimEdIzmPosle);
 
-                        // TODO:  (отправка маркировки)
-                        /*
-                         * <ДопСведТов АртикулТов="03020000000000000218" НаимЕдИзм="шт" ПрТовРаб="1">
-				                <НомСредИдентТов>
-					                    <НомУпак>[02][gtin][37][количество]</НомУпак>
-				                </НомСредИдентТов>
-			                </ДопСведТов>
-                         
-
-                        string nomUpakValue = "02" + Item[i, 0] + "37";
-                        nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]), 2)).ToString();     // здесь нужно разобраться Item[i,8] или Item[i,18] кол до или после
-                                                                                                       // так как для одной позиции допускается указание рег.выражения не более 1-го раза 
-                        XElement NomSredIdent = new XElement("НомСредИдентТов");
-                        XElement NomUpak = new XElement("НомУпак", nomUpakValue);
-                        DopSvedTov.Add(NomSredIdent);
-                        NomSredIdent.Add(NomUpak);    */
+                        //<Документ><ТаблКСчФ><СведТов><ДопСведТов><НомСредИдентТов[До/После]><НомУпак>
+                        if (Item[i, 10].ToString().Contains("10") && CurrDataUKD[2].ToString().Equals("BaseMark"))     //Item[i, 10] - налоговая ставка после (как бы)
+                        {
+                            string nomUpakValueDo = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
+                            string nomUpakValuePosle = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после
+                            XElement NomSredIdentDo = new XElement("НомСредИдентТовДо");
+                            XElement NomUpakDo = new XElement("НомУпак", nomUpakValueDo);
+                            XElement NomSredIdentPosle = new XElement("НомСредИдентТовПосле");
+                            XElement NomUpakPosle = new XElement("НомУпак", nomUpakValuePosle);
+                            DopSvedTov.Add(NomSredIdentDo);
+                            NomSredIdentDo.Add(NomUpakDo);
+                            DopSvedTov.Add(NomSredIdentPosle);
+                            NomSredIdentPosle.Add(NomUpakPosle);
+                        }
                     }
 
                     if (sumWthNds_V > 0)
@@ -2264,6 +2284,196 @@ namespace AutoOrdersIntake
                 }
             }
         }
+
+        public static void CreateKonturBaseSvod_UPD(List<object> CurrDataSf)  // 0 ProviderOpt, 1 ProviderZkg, 2 NastDoc_Fmt, 3 SklSf_Rcd, 4 SklSf_TpOtg, 5 SklSfA_RcdCor, 6 PrdZkg_NmrExt, 7 PrdZkg_Rcd, 8 PrdZkg_Dt, 9 SklNk_TDrvNm, 10 typeSf, 11 NISF, 12 sklnkDat, 13 sklnkNmr, 14 dtOtgr
+        {
+            string fNameXML = "ON_NSCHFDOPPR_";
+            string XmlText = "empty";
+            string sfGUID = "", IdPoluch = "", IdOtprav = "";
+            int GuidTaked = 0;
+
+            SqlConnection conn = new SqlConnection(Settings.Default.ConnStringISPRO);
+            SqlDataReader dReader = null;
+            SqlCommand command;
+
+            Program.WriteLine("Формирование сводного УПД.");
+
+            // получим более детальную инфу от СФ
+            object[] detailInfoSf = Verifiacation.GetDataFromSF(Convert.ToInt64(CurrDataSf[3])); //0 SklSf_Nmr, 1 SklSf_Dt, 2 SklSf_KAgID, 3 SklSf_KAgAdr, 4 SklSf_RcvrID, 5 SklSf_RcvrAdr, 6 SVl_CdISO
+            object[] infoKag = Verifiacation.GetDataFromPtnRCD_IP(Convert.ToInt64(detailInfoSf[2]), Convert.ToInt64(detailInfoSf[3])); // 0 Ptn_Cd, 1 Ptn_NmSh, 2 Filia_GLN, 3 Ptn_Inn, 4 Ptn_KPP, 5 ProdCode, 6 Filia_Adr, 7 Filia_Index, 8 Filia_Rgn, 9 Город, 10 Улица, 11 Дом, 12 Полное наименование, 12 Полное наименование
+            object[] infoGpl = Verifiacation.GetDataFromPtnRCD_IP(Convert.ToInt64(detailInfoSf[4]), Convert.ToInt64(detailInfoSf[5]));
+
+            conn.Open();
+
+            try   //проверка GUID
+            {
+                string checkSfGUID = "SELECT prv.UF_RkValS sfGUID FROM dbo.UFPRV prv, dbo.UFRKV rkv WHERE rkv.UFR_RkRcd = prv.UF_RkRcd\n"; // проверка сф на наличие GUID
+                checkSfGUID += $"AND prv.UF_TblId = rkv.UFR_DbRcd AND rkv.UFR_Id = 'U_sfGUID' and prv.UF_TblRcd = {CurrDataSf[3]}";
+                command = new SqlCommand(checkSfGUID, conn);
+                dReader = command.ExecuteReader();
+                if (dReader.Read() == false)
+                {
+                    try
+                    {
+                        // get new GUID
+                        sfGUID = Convert.ToString(Guid.NewGuid());
+                        dReader.Close();
+                        string insertGUID = $"insert into dbo.UFPRV select n.UFR_DbRcd,{CurrDataSf[3]},n.UFR_RkRcd,'{sfGUID}',0,0,0 ";
+                        insertGUID += "from dbo.UFRKV n where n.UFR_Id = 'U_sfGUID'";
+                        command = new SqlCommand(insertGUID, conn);
+                        GuidTaked = command.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                    catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+                }
+                else
+                {
+                    // get existing GUID for file name
+                    object[] results = new object[dReader.VisibleFieldCount];
+                    dReader.GetValues(results);
+                    sfGUID = results[0].ToString();
+                    GuidTaked = 1;
+                }
+                dReader.Close();
+            }
+            catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+
+            if (conn.State != ConnectionState.Open) conn.Open();
+
+            // если GUID получен то далее получаем IdPoluch and IdOtprav
+            if (GuidTaked > 0)
+            {
+                try  //-----------------------------------IdPoluch
+                {
+                    string selectIdUserEdo = "select v.UF_RkValS from dbo.UFPRV v,dbo.UFRKV n where n.UFR_RkRcd = v.UF_RkRcd and v.UF_TblId = n.UFR_DbRcd ";
+                    selectIdUserEdo += $"and n.UFR_Id = 'U_IdUserEDO' and UF_TblRcd = {detailInfoSf[2]}";    // SklSf_KAgId
+                    command = new SqlCommand(selectIdUserEdo, conn);
+                    dReader = command.ExecuteReader();
+                    if (dReader.Read())
+                    {
+                        object[] result = new object[dReader.VisibleFieldCount];
+                        dReader.GetValues(result);
+                        IdPoluch = result[0].ToString();
+                    }
+                    else Program.WriteLine("Отсутствует код участника ЭДО у данного контрагента!");
+                    dReader.Close();
+                }
+                catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+
+
+                try  //-----------------------------------IdOtprav
+                {
+                    string selectIdOtp = "SELECT UFS_Nm FROM UFLstSpr t LEFT JOIN UFSPR spr ON spr.UFS_Rcd = t.UFS_Rcd AND spr.UFS_CdS = 'ИдОтп' ";
+                    selectIdOtp += "WHERE t.UFS_CdSpr = 119";
+                    command = new SqlCommand(selectIdOtp, conn);
+                    dReader = command.ExecuteReader();
+                    if (dReader.Read())
+                    {
+                        object[] result = new object[dReader.VisibleFieldCount];
+                        dReader.GetValues(result);
+                        IdOtprav = result[0].ToString();
+                    }
+                    dReader.Close();
+                }
+                catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+
+                // если получили IdPoluch and IdOtprav то выполняем T-SQL функцию, получаем XML-текст и сохраняем в файл
+                if (!String.IsNullOrEmpty(IdPoluch) && !String.IsNullOrEmpty(IdOtprav))
+                {
+                    try
+                    {
+                        fNameXML += (IdPoluch + "_" + IdOtprav + "_" + DateTime.Now.ToString("yyyyMMdd") + "_" + sfGUID).Trim(' ');
+                        string execTableFunction = "SELECT NoErr,ErrDescription,Vers,cast(xDoc as varchar(max)) xx \n";
+                        execTableFunction += $"FROM [dbo].[ItXmlNSCHFDOPPR22]({CurrDataSf[3]},'{CurrDataSf[10]}','{fNameXML}')";
+
+                        command = new SqlCommand(execTableFunction, conn);
+                        dReader = command.ExecuteReader();
+
+                        if (dReader.Read())
+                        {
+                            object[] results = new object[dReader.VisibleFieldCount];
+                            dReader.GetValues(results);
+                            if (Convert.ToInt32(results[0]) == 0)   // If No Errors in T-SQL table-function
+                            {
+                                XmlText = "<?xml version=\"1.0\" encoding=\"windows-1251\"?>";
+                                XmlText += results[3].ToString();
+                            }
+                            else
+                            {
+                                string ErrMessage = "Ошибка в при выполнении функции ItXmlNSCHFDOPPR22: " + results[1].ToString();   // ErrDescription 
+                                Program.WriteLine(ErrMessage);
+                                throw new Exception(ErrMessage);
+                            }
+
+                        }
+                        dReader.Close();
+                    }
+                    catch (Exception exception) { DispOrders.WriteErrorLog(exception.Message + " Источник: " + exception.Source); }
+
+                    // если XML текст получен, то формируем файл и сохраняем его
+                    if (!(XmlText.Equals("empty")))
+                    {
+                        try
+                        {
+                            string xmlPath = @"C:\Temp\";
+                            if (!dReader.IsClosed) dReader.Close();
+
+                            // взятие нужного пути для файла
+                            string selectDefaultXMLPath = "SELECT UFS_Nm FROM UFLstSpr t LEFT JOIN UFSPR spr ON spr.UFS_Rcd = t.UFS_Rcd AND spr.UFS_CdS = 'Каталог' ";
+                            selectDefaultXMLPath += "WHERE t.UFS_CdSpr = 119";
+                            command = new SqlCommand(selectDefaultXMLPath, conn);
+                            dReader = command.ExecuteReader();
+                            if (dReader.Read())
+                            {
+                                object[] result = new object[dReader.VisibleFieldCount];
+                                dReader.GetValues(result);
+                                xmlPath = result[0].ToString();
+                            }
+                            dReader.Close();
+
+                            // создание файла и запись xml-текста в файл
+                            fNameXML = xmlPath + fNameXML + ".xml";
+                            Stream stream = File.OpenWrite(fNameXML);
+                            StreamWriter streamWriter = new StreamWriter(stream, Encoding.GetEncoding("windows-1251"));
+                            streamWriter.Write(XmlText);
+                            streamWriter.Close();
+
+                            // взятие суммы с НДС для WriteEDISentDoc
+                            string sumWthNds = "0.00";
+                            XmlDocument document = new XmlDocument();
+                            document.Load(fNameXML);
+                            XmlNode needNode = document.SelectSingleNode(@"/Файл/Документ/ТаблСчФакт/ВсегоОпл");
+                            if (needNode != null) sumWthNds = needNode.Attributes["СтТовУчНалВсего"].Value;
+
+                            // иформирование о завершении и запись в протокол и таблицу SentDoc 
+                            string fileNameSokr = DateTime.Now.ToString("yyyyMMdd") + "_" + sfGUID + ".xml";
+                            Program.WriteLine("Сводный УПД сформирован в файл: " + fileNameSokr);
+                            DispOrders.WriteProtocolEDI("УПД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД сформирован", DateTime.Now, Convert.ToString(CurrDataSf[6]), "KONTUR");
+                            DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataSf[3]), Convert.ToString(detailInfoSf[0]), "123", sumWthNds, Convert.ToString(CurrDataSf[7]), 1);
+                            //resultCode = 2;
+                        }
+                        catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+                    }
+                }
+            }
+
+            conn.Close();
+            //return resultCode;          // 0 - Ошибка, 1 - удалось сформировать XML-текст, 2 - удалось сохранить XML-файл
+
+            // такая проверка есть в коде скрипта отчета, но по-моему она не нужна вообще
+            /*string SklSf_Type = "1";  
+            SqlCommand checkSklSfType = new SqlCommand($"SELECT SklSf_Type FROM SKLSF WHERE SklSf_Rcd = {CurrDataSf[3]}",conn);
+            dReader = checkSklSfType.ExecuteReader();
+            if (dReader.Read())
+            {
+                object[] result = new object[dReader.VisibleFieldCount];
+                dReader.GetValues(result); 
+                SklSf_Type = result[0].ToString(); 
+            }
+            if (SklSf_Type.Equals("2")) FuncDoc = "СЧФ";*/
+
+        }
+
     }
 }
 

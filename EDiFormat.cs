@@ -1400,7 +1400,16 @@ namespace AutoOrdersIntake
             string idPol = idEdo + infoGpl[2].ToString(); //ИдПол
 
             string guid = Convert.ToString(Guid.NewGuid());
-            string fileName = "ON_NSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            string fileName;
+            if (CurrDataUPD[2].ToString().Equals("X5Mark"))
+            {
+                fileName = "ON_NSCHFDOPPRMARK_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            }
+            else
+            {
+                fileName = "ON_NSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            }
+            
 
             /************************** 1 уровень. <Файл> ******************************/
 
@@ -1829,6 +1838,17 @@ namespace AutoOrdersIntake
                 DopSvedTov.Add(PrTovRav);
                 DopSvedTov.Add(NaimEdIzm);
 
+                //<Документ><ТаблСчФакт><СведТов><ДопСведТов><НомСредИдентТов><НомУпак>     маркировка
+                if (Item[i, 9].ToString().Contains("10") && CurrDataUPD[2].ToString().Equals("X5Mark"))
+                {
+                    string nomUpakValue = "020" + Item[i, 0] + "37";
+                    nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]))).ToString();
+                    XElement NomSredIdent = new XElement("НомСредИдентТов");
+                    XElement NomUpak = new XElement("НомУпак", nomUpakValue);
+                    DopSvedTov.Add(NomSredIdent);
+                    NomSredIdent.Add(NomUpak);
+                }
+
                 //<Документ><ТаблСчФакт><СведТов><ИнфПолФХЖ2>
                 XElement InfPolFHJ23 = new XElement("ИнфПолФХЖ2");
                 XAttribute ItmTxtInf3Identif = new XAttribute("Идентиф", "номер_заказа");
@@ -2132,7 +2152,15 @@ namespace AutoOrdersIntake
             string idPol = idEdo + infoGpl[2].ToString(); //ИдПол
 
             string guid = Convert.ToString(Guid.NewGuid());
-            string fileName = "ON_NKORSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            string fileName;
+            if (CurrDataUKD[2].ToString().Equals("X5Mark"))
+            {
+                fileName = "ON_NKORSCHFDOPPRMARK_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            }
+            else
+            {
+                fileName = "ON_NKORSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            }
 
 
             /************************** 1 уровень. <Файл> ******************************/
@@ -2586,6 +2614,21 @@ namespace AutoOrdersIntake
                 SvedTov.Add(DopInfo);
                 DopInfo.Add(NmEiBefore);
                 DopInfo.Add(NmEiAfter);
+
+                //<Документ><ТаблКСчФ><СведТов><ДопСведТов><НомСредИдентТов[До/После]><НомУпак>
+                if (Item[i, 10].ToString().Contains("10") && CurrDataUKD[2].ToString().Equals("X5Mark"))     //Item[i, 10] - налоговая ставка после (как бы)
+                {
+                    string nomUpakValueDo = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
+                    string nomUpakValuePosle = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после
+                    XElement NomSredIdentDo = new XElement("НомСредИдентТовДо");
+                    XElement NomUpakDo = new XElement("НомУпак", nomUpakValueDo);
+                    XElement NomSredIdentPosle = new XElement("НомСредИдентТовПосле");
+                    XElement NomUpakPosle = new XElement("НомУпак", nomUpakValuePosle);
+                    DopInfo.Add(NomSredIdentDo);
+                    NomSredIdentDo.Add(NomUpakDo);
+                    DopInfo.Add(NomSredIdentPosle);
+                    NomSredIdentPosle.Add(NomUpakPosle);
+                }
             }
 
             if (sumWthNds_V > 0)
@@ -2808,7 +2851,16 @@ namespace AutoOrdersIntake
             string idPol = idEdo + infoGpl[2].ToString(); //ИдПол
 
             string guid = Convert.ToString(Guid.NewGuid());
-            string fileName = "ON_NSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            string fileName;
+            if (CurrDataUPD[2].ToString().Equals("LentaMark"))
+            {
+                fileName = "ON_NSCHFDOPPRMARK_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            }
+            else
+            {
+                fileName = "ON_NSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            }
+            
 
             /************************** 1 уровень. <Файл> ******************************/
 
@@ -3244,6 +3296,17 @@ namespace AutoOrdersIntake
                 DopSvedTov.Add(PrTovRav);
                 DopSvedTov.Add(NaimEdIzm);
 
+                //<Документ><ТаблСчФакт><СведТов><ДопСведТов><НомСредИдентТов><НомУпак>     маркировка
+                if (Item[i, 9].ToString().Contains("10") && CurrDataUPD[2].ToString().Equals("LentaMark"))
+                {
+                    string nomUpakValue = "020" + Item[i, 0] + "37";
+                    nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]))).ToString();
+                    XElement NomSredIdent = new XElement("НомСредИдентТов");
+                    XElement NomUpak = new XElement("НомУпак", nomUpakValue);
+                    DopSvedTov.Add(NomSredIdent);
+                    NomSredIdent.Add(NomUpak);
+                }
+
                 //<Документ><ТаблСчФакт><СведТов><ИнфПолФХЖ2>
                 XElement InfPolFHJ23 = new XElement("ИнфПолФХЖ2");
                 XAttribute ItmTxtInf3Identif = new XAttribute("Идентиф", "номер_заказа");
@@ -3529,7 +3592,16 @@ namespace AutoOrdersIntake
             string idPol = idEdo + infoGpl[2].ToString(); //ИдПол
 
             string guid = Convert.ToString(Guid.NewGuid());
-            string fileName = "ON_NKORSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            string fileName;
+            if (CurrDataUKD[2].ToString().Equals("LentaMark"))
+            {
+                fileName = "ON_NKORSCHFDOPPRMARK_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл   
+            }
+            else
+            {
+                fileName = "ON_NKORSCHFDOPPR_" + idPol + "_" + idOtpr + "_" + DateTime.Today.ToString(@"yyyyMMdd") + "_" + guid;//ИдФайл
+            }
+            
 
             /************************** 1 уровень. <Файл> ******************************/
 
@@ -3994,6 +4066,21 @@ namespace AutoOrdersIntake
                 SvedTov.Add(DopInfo);
                 DopInfo.Add(NmEiBefore);
                 DopInfo.Add(NmEiAfter);
+
+                //<Документ><ТаблКСчФ><СведТов><ДопСведТов><НомСредИдентТов[До/После]><НомУпак>
+                if (Item[i, 20].ToString().Contains("10") && CurrDataUKD[2].ToString().Equals("LentaMark"))    //Item[i, 20] - ставка НДС после
+                {
+                    string nomUpakValueDo = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
+                    string nomUpakValuePosle = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после
+                    XElement NomSredIdentDo = new XElement("НомСредИдентТовДо");
+                    XElement NomUpakDo = new XElement("НомУпак", nomUpakValueDo);
+                    XElement NomSredIdentPosle = new XElement("НомСредИдентТовПосле");
+                    XElement NomUpakPosle = new XElement("НомУпак", nomUpakValuePosle);
+                    DopInfo.Add(NomSredIdentDo);
+                    NomSredIdentDo.Add(NomUpakDo);
+                    DopInfo.Add(NomSredIdentPosle);
+                    NomSredIdentPosle.Add(NomUpakPosle);
+                }
             }
 
             if (sumWthNds_V > 0)
