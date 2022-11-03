@@ -17,7 +17,7 @@ namespace AutoOrdersIntake
     {
         public static void IntakeDBFNew()
         {
-            string _path = DispOrders.GetValueOption("DBF.ЗАКАЗ");
+            string _path = DispOrders.GetValueOption("DBF.ЗАКАЗ");  // @"\\edi-mgn\ZAKAZ\EXPIMP\Loading\DBF\tempf\";
             string _path_arch = DispOrders.GetValueOption("DBF.Архив");
             string[] files = Directory.GetFiles(_path, "*.dbf");
             string connString = Settings.Default.ConnStringISPRO;

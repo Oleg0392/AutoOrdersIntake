@@ -17,6 +17,7 @@ namespace AutoOrdersIntake
     {
         public static void IntakeOrders()
         {
+            Program.WriteLine(" --- EDISOFT.IntakeOrders начат.");
             bool error;
             int i = 0;
             int VolumeDoc = 0;
@@ -118,6 +119,7 @@ namespace AutoOrdersIntake
                                             buyer_code = n.ChildNodes[0].SelectSingleNode("BuyerItemCode").InnerText;
                                             i++;
                                             object[] PriceList = Verifiacation.GetPriceList(res_verf_deliv[0], Convert.ToInt32(res_verf_item[5]));////выдает тольтко одно значение - проверить в понедельник.
+                                            Program.WriteLine("Запись во временную таблицу...");
                                             DispOrders.RecordToTmpZkg(Convert.ToString(res_verf_buyer[0]), Convert.ToString(res_verf_deliv[0]), date_delivery, Convert.ToString(res_verf_item[1]), Convert.ToString(res_verf_item[4]), OrderedQuantity, date_order, number_order, Convert.ToString(PriceList[0]), Convert.ToInt16(res_verf_item[5]), Path.GetFileName(doc.BaseURI), Convert.ToString(PriceList[1]), "0", PriceOrder);
                                             try
                                             {
@@ -159,6 +161,7 @@ namespace AutoOrdersIntake
                     //перенос заказов в постоянку
                     if (error == false)
                     {
+                        Program.WriteLine("Запись в постоянную таблицу...");
                         DispOrders.TMPtoPrdZkg(res_verf_buyer, res_verf_deliv, Path.GetFileName(doc.BaseURI), "EDI-Софт", number_order, sellerCodeByBuyer);
                         VolumeDoc++;
 
@@ -168,6 +171,7 @@ namespace AutoOrdersIntake
                         string newP = ArchiveEDISOFT + Path.GetFileName(doc.BaseURI);
                         try
                         {
+                            Program.WriteLine("Перемещение заказа в архив...");
                             Directory.Move(oldP, newP);
                         }
                         catch
@@ -223,10 +227,10 @@ namespace AutoOrdersIntake
                 
 
             }
-
+            Program.WriteLine("Запись в RecordCountEDoc...");
             ReportEDI.RecordCountEDoc("EDI-Софт", "Orders", VolumeDoc);
             //Console.WriteLine("Заказ от EDI Soft принят");
-
+            Program.WriteLine(" --- EDISOFT.IntakeOrders завершён.");
         }
 
         public static void TransferOrders()

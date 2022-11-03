@@ -27,7 +27,7 @@ namespace AutoOrdersIntake
             object[] infoSf = Verifiacation.GetDataFromSF(Convert.ToInt64(CurrDataUPD[3])); //0 SklSf_Nmr, 1 SklSf_Dt, 2 SklSf_KAgID, 3 SklSf_KAgAdr, 4 SklSf_RcvrID, 5 SklSf_RcvrAdr, 6 SVl_CdISO
 
             //запрос данных спецификации
-            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), true); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_NmAlt, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
+            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), 1); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_NmAlt, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
 
             //Запрос данных покупателя
             object[] infoKag = Verifiacation.GetDataFromPtnRCD(Convert.ToInt64(infoSf[2]), Convert.ToInt64(infoSf[3])); // 0 Ptn_Cd, 1 Ptn_NmSh, 2 Filia_GLN, 3 Ptn_Inn, 4 Ptn_KPP, 5 ProdCode, 6 Filia_Adr, 7 Filia_Index, 8 Filia_Rgn, 9 Город, 10 Улица, 11 Дом, 12 Полное наименование, 12 Полное наименование
@@ -1350,7 +1350,7 @@ namespace AutoOrdersIntake
             object[] infoSf = Verifiacation.GetDataFromSF(Convert.ToInt64(CurrDataUPD[3])); //0 SklSf_Nmr, 1 SklSf_Dt, 2 SklSf_KAgID, 3 SklSf_KAgAdr, 4 SklSf_RcvrID, 5 SklSf_RcvrAdr, 6 SVl_CdISO
 
             //запрос данных спецификации
-            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), true); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_NmAlt, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
+            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), 1); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_NmAlt, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
 
             //Запрос данных покупателя
             object[] infoKag = Verifiacation.GetDataFromPtnRCD(Convert.ToInt64(infoSf[2]), Convert.ToInt64(infoSf[3])); // 0 Ptn_Cd, 1 Ptn_NmSh, 2 Filia_GLN, 3 Ptn_Inn, 4 Ptn_KPP, 5 ProdCode, 6 Filia_Adr, 7 Filia_Index, 8 Filia_Rgn, 9 Город, 10 Улица, 11 Дом, 12 Полное наименование
@@ -2006,6 +2006,8 @@ namespace AutoOrdersIntake
 
             //------сохранение документа-----------
             fileName = fileName + ".xml";
+            string[] fileNameParts = fileName.Split('_');  // сокращение имени файла для протокола и U_ChSentDoc
+            string fileNameSokr = fileNameParts[0] + "_" + fileNameParts[1] + "_" + fileNameParts[4] + "_" + fileNameParts[5];
             try
             {
                 xdoc.Save(pathArchiveEDI + fileName);
@@ -2021,19 +2023,19 @@ namespace AutoOrdersIntake
                     //a warning because there is no schema matching that namespace.
                     Validate(pathUPDEDI + fileName, schemaSet);
                     Console.ReadLine();*/
+                    
                     string message = "EDISOFT. УПД " + typeFunc + " " + fileName + " создан в " + pathUPDEDI;
                     Program.WriteLine(message);
-                    DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileName, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД " + typeFunc +  " сформирован", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
-                    if(typeFunc == "ДОП")
-                        DispOrders.WriteEDiSentDoc("10", fileName, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]),1, CurrDataUPD[11].ToString());
+                    if (typeFunc == "ДОП")
+                        DispOrders.WriteEDiSentDoc("10", fileNameSokr, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1, CurrDataUPD[11].ToString());
                     else
-                        DispOrders.WriteEDiSentDoc("8", fileName, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1, CurrDataUPD[11].ToString());
-
+                        DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1, CurrDataUPD[11].ToString());
+                    DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД " + typeFunc +  " сформирован", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
                 }
                 catch (Exception e)
                 {
                     string message_error = "EDISOFT. Не могу создать xml файл УПД " + typeFunc + " в " + pathUPDEDI + ". Нет доступа или диск переполнен.";
-                    DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileName, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УПД " + typeFunc + " не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
+                    DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileNameSokr, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УПД " + typeFunc + " не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
                     Program.WriteLine(message_error);
                     DispOrders.WriteErrorLog(e.Message);
                 }
@@ -2041,7 +2043,7 @@ namespace AutoOrdersIntake
             catch (Exception e)
             {
                 string message_error = "EDISOFT. Не могу создать xml файл УПД " + typeFunc + " в " + pathArchiveEDI + ". Нет доступа или диск переполнен.";
-                DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileName, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УПД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
+                DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileNameSokr, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УПД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
                 Program.WriteLine(message_error);
                 DispOrders.WriteErrorLog(e.Message);
                 //запись в лог о неудаче
@@ -2754,6 +2756,8 @@ namespace AutoOrdersIntake
 
             //------сохранение документа-----------
             fileName = fileName + ".xml";
+            string[] fileNameParts = fileName.Split('_');
+            string fileNameSokr = fileNameParts[0] + "_" + fileNameParts[1] + "_" + fileNameParts[4] + "_" + fileNameParts[5];
             try
             {
                 xdoc.Save(pathArchiveEDI + fileName);
@@ -2762,14 +2766,14 @@ namespace AutoOrdersIntake
                     xdoc.Save(pathUKDEDI + fileName);
                     string message = "EDISOFT. УКД " + fileName + " создан в " + pathUKDEDI;
                     Program.WriteLine(message);
-                    DispOrders.WriteProtocolEDI("УКД", fileName, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УКД сформирован", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
-                    DispOrders.WriteEDiSentDoc("8", fileName, Convert.ToString(CurrDataUKD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds_V - sumWthNds_G), Convert.ToString(CurrDataUKD[7]),1);
+                    DispOrders.WriteProtocolEDI("УКД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УКД сформирован", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
+                    DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataUKD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds_V - sumWthNds_G), Convert.ToString(CurrDataUKD[7]),1);
                     //запись в лог о удаче
                 }
                 catch (Exception e)
                 {
                     string message_error = "EDISOFT. Не могу создать xml файл УКД в " + pathUKDEDI + ". Нет доступа или диск переполнен.";
-                    DispOrders.WriteProtocolEDI("УКД", fileName, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УКД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
+                    DispOrders.WriteProtocolEDI("УКД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УКД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
                     Program.WriteLine(message_error);
                     //DispOrders.WriteErrorLog(e.Message);
                 }
@@ -2777,7 +2781,7 @@ namespace AutoOrdersIntake
             catch (Exception e)
             {
                 string message_error = "EDISOFT. Не могу создать xml файл УКД в " + pathArchiveEDI + ". Нет доступа или диск переполнен.";
-                DispOrders.WriteProtocolEDI("УКД", fileName, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УКД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
+                DispOrders.WriteProtocolEDI("УКД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УКД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
                 Program.WriteLine(message_error);
                 DispOrders.WriteErrorLog(e.Message);
                 //запись в лог о неудаче
@@ -2801,7 +2805,7 @@ namespace AutoOrdersIntake
             object[] infoNk = Verifiacation.GetNkDataFromZkg(Convert.ToInt64(CurrDataUPD[7])); //0 SklNk_Nmr, 1 SklNk_Dat
 
             //запрос данных спецификации
-            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), true); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_Nm, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
+            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), 1); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_Nm, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
 
             //Запрос данных покупателя
             object[] infoKag = Verifiacation.GetDataFromPtnRCD(Convert.ToInt64(infoSf[2]), Convert.ToInt64(infoSf[3])); // 0 Ptn_Cd, 1 Ptn_NmSh, 2 Filia_GLN, 3 Ptn_Inn, 4 Ptn_KPP, 5 ProdCode, 6 Filia_Adr, 7 Filia_Index, 8 Filia_Rgn, 9 Город, 10 Улица, 11 Дом, 12 Полное наименование
@@ -3480,6 +3484,8 @@ namespace AutoOrdersIntake
 
             //------сохранение документа-----------
             fileName = fileName + ".xml";
+            string[] fileNameParts = fileName.Split('_');
+            string fileNameSokr = fileNameParts[0] + "_" + fileNameParts[1] + "_" + fileNameParts[4] + "_" + fileNameParts[5];
             try
             {
                 xdoc.Save(pathArchiveEDI + fileName);
@@ -3497,17 +3503,17 @@ namespace AutoOrdersIntake
                     Console.ReadLine();*/
                     string message = "EDISOFT. УПД " + typeFunc + " " + fileName + " создан в " + pathUPDEDI;
                     Program.WriteLine(message);
-                    DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileName, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД " + typeFunc + " сформирован", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
+                    DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД " + typeFunc + " сформирован", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
                     if (typeFunc == "ДОП")
-                        DispOrders.WriteEDiSentDoc("10", fileName, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1, CurrDataUPD[11].ToString());
+                        DispOrders.WriteEDiSentDoc("10", fileNameSokr, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1, CurrDataUPD[11].ToString());
                     else
-                        DispOrders.WriteEDiSentDoc("8", fileName, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1, CurrDataUPD[11].ToString());
+                        DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1, CurrDataUPD[11].ToString());
 
                 }
                 catch (Exception e)
                 {
                     string message_error = "EDISOFT. Не могу создать xml файл УПД " + typeFunc + " в " + pathUPDEDI + ". Нет доступа или диск переполнен.";
-                    DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileName, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УПД " + typeFunc + " не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
+                    DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileNameSokr, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УПД " + typeFunc + " не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
                     Program.WriteLine(message_error);
                     DispOrders.WriteErrorLog(e.Message);
                 }
@@ -3515,7 +3521,7 @@ namespace AutoOrdersIntake
             catch (Exception e)
             {
                 string message_error = "EDISOFT. Не могу создать xml файл УПД " + typeFunc + " в " + pathArchiveEDI + ". Нет доступа или диск переполнен.";
-                DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileName, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УПД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
+                DispOrders.WriteProtocolEDI("УПД " + typeFunc, fileNameSokr, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УПД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "EDISOFT");
                 Program.WriteLine(message_error);
                 DispOrders.WriteErrorLog(e.Message);
                 //запись в лог о неудаче
@@ -4229,6 +4235,8 @@ namespace AutoOrdersIntake
 
             //------сохранение документа-----------
             fileName = fileName + ".xml";
+            string[] fileNameParts = fileName.Split('_');
+            string fileNameSokr = fileNameParts[0] + "_" + fileNameParts[1] + "_" + fileNameParts[4] + "_" + fileNameParts[5];
             try
             {
                 xdoc.Save(pathArchiveEDI + fileName);
@@ -4237,14 +4245,14 @@ namespace AutoOrdersIntake
                     xdoc.Save(pathUKDEDI + fileName);
                     string message = "EDISOFT. УКД " + fileName + " создан в " + pathUKDEDI;
                     Program.WriteLine(message);
-                    DispOrders.WriteProtocolEDI("УКД", fileName, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УКД сформирован", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
-                    DispOrders.WriteEDiSentDoc("8", fileName, Convert.ToString(CurrDataUKD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds_V - sumWthNds_G), Convert.ToString(CurrDataUKD[7]), 1);
+                    DispOrders.WriteProtocolEDI("УКД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УКД сформирован", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
+                    DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataUKD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds_V - sumWthNds_G), Convert.ToString(CurrDataUKD[7]), 1);
                     //запись в лог о удаче
                 }
                 catch (Exception e)
                 {
                     string message_error = "EDISOFT. Не могу создать xml файл УКД в " + pathUKDEDI + ". Нет доступа или диск переполнен.";
-                    DispOrders.WriteProtocolEDI("УКД", fileName, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УКД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
+                    DispOrders.WriteProtocolEDI("УКД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УКД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
                     Program.WriteLine(message_error);
                     //DispOrders.WriteErrorLog(e.Message);
                 }
@@ -4252,7 +4260,7 @@ namespace AutoOrdersIntake
             catch (Exception e)
             {
                 string message_error = "EDISOFT. Не могу создать xml файл УКД в " + pathArchiveEDI + ". Нет доступа или диск переполнен.";
-                DispOrders.WriteProtocolEDI("УКД", fileName, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УКД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
+                DispOrders.WriteProtocolEDI("УКД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 10, infoGpl[0] + " - " + infoGpl[1], "УКД не сформирован. Нет доступа или диск переполнен.", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "EDISOFT");
                 Program.WriteLine(message_error);
                 DispOrders.WriteErrorLog(e.Message);
                 //запись в лог о неудаче
@@ -4274,7 +4282,7 @@ namespace AutoOrdersIntake
             object[] infoSf = Verifiacation.GetDataFromSF(Convert.ToInt64(CurrDataUPD[3])); //0 SklSf_Nmr, 1 SklSf_Dt, 2 SklSf_KAgID, 3 SklSf_KAgAdr, 4 SklSf_RcvrID, 5 SklSf_RcvrAdr, 6 SVl_CdISO
 
             //запрос данных спецификации
-            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), true); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_NmAlt, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
+            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), 1); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_NmAlt, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
 
             //Запрос данных покупателя
             object[] infoKag = Verifiacation.GetDataFromPtnRCD(Convert.ToInt64(infoSf[2]), Convert.ToInt64(infoSf[3])); // 0 Ptn_Cd, 1 Ptn_NmSh, 2 Filia_GLN, 3 Ptn_Inn, 4 Ptn_KPP, 5 ProdCode, 6 Filia_Adr, 7 Filia_Index, 8 Filia_Rgn, 9 Город, 10 Улица, 11 Дом, 12 Полное наименование

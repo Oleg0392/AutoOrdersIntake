@@ -84,6 +84,7 @@ namespace AutoOrdersIntake
                 
             Program.WriteLine("Конец  ----------------------------------------------------------");
             Console.WriteLine("Готово");
+            //Console.ReadKey();
             Environment.Exit(0);
         }
 

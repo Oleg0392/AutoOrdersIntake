@@ -9,12 +9,15 @@ using System.Data;
 using System.IO;
 using System.Collections;
 using System.Xml;
+using System.Threading;
 // Класс для приема заказов, резервированием rcd документа и заказа.
 
 namespace AutoOrdersIntake
 {
     class DispOrders
     {
+        static private volatile bool exceptionFlag;
+
         internal static void RecordToTmpZkg(string IsPlatCd, string IsDelivCd, string DocDateExp, string IsArtCd, string IsArtEI, string ArtQuantity, string DocDateDoc, string DocComment, string PriceList,int TypeSkln,string filename,string PriceList_Rcd, string RcdDog = "0", string OrderPrice = "0")
         {
             int Price_EI = DispOrders.GetEIPrice(Convert.ToInt32(PriceList), IsArtCd);
@@ -198,27 +201,45 @@ namespace AutoOrdersIntake
                                 + " select @RetRcd";
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connString;
-            conn.Open();
             SqlCommand command = new SqlCommand(verification, conn);
 
             string RCD = string.Empty;
-            try
+            SqlDataReader dr = null;
+            conn.Open();
+
+            for (int tryNumber = 3; tryNumber > 0; tryNumber--)
             {
-                SqlDataReader dr = command.ExecuteReader();//не работает!
-                int n = dr.VisibleFieldCount;
-                object[] result = new object[n];
+                try
+                {
+                    if (tryNumber < 3) Thread.Sleep(500);
+                    if (conn.State == ConnectionState.Closed) conn.Open();
+                    if (dr != null) dr.Close();
+                    dr = command.ExecuteReader();//не работает! 
+                }
+                catch (SqlException e)
+                {
+                    exceptionFlag = true;
+                    Program.WriteLine("Ошибка генератора Rcd: " + e.Message + "; Source: " + e.Source);
+                    Program.WriteLine("Осталось повторных попыток: " + tryNumber + " из 3.");
+                    dr.Close();
+                    command.CommandTimeout = 60;
+                }
+
+                if (!exceptionFlag) break;
+            }
+
+            if (!exceptionFlag)
+            {
+                object[] result = new object[dr.VisibleFieldCount];
                 while (dr.Read())
                 {
                     dr.GetValues(result);
                 }
                 RCD = Convert.ToString(result[0]);
             }
-            catch (Exception e)
-            {
-                Program.WriteLine("Ошибка генератора Rcd " + e.ToString());
-            }
 
             conn.Close();
+            exceptionFlag = false;
 
             return RCD;
 
@@ -367,6 +388,7 @@ namespace AutoOrdersIntake
                 conn.ConnectionString = connString;
                 conn.Open();
                 SqlCommand command = new SqlCommand(verification, conn);
+                Program.WriteLine("Метод взятия маршрута по умолчанию. (график маршрута не указан)");
                 SqlDataReader dr = command.ExecuteReader();
                 int i = 0;
                 object[] result = new object[i];
@@ -408,7 +430,7 @@ namespace AutoOrdersIntake
             }
             catch (IOException e)
             {
-                Program.WriteLine("Ошибка при записи в таблицу PRDZKG.Ошибка: " + e.Source + ".Сообщение: " + e.Message);
+                Program.WriteLine("Ошибка при взятии данных для записи заказа. Источник: " + e.Source + ".Сообщение: " + e.Message);
                 DispOrders.WriteErrorLog(e.Message);
 
                 return;
@@ -434,26 +456,45 @@ namespace AutoOrdersIntake
             Sum = Convert.ToDecimal(DocSum);
             SumTax = Convert.ToDecimal(DocSumTax);
             DiffSum = Sum - SumTax;
+            Program.WriteLine("Запуск процедуры вставки заказа в постоянную таблицу (U_ChCreateOrderNew)...");
             string Insert = "exec U_ChCreateOrderNew '" + PrdZkg_Rcd + "','" + Jur + "','" + UsID + "','" + SkladId + "','" + Convert.ToString(MarId) + "','" + Convert.ToString(Sum).Replace(",", ".") + "'," + Convert.ToString(SumTax).Replace(",", ".") + ",'" + Convert.ToString(DiffSum).Replace(",", ".") + "','"+PrcRcd+"'";
+         
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = connString;    
+            SqlCommand command = new SqlCommand(Insert, conn);     
+            SqlDataReader dr = null;
+            
+            conn.Open();
 
-            try
+            for (int tryNumber = 3; tryNumber > 0; tryNumber--)
             {
-                SqlConnection conn = new SqlConnection();
-                conn.ConnectionString = connString;
-                conn.Open();
-                SqlCommand command = new SqlCommand(Insert, conn);
-
-                SqlDataReader dr = command.ExecuteReader();
-
+                try
+                {
+                    Program.WriteLine("!!!ForDEBUGG: Инициализация и запуск SqlDataReader. - SqlCommand.ExecuteReader()");
+                    if (tryNumber < 3) Thread.Sleep(500);
+                    if (conn.State == ConnectionState.Closed) conn.Open();
+                    if (dr != null) dr.Close();
+                    dr = command.ExecuteReader();
+                }
+                catch (SqlException exception)
+                {
+                    exceptionFlag = true;
+                    Program.WriteLine("Ошибка при записи в таблицу PRDZKG. Источник: " + exception.Source + ".Сообщение: " + exception.Message);
+                    DispOrders.WriteErrorLog(exception.Message);
+                    Program.WriteLine("Повторная попытка записи...");
+                    Program.WriteLine("Осталось попыток: " + tryNumber + " из 3.");
+                    if (dr != null) dr.Close();
+                    command.CommandTimeout = 60;
+                }
+                
                 conn.Close();
+                if (!exceptionFlag) break;
+            }
 
-            }
-            catch (IOException e)
-            {
-                Program.WriteLine("Ошибка при записи в таблицу PRDZKG.Ошибка: " + e.Source + ".Сообщение: " + e.Message);
-                DispOrders.WriteErrorLog(e.Message);
-            }
-           
+            if (!exceptionFlag) Program.WriteLine("Процедура вставки заказа U_ChCreateOrderNew выполнена успешно.");
+            else Program.WriteLine("Не удалось выполнить процедуру U_ChCreateOrderNew.");
+
+            exceptionFlag = false;
         }
 
         internal static void CreateItemPosition(string TrdS_Rcd, string PrdZkg_Rcd,string Articul)//создание товарной позиции - создание записи в таблице TrdS
@@ -462,19 +503,35 @@ namespace AutoOrdersIntake
             string Insert = "exec U_ChCreateItemPosition '" + TrdS_Rcd + "', '" + PrdZkg_Rcd + "', '" + Articul + "' ";
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connString;
-            try
+            SqlCommand command = new SqlCommand(Insert, conn);
+            SqlDataReader dr = null;
+            conn.Open();
+
+            for (int tryNumber = 5; tryNumber > 0; tryNumber--)
             {
-                conn.Open();
-                SqlCommand command = new SqlCommand(Insert, conn);
-                SqlDataReader dr = command.ExecuteReader();
-                conn.Close();
+                try
+                {
+                    if (tryNumber < 5) Thread.Sleep(500);  // иначе генерируется такой же Rcd как предыдущий
+                    if (conn.State == ConnectionState.Closed) conn.Open();
+                    if (dr != null) dr.Close();
+                    dr = command.ExecuteReader();
+                }
+                catch (SqlException e)
+                {
+                    exceptionFlag = true;
+                    Program.WriteLine("Ошибка генератора Rcd: " + e.Message + "; Source: " + e.Source);
+                    Program.WriteLine("Осталось повторных попыток: " + tryNumber + " из 5.");
+                    if (dr != null) dr.Close();
+                    command.CommandTimeout = 60;
+                }
+
+                if (!exceptionFlag) break;
+
             }
-            catch (IOException e)
-            {
-                Program.WriteLine("Ошибка при записи в таблицу TRDS. Ошибка: " + e.Source + ".Сообщение: " + e.Message);
-                DispOrders.WriteErrorLog(e.Message);
+            dr.Close();
+            conn.Close();
+            exceptionFlag = false;
             }
-        }
 
         internal static void WriteOrderLog(string source, string plat, string deliv, string filename,string num_order,int error,string error_prop, DateTime date, DateTime time, int TypeSkln )//запись в лог приема заказа
         {
@@ -497,6 +554,7 @@ namespace AutoOrdersIntake
             Program.WriteLine(Name_ParseFile);
             foreach (int ts in DstSkln)
             {
+                Program.WriteLine("Создание и резерв RCD для заказа...");
                 string PrdZkg_Rcd = DispOrders.Reserved_Rcd("PrdZkg", "PrdZkg_Rcd");//резервируем rcd в таблице PrdZkg           
                 if (PrdZkg_Rcd != null)
                 {
@@ -504,6 +562,7 @@ namespace AutoOrdersIntake
                     int count = ArtList.Count();
                     for (int i = 0; i < count; i++)
                     {
+                        Program.WriteLine("Создание и резерв RCD для позиций заказа...");
                         string TrdS_Rcd = DispOrders.Reserved_Rcd("TrdS", "TrdS_Rcd");//резервируем rcd в таблице TrdS
                         DispOrders.CreateItemPosition(TrdS_Rcd, PrdZkg_Rcd, Convert.ToString(ArtList[i]));
 
@@ -1665,11 +1724,21 @@ namespace AutoOrdersIntake
             string CMDGetSF;
             object[,] result;
 
-            if (typeFunc == "")
+            switch (typeFunc)
+            {
+                case "SVOD": CMDGetSF = "SELECT ProviderOpt, ProviderZkg, NastDoc_Fmt, SklSf_Rcd, SklSf_TpOtg, SklSfA_RcdCor, Expr1, typeSf FROM U_vwChListUPDForSentNSvod WHERE ISNULL(ProviderZkg,'') <> '' AND ISNULL(NastDoc_Fmt,'') <> ''";
+                    break;
+                case "ДОП": CMDGetSF = "SELECT ProviderOpt, ProviderZkg, NastDoc_Fmt, SklSf_Rcd, SklSf_TpOtg, SklSfA_RcdCor, PrdZkg_NmrExt, PrdZkg_Rcd, PrdZkg_Dt, SklNk_TDrvNm, typeSf, NISF, sklnkDat, sklnkNmr, dtOtgr FROM U_vwChListUPDDOPForSent WHERE ISNULL(ProviderZkg,'') <> '' AND ISNULL(NastDoc_Fmt,'') <> ''";
+                    break;
+                default: CMDGetSF = "SELECT ProviderOpt, ProviderZkg, NastDoc_Fmt, SklSf_Rcd, SklSf_TpOtg, SklSfA_RcdCor, PrdZkg_NmrExt, PrdZkg_Rcd, PrdZkg_Dt, SklNk_TDrvNm, typeSf, NISF, sklnkDat, sklnkNmr, dtOtgr FROM U_vwChListUPDForSentN WHERE ISNULL(ProviderZkg,'') <> '' AND ISNULL(NastDoc_Fmt,'') <> ''";
+                    break;
+            }
+
+            /*if (typeFunc == "")
                 CMDGetSF = "SELECT ProviderOpt, ProviderZkg, NastDoc_Fmt, SklSf_Rcd, SklSf_TpOtg, SklSfA_RcdCor, PrdZkg_NmrExt, PrdZkg_Rcd, PrdZkg_Dt, SklNk_TDrvNm, typeSf, NISF, sklnkDat, sklnkNmr, dtOtgr FROM U_vwChListUPDForSentN WHERE ISNULL(ProviderZkg,'') <> '' AND ISNULL(NastDoc_Fmt,'') <> ''";
             else
                 CMDGetSF = "SELECT ProviderOpt, ProviderZkg, NastDoc_Fmt, SklSf_Rcd, SklSf_TpOtg, SklSfA_RcdCor, PrdZkg_NmrExt, PrdZkg_Rcd, PrdZkg_Dt, SklNk_TDrvNm, typeSf, NISF, sklnkDat, sklnkNmr, dtOtgr FROM U_vwChListUPDDOPForSent WHERE ISNULL(ProviderZkg,'') <> '' AND ISNULL(NastDoc_Fmt,'') <> ''";
-
+            */
 
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connString;
@@ -2613,6 +2682,7 @@ namespace AutoOrdersIntake
 
         public static int GetRouteSchedule(string PtnCd)  // возвращает номер текущего маршрута согласно графику маршрутов в карточке контрагента
         {
+            Program.WriteLine(" ---- DispOrders.GetRouteSchedule //взятие номера маршрута согласно графику маршрутов у к/а");
             string connString = Settings.Default.ConnStringISPRO;      // запрос на график маршрутов
             string schedulesQuery = "SELECT prv.UF_RkValS "
                                   + "FROM UFPRV prv "
@@ -2624,6 +2694,7 @@ namespace AutoOrdersIntake
             conn.ConnectionString = connString;
             conn.Open();
             SqlCommand command = new SqlCommand(schedulesQuery, conn);
+            Program.WriteLine("Запрос на график маршрутов...");
             SqlDataReader dataReader = command.ExecuteReader();
             int result = 199999;
             DateTime DateExp = new DateTime();
@@ -2640,6 +2711,7 @@ namespace AutoOrdersIntake
                 {
                     string getDocDateExp = "SELECT TOP 1 DocDateExp FROM U_CHTMPZKG";   // запрос на дату отгрузки заказа
                     command = new SqlCommand(getDocDateExp, conn);
+                    Program.WriteLine("Запрос на дату отгрузки заказа...");
                     SqlDataReader dateExpReader = command.ExecuteReader();
                     if (dateExpReader.Read())
                     {
@@ -2652,6 +2724,7 @@ namespace AutoOrdersIntake
                 }
                 catch (Exception ex)
                 {
+                    Program.WriteLine(ex.Message);
                     DateExp = DateTime.Now;
                 }
 
@@ -2666,6 +2739,7 @@ namespace AutoOrdersIntake
                 
                 try
                 {
+                    Program.WriteLine("Запрос на Rcd маршрута, т.к. в графике указан Cd.");
                     string getTrdRcd = "SELECT TrdRt_Rcd FROM TRDRT WHERE TrdRt_Cd = '" + Route + "' ";   // запрос на Rcd маршрута
                     command = new SqlCommand(getTrdRcd, conn);
                     SqlDataReader trdReader = command.ExecuteReader();
@@ -2682,6 +2756,7 @@ namespace AutoOrdersIntake
                 
 
             }
+            Program.WriteLine(" ---- DispOrders.GetRouteSchedule завершён.");
             return result;
         }
 

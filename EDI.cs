@@ -29,7 +29,7 @@ namespace AutoOrdersIntake
             object[] PlatInfo = Verifiacation.GetDataFromPtnCD(Convert.ToString(CurrDataInvoice[9]));
 
             int CntLinesInvoice = Verifiacation.CountItemsInOrder(Convert.ToString(CurrDataInvoice[1]), 5);
-            object[,] Item = DispOrders.GetItemsFromTrdS(Convert.ToString(CurrDataInvoice[1]), CntLinesInvoice, 5);
+            object[,] Item = DispOrders.GetItemsFromTrdS(Convert.ToString(CurrDataInvoice[1]), CntLinesInvoice, 5, true);
 
             //какой gln номер использовать
             bool UseMasterGLN = Verifiacation.GetUseMasterGln(Convert.ToString(DelivInfo[8]));
@@ -919,7 +919,7 @@ namespace AutoOrdersIntake
 
                 bool PCE = Verifiacation.UsePCE(Convert.ToString(CurrDataInvoice[9]));//проверка на использование штук в исходящих докуметов
 
-                object[,] Item = DispOrders.GetItemsFromInvoice(Convert.ToString(CurrDataInvoice[1]), CntLinesInvoice, PCE);
+                object[,] Item = DispOrders.GetItemsFromInvoice(Convert.ToString(CurrDataInvoice[1]), CntLinesInvoice, true);
 
                 object[] Total = DispOrders.GetTotal(Convert.ToString(CurrDataInvoice[1]), 5);
 
@@ -931,9 +931,31 @@ namespace AutoOrdersIntake
                 XElement eDIMessage = new XElement("eDIMessage");
                 XElement interchangeHeader = new XElement("interchangeHeader");
                 XElement invoice = new XElement("invoice");
-                XAttribute numberInvoice = new XAttribute("number", CurrDataInvoice[2]);
-                XAttribute dateInvoice = new XAttribute("date", (Convert.ToDateTime(CurrDataInvoice[3])).ToString("yyyy-MM-dd"));
-                XAttribute TypeInvoice = new XAttribute("type", "Original");
+                XAttribute numberInvoice;
+                XAttribute dateInvoice;
+                XAttribute TypeInvoice;
+                if (CurrDataInvoice[27].ToString().Equals("1"))  // если это исправительная с/ф
+                {
+                    numberInvoice = new XAttribute("number", CurrDataInvoice[2]);
+                    dateInvoice = new XAttribute("date", (Convert.ToDateTime(CurrDataInvoice[3])).ToString("yyyy-MM-dd"));
+                    XAttribute revisionNumberInvoice = new XAttribute("revisionNumber", CurrDataInvoice[27]);
+                    XAttribute revisionDateInvoice = new XAttribute("revisionDate", DateTime.Now.ToString("yyyy-MM-dd"));
+                    TypeInvoice = new XAttribute("type", "Replace");
+                    invoice.Add(numberInvoice);
+                    invoice.Add(dateInvoice);
+                    invoice.Add(revisionNumberInvoice);
+                    invoice.Add(revisionDateInvoice);
+                    invoice.Add(TypeInvoice);  // добавлено по структуре версии 1,5,26
+                }
+                else
+                {
+                    numberInvoice = new XAttribute("number", CurrDataInvoice[2]);
+                    dateInvoice = new XAttribute("date", (Convert.ToDateTime(CurrDataInvoice[3])).ToString("yyyy-MM-dd"));
+                    TypeInvoice = new XAttribute("type", "Original");
+                    invoice.Add(numberInvoice);
+                    invoice.Add(dateInvoice);
+                    invoice.Add(TypeInvoice);  // добавлено по структуре версии 1,5,26
+                }
                 XAttribute idMessage = new XAttribute("id", id);
                 XAttribute creationDateTime = new XAttribute("creationDateTime", (DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss"));
 
@@ -943,9 +965,9 @@ namespace AutoOrdersIntake
                 eDIMessage.Add(idMessage);
                 eDIMessage.Add(creationDateTime);
 
-                invoice.Add(numberInvoice);
+                /*invoice.Add(numberInvoice);
                 invoice.Add(dateInvoice);
-                invoice.Add(TypeInvoice);  // добавлено по структуре версии 1,5,26
+                invoice.Add(TypeInvoice);  // добавлено по структуре версии 1,5,26*/
 
                 //------interchangeHeader---------------
                 XElement sender = new XElement("sender", ILN_Edi);
@@ -1358,7 +1380,7 @@ namespace AutoOrdersIntake
                     LineItem.Add(vATAmount);
                     LineItem.Add(amount);
 
-                    if (Convert.ToString(DelivInfo[10]) == "BaseMark" && Convert.ToInt32(Item[i, 9]) == 10)
+                    if (Convert.ToString(DelivInfo[10]).Contains("Mark") && Convert.ToInt32(Item[i, 9]) == 10)
                     {
                         XElement controlIdentificationMarks;
                         XAttribute controlIdentificationMarks_type;
@@ -3856,7 +3878,7 @@ namespace AutoOrdersIntake
                     LineItem.Add(amountIncrease);
                     LineItem.Add(amountDecrease);
 
-                    if (Convert.ToString(DelivInfo[10]) == "BaseMark" && Convert.ToInt32(Item[i,9]) == 10)
+                    if (Convert.ToString(DelivInfo[10]).Contains("Mark") && Convert.ToInt32(Item[i,9]) == 10)
                     {
                         int quantityItemBefore = Convert.ToInt32(prevItem[0, 4]);
                         int quantityItemAfter = Convert.ToInt32(prevItem[0, 4]) + Convert.ToInt32(Item[i, 4]);
@@ -3866,12 +3888,16 @@ namespace AutoOrdersIntake
                         XAttribute controlIdentificationMarksAfter_type;
                         controlIdentificationMarksBefore = new XElement("controlIdentificationMarksBefore", "020" + EAN_F + "37" + Convert.ToString(quantityItemBefore));
                         controlIdentificationMarksBefore_type = new XAttribute("type", "Group");
-                        controlIdentificationMarksAfter = new XElement("controlIdentificationMarksAfter", "020" + EAN_F + "37" + Convert.ToString(quantityItemAfter));
-                        controlIdentificationMarksAfter_type = new XAttribute("type", "Group");
+                        if (!(DelivInfo[10].ToString() == "LentaMark" && (Convert.ToInt32(prevItem[0, 4]) + Convert.ToInt32(Item[i, 4])) <= 0))
+                        {
+                            controlIdentificationMarksAfter = new XElement("controlIdentificationMarksAfter", "020" + EAN_F + "37" + Convert.ToString(quantityItemAfter));
+                            controlIdentificationMarksAfter_type = new XAttribute("type", "Group");
+                            LineItem.Add(controlIdentificationMarksAfter);
+                            controlIdentificationMarksAfter.Add(controlIdentificationMarksAfter_type);
+                        }
                         LineItem.Add(controlIdentificationMarksBefore);
                         controlIdentificationMarksBefore.Add(controlIdentificationMarksBefore_type);
-                        LineItem.Add(controlIdentificationMarksAfter);
-                        controlIdentificationMarksAfter.Add(controlIdentificationMarksAfter_type);
+                        
                     }
 
                     if (Convert.ToString(DelivInfo[10]) == "MDOU")
@@ -5401,7 +5427,9 @@ namespace AutoOrdersIntake
         /*
          * typeFunc = "" - Это УПД с функциями СЧФДОП и СЧФ
          * typeFunc = "ДОП" - Это УПД с функцией ДОП
-         * */
+         * typeFunc = "SVOD" - Сводный УПД
+         */
+
         public static void SentUPD(string typeFunc = "")
         {
 
@@ -5430,7 +5458,7 @@ namespace AutoOrdersIntake
                             }
                             if (ListSF[i, 2].ToString().Contains("Lenta"))     // ...Mark добавлен
                             {
-                                EDIformat.CreateEdiLenta_UPD(CurrDataSF, ListSF[i, 10].ToString());
+                                EDIformat.CreateEdiLenta_UPD(CurrDataSF, ListSF[i, 10].ToString());  
                             }
                             if (ListSF[i, 2].ToString() == "Tander")
                             {
@@ -5469,7 +5497,7 @@ namespace AutoOrdersIntake
 
         public static void SentUPD_Diadoc()
         {
-
+            
             //Новый формат
             object[,] ListSF = DispOrders.GetListUPDN("");//список УПД, 0 ProviderOpt, 1 ProviderZkg, 2 NastDoc_Fmt, 3 SklSf_Rcd, 4 SklSf_TpOtg, 5 SklSfA_RcdCor, 6 PrdZkg_NmrExt, 7 PrdZkg_Rcd, 8 PrdZkg_Dt, 9 SklNk_TDrvNm
 
@@ -5485,23 +5513,14 @@ namespace AutoOrdersIntake
                         List<object> CurrDataSF = new List<object>();
 
                         for (int j = 0; j < ListSF.GetLength(1); j++) CurrDataSF.Add(ListSF[i, j]);
-                        if (ListSF[i, 4].ToString() == "0") //УПД
+
+                        if (ListSF[i, 4].ToString() == "0") //УПД            for debug concrete sf && (Convert.ToInt32(ListSF[i, 3]) == 6324411)
                         {
                             if (ListSF[i, 2].ToString().Contains("Base"))
                             {
                                 try
                                 {
-                                    //проверка на признак сводного счета фактоуры
-                                    DateTime SvodSfDt = Verifiacation.GetEdoSvodDate(ListSF[i, 3].ToString());
-                                    if (SvodSfDt != DateTime.MinValue)
-                                    {
-                                        if (i == 0) SKBKontur.CreateKonturBaseSvod_UPD(CurrDataSF);    // сводный УПД, их может быть несколько с одним Rcd, нужно обработать только 1 раз такой УПД
-                                        else
-                                        {
-                                            if (!ListSF[i-1, 3].ToString().Equals(CurrDataSF[3].ToString())) SKBKontur.CreateKonturBaseSvod_UPD(CurrDataSF);
-                                        }
-                                    }
-                                    else {    SKBKontur.CreateKonturBase_UPD(CurrDataSF);   }   // обычный УПД
+                                    SKBKontur.CreateKonturBase_UPD(CurrDataSF);
                                     CheckSentInv(Convert.ToString(CurrDataSF[3]));
                                 }
                                 catch (Exception err)
@@ -5511,7 +5530,7 @@ namespace AutoOrdersIntake
                                 }
                             }
                         }
-                        if (ListSF[i, 4].ToString() == "3") //УКД
+                        if (ListSF[i, 4].ToString() == "3") //УКД    && (Convert.ToInt32(ListSF[i, 3]) == 6326986)
                         {
                             if (ListSF[i, 2].ToString().Contains("Base"))
                             {
@@ -5535,6 +5554,38 @@ namespace AutoOrdersIntake
             catch (Exception err)
             {
                 Program.WriteLine("Ошибка выгрузки УПД " + Convert.ToString(err));
+            }
+
+            // проверка и отправка сводных УПД (пока только УПД)
+            object[,] ListSFSvod = DispOrders.GetListUPDN("SVOD");   //список УПД, 0 ProviderOpt, 1 ProviderZkg, 2 NastDoc_Fmt, 3 SklSf_Rcd, 4 SklSf_TpOtg, 5 SklSfA_RcdCor, 6 SklNk_TDrvNm
+
+            try
+            {
+                for (int i = 0; i < ListSFSvod.GetLength(0); i++)
+                {
+
+                    if (ListSFSvod[i, 1].ToString() == "KONTUR")
+                    {
+                        Program.WriteLine("Подготовка к отправке SklSf_Rcd " + Convert.ToString(ListSFSvod[i, 3]) + " провайдер заказа " + Convert.ToString(ListSFSvod[i, 1]));
+                        List<object> CurrDataSvodSF = new List<object>();
+
+                        for (int j = 0; j < ListSFSvod.GetLength(1); j++) CurrDataSvodSF.Add(ListSFSvod[i, j]);
+
+                        if (ListSFSvod[i, 4].ToString() == "0") //УПД            for debug concrete sf && (Convert.ToInt32(ListSF[i, 3]) == 6324411)
+                        {
+                            if (ListSFSvod[i, 2].ToString().Contains("Base"))
+                            {
+                                SKBKontur.CreateKonturBaseSvod_UPD(CurrDataSvodSF);
+                                CheckSentInv(Convert.ToString(CurrDataSvodSF[3]));
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch(Exception err)
+            {
+                Program.WriteLine("Ошибка выгрузки сводного УПД " + Convert.ToString(err));
             }
         }
 

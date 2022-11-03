@@ -17,6 +17,7 @@ namespace AutoOrdersIntake
     {
         public static void IntakeOrders()
         {
+            Program.WriteLine(" --- SKBKontur.IntakeOrders.");
             bool error;
             int i = 0;
             int VolumeDoc = 0;
@@ -30,6 +31,7 @@ namespace AutoOrdersIntake
             XmlDocument doc = new XmlDocument();
             foreach (string parsefile in files)
             {
+                Program.WriteLine("Проверка файла-заказа: " + parsefile);
                 string EI;
                 error = false;//по умолчанию ошибок нет
                 doc.Load(parsefile);
@@ -150,7 +152,8 @@ namespace AutoOrdersIntake
 
                                                         //quantity = n.SelectSingleNode("requestedQuantity").InnerText;
                                                         i++;
-                                                        object[] PriceList = Verifiacation.GetPriceList(res_verf_deliv[0], Convert.ToInt32(res_verf_item[5])); 
+                                                        object[] PriceList = Verifiacation.GetPriceList(res_verf_deliv[0], Convert.ToInt32(res_verf_item[5]));
+                                                        Program.WriteLine("Проверка заказа завершена. Вставка заказа во временную таблицу U_ChTmpZkg...");
                                                         DispOrders.RecordToTmpZkg(Convert.ToString(res_verf_buyer[0]), Convert.ToString(res_verf_deliv[0]), date_delivery, Convert.ToString(res_verf_item[1]), Convert.ToString(res_verf_item[4]), quantity, date_order, number_order, Convert.ToString(PriceList[0]), Convert.ToInt16(res_verf_item[5]), Path.GetFileName(doc.BaseURI), Convert.ToString(PriceList[1]), "0", PriceOrder);
                                                         try
                                                         {
@@ -158,7 +161,7 @@ namespace AutoOrdersIntake
                                                         }
                                                         catch
                                                         {
-                                                            DispOrders.WriteErrorLog("Ошибка процедуры CheckBuyerCode в СКБ-Контур. Buyer code: " + buyer_code + ", товар: " + res_verf_item[2] + ", PtnCd: " + res_verf_buyer[0]);
+                                                            DispOrders.WriteErrorLog("Ошибка процедуры CheckBuyerCode в СКБ-Контур. Buyer code: " + buyer_code + ", товар: " + res_verf_item[2] + ", PtnCd: " + res_verf_buyer[0]); 
                                                         }
                                                     }
                                                 }
@@ -196,7 +199,7 @@ namespace AutoOrdersIntake
                                 //перенос заказов в постоянку
                                 if (error == false)
                                 {
-                                    
+                                    Program.WriteLine("Перенос заказа в постоянную таблицу PRDZKG.");
                                     DispOrders.TMPtoPrdZkg(res_verf_buyer, res_verf_deliv, Path.GetFileName(doc.BaseURI), "СКБ-Контур", number_order);
                                     VolumeDoc++;
 
@@ -204,6 +207,7 @@ namespace AutoOrdersIntake
                                     string newP = ArchiveSKBKontur + Path.GetFileName(doc.BaseURI);
                                     try
                                     {
+                                        Program.WriteLine("Заказ перенесён. Перемещение заказа в архив.");
                                         Directory.Move(oldP, newP);
                                     }
                                     catch
@@ -260,15 +264,18 @@ namespace AutoOrdersIntake
                     }
                 }
             }
+            Program.WriteLine("Запись RecordCountEDoc");
             ReportEDI.RecordCountEDoc("СКБ-Контур", "Orders", VolumeDoc);
             //Program.WriteLine("Прием заказов от СКБ закончен");
             //Console.ReadLine();
+            Program.WriteLine(" --- SKBKontur.IntakeOrders завершен.");
         }
 
 
         public static void TransferOrders()
         {
 
+            Program.WriteLine(" --- Перемещение заказов (SKBKontur.TransferOrders).");
             string _path = DispOrders.GetValueOption("СКБ-КОНТУР.ИМПОРТ");
             string ErrorSKBKontur = DispOrders.GetValueOption("СКБ-КОНТУР.ОШИБКА");
             string ArchiveSKBKontur = DispOrders.GetValueOption("СКБ-КОНТУР.АРХИВ");
@@ -276,6 +283,8 @@ namespace AutoOrdersIntake
 
             string[] files = Directory.GetFiles(_path, "ORDERS*.xml");
             XmlDocument doc = new XmlDocument();
+            if (files.Length > 0) { Program.WriteLine("Разбор и перемещение файлов. Количество файлов: " + files.Length.ToString()); }
+            else { Program.WriteLine(" --- Файлов (заказов) для перемещения не обнаружено, завершение метода SKBKontur.TransferOrders"); }
             foreach (string parsefile in files)
             {
                 
@@ -283,6 +292,7 @@ namespace AutoOrdersIntake
                 string gln_delivery;//gln грузополучателя
                 string seller_gln, main_gln_edi;
                 bool error = false;
+                bool failed = false;
                
                 seller_gln = doc.SelectSingleNode("/eDIMessage/order/seller/gln").InnerText; //поставщик
                 gln_delivery = doc.SelectSingleNode("/eDIMessage/order/deliveryInfo/shipTo/gln").InnerText; //грузополучатель
@@ -303,6 +313,7 @@ namespace AutoOrdersIntake
                             try
                             {
                                 Directory.Move(oldP, newP);
+                                Program.WriteLine("Заказ " + parsefile + " успешно прошел все проверки и был перемещён.");
                             }
                             catch
                             {
@@ -310,6 +321,7 @@ namespace AutoOrdersIntake
                                 string nameInv = "ORDERS_" + id + ".xml";
                                 string ReserveNewP = ZakazSKBKontur + nameInv;
                                 Directory.Move(oldP, ReserveNewP);
+                                failed = true;
                             }
                         }
                         else error = true;       
@@ -334,7 +346,10 @@ namespace AutoOrdersIntake
                         string ReserveNewP = ErrorSKBKontur + nameInv;
                         Directory.Move(oldP, ReserveNewP);
                     }
+
                 }
+
+                if (failed) { Program.WriteLine("Не удалось переместить заказ: " + parsefile);  }
             }
         }
 
@@ -547,7 +562,10 @@ namespace AutoOrdersIntake
             if (infoOrder[0] != null) Program.WriteLine("Номер заказа " + infoOrder[0].ToString());
 
             //запрос данных спецификации
-            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), true); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_Nm, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
+            int PCE;
+            object[] SfMark = Verifiacation.CheckSfMarker(CurrDataUPD[3].ToString(), "edo-kg");
+            if (SfMark != null) PCE = 2; else PCE = 1;
+            object[,] Item = Verifiacation.GetItemsFromSF(Convert.ToString(CurrDataUPD[3]), PCE); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_Nm, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
             
             //Запрос данных покупателя (в основном ИП)
             object[] infoKag = Verifiacation.GetDataFromPtnRCD_IP(Convert.ToInt64(infoSf[2]), Convert.ToInt64(infoSf[3])); // 0 Ptn_Cd, 1 Ptn_NmSh, 2 Filia_GLN, 3 Ptn_Inn, 4 Ptn_KPP, 5 ProdCode, 6 Filia_Adr, 7 Filia_Index, 8 Filia_Rgn, 9 Город, 10 Улица, 11 Дом, 12 Полное наименование, 12 Полное наименование
@@ -651,12 +669,12 @@ namespace AutoOrdersIntake
             idPol = PolInfo[0];
             BoxIdPol = PolInfo[1];
 
-            if (idPol == "")  //у провайдера бывает код идентификатора ЭДО в нижнем регистре
+            /*if (idPol == "")  //у провайдера бывает код идентификатора ЭДО в нижнем регистре
             {
                 PolInfo = DiadocAuthenticate.OrganizationInfo(InnKag, KppKag, IdProvaiderPol.ToLower());
                 idPol = PolInfo[0];
                 BoxIdPol = PolInfo[1];
-            }
+            }*/
 
             Program.WriteLine("Информация об отправителе ИНН " + infoFirm[1].ToString() + " КПП " + infoFirm[2].ToString());
             OtprInfo = DiadocAuthenticate.OrganizationInfo(infoFirm[1].ToString(), infoFirm[2].ToString(), IdProvaiderOtpr);
@@ -894,7 +912,8 @@ namespace AutoOrdersIntake
                         OtchestvoIP = "";
                         FamilijaIP = NameOrFio.Substring(0, NameOrFio.IndexOf(' '));
                         ImjaIP = NameOrFio.Substring(NameOrFio.IndexOf(' ') + 1, 2);
-                        OtchestvoIP = NameOrFio.Substring(NameOrFio.IndexOf('.') + 1, 2);
+                        OtchestvoIP = NameOrFio.Substring(NameOrFio.IndexOf('.') + 1, 1);
+                        OtchestvoIP += ".";
 
                         XAttribute GruzPoluchSvIPFamilija = new XAttribute("Фамилия", FamilijaIP);
                         XAttribute GruzPoluchSvIPImja = new XAttribute("Имя", ImjaIP);
@@ -924,6 +943,11 @@ namespace AutoOrdersIntake
                     if (infoGpl[8].ToString().Length > 0)
                     {
                         XAttribute GruzPoluchKodReg = new XAttribute("КодРегион", infoGpl[8]);
+                        GruzPoluchAdrRF.Add(GruzPoluchKodReg);
+                    }
+                    else if (infoKag[8].ToString().Length > 0)
+                    {
+                        XAttribute GruzPoluchKodReg = new XAttribute("КодРегион", infoKag[8]);
                         GruzPoluchAdrRF.Add(GruzPoluchKodReg);
                     }
                     if (infoGpl[9].ToString().Length > 0)
@@ -978,7 +1002,8 @@ namespace AutoOrdersIntake
                         OtchestvoIP = "";
                         FamilijaIP = NameOrFio.Substring(0, NameOrFio.IndexOf(' '));
                         ImjaIP = NameOrFio.Substring(NameOrFio.IndexOf(' ') + 1, 2);
-                        OtchestvoIP = NameOrFio.Substring(NameOrFio.IndexOf('.') + 1, 2);
+                        OtchestvoIP = NameOrFio.Substring(NameOrFio.IndexOf('.') + 1, 1);
+                        OtchestvoIP += ".";
 
                         XAttribute SvPokupSvIPFamilija = new XAttribute("Фамилия", FamilijaIP);
                         XAttribute SvPokupSvIPImja = new XAttribute("Имя", ImjaIP);
@@ -1343,12 +1368,9 @@ namespace AutoOrdersIntake
                         try
                         {
                             xdoc.Save(pathUPDEDI + fileName);
+                            DispOrders.WriteProtocolEDI("УПД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД сформирован", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "KONTUR");
                             string message = "СКБ-Контур. УПД " + fileName + " создан в " + pathUPDEDI;
                             Program.WriteLine(message);
-                            //имя файла слишком длинное, обрежим его до дата + гуид, поиск можно будет делать по регулярному выражению .*fileNameSokr
-                            DispOrders.WriteProtocolEDI("УПД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД сформирован", DateTime.Now, Convert.ToString(CurrDataUPD[6]), "KONTUR");
-                            DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1);
-
                         }
                         catch (Exception e)
                         {
@@ -1361,12 +1383,19 @@ namespace AutoOrdersIntake
                         try
                         {
                             Program.WriteLine("Отправляем УПД в Диадок через Диадок API");
-                            DiadocAuthenticate.SendInvoiceXml(pathUPDEDI, fileName, idPol, idOtpr, BoxIdPol, BoxIdOtpr, "UniversalTransferDocument", infoSf[0].ToString(), Convert.ToDateTime(infoSf[1]).ToString(@"dd.MM.yyyy"));  //Отправляем УПД в Диадок через Диадок API
+                            int sendStatus = DiadocAuthenticate.SendInvoiceXml(pathUPDEDI, fileName, idPol, idOtpr, BoxIdPol, BoxIdOtpr, "UniversalTransferDocument", infoSf[0].ToString(), Convert.ToDateTime(infoSf[1]).ToString(@"dd.MM.yyyy"));  //Отправляем УПД в Диадок через Диадок API
+                            if (sendStatus == 1)
+                            {
+                                //имя файла слишком длинное, обрежим его до дата + гуид, поиск можно будет делать по регулярному выражению .*fileNameSokr
+                                DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataUPD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds), Convert.ToString(CurrDataUPD[7]), 1);
+                            }
+                            else throw new Exception("Не удалось отправить УПД в Диадок. Код статуса отправки: " + sendStatus.ToString());                            
                         }
                         catch (Exception e)
                         {
                             Program.WriteLine("Ошибка отправки УПД в Диадок через Диадок API");
                             DispOrders.WriteErrorLog(e.Message);
+                            Program.WriteLine(e.Message + " Источник: " + e.Source);
                         }
                     }
 
@@ -1402,7 +1431,7 @@ namespace AutoOrdersIntake
             //Запрос данных Корректируемой (отгрузочной) СФ
             object[] infoCorSf = Verifiacation.GetDataFromSF(Convert.ToInt64(CurrDataUKD[5])); //0 SklSf_Nmr, 1 SklSf_Dt, 2 SklSf_KAgID, 3 SklSf_KAgAdr, 4 SklSf_RcvrID, 5 SklSf_RcvrAdr, 6 SVl_CdISO
             Program.WriteLine("Номер КСФ " + infoSf[0].ToString());
-
+            
             //запрос данных спецификации
             object[,] Item = Verifiacation.GetItemsFromKSF(Convert.ToString(CurrDataUKD[3]), Convert.ToString(CurrDataUKD[5]), true); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_Nm, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
 
@@ -1477,8 +1506,8 @@ namespace AutoOrdersIntake
 
             string InnKag = "";
             string KppKag = "";
-            InnKag = infoGpl[3].ToString();
-            KppKag = infoGpl[4].ToString();
+            InnKag = infoKag[3].ToString();
+            KppKag = infoKag[4].ToString();
             string idPol = ""; //ИдПолуч
             string BoxIdPol = ""; //ЯщикПолуч
             string idOtpr = ""; //ИдОтпр
@@ -1505,12 +1534,12 @@ namespace AutoOrdersIntake
             idPol = PolInfo[0];
             BoxIdPol = PolInfo[1];
 
-            if (idPol == "")  //у провайдера бывает код идентификатора ЭДО в нижнем регистре
+            /*if (idPol == "")  //у провайдера бывает код идентификатора ЭДО в нижнем регистре
             {
                 PolInfo = DiadocAuthenticate.OrganizationInfo(InnKag, KppKag, IdProvaiderPol.ToLower());
                 idPol = PolInfo[0];
                 BoxIdPol = PolInfo[1];
-            }
+            }*/
 
             Program.WriteLine("Информация об отправителе ИНН " + infoFirm[1].ToString() + " КПП " + infoFirm[2].ToString());
             OtprInfo = DiadocAuthenticate.OrganizationInfo(infoFirm[1].ToString(), infoFirm[2].ToString(), IdProvaiderOtpr);
@@ -1698,7 +1727,8 @@ namespace AutoOrdersIntake
                         OtchestvoIP = "";
                         FamilijaIP = NameOrFio.Substring(0, NameOrFio.IndexOf(' '));
                         ImjaIP = NameOrFio.Substring(NameOrFio.IndexOf(' ') + 1, 2);
-                        OtchestvoIP = NameOrFio.Substring(NameOrFio.IndexOf('.') + 1, 2);
+                        OtchestvoIP = NameOrFio.Substring(NameOrFio.IndexOf('.') + 1, 1);
+                        OtchestvoIP += ".";
 
                         XAttribute SvPokupSvIPFamilija = new XAttribute("Фамилия", FamilijaIP);
                         XAttribute SvPokupSvIPImja = new XAttribute("Имя", ImjaIP);
@@ -1979,8 +2009,8 @@ namespace AutoOrdersIntake
 
                         XElement DopSvedTov = new XElement("ДопСведТов");
 
-                        XAttribute NaimEdIzmDo = new XAttribute("НаимЕдИзмДо", Verifiacation.GetEdIzm(Convert.ToString(Item[i, 4])));
-                        XAttribute NaimEdIzmPosle = new XAttribute("НаимЕдИзмПосле", Verifiacation.GetEdIzm(Convert.ToString(Item[i, 14])));
+                        XAttribute NaimEdIzmDo = new XAttribute("НаимЕдИзмДо", Verifiacation.GetEdIzm(Convert.ToString(Item[i, 4]).Trim()));
+                        XAttribute NaimEdIzmPosle = new XAttribute("НаимЕдИзмПосле", Verifiacation.GetEdIzm(Convert.ToString(Item[i, 14]).Trim()));
                         SvedTov.Add(DopSvedTov);
                         DopSvedTov.Add(NaimEdIzmDo);
                         DopSvedTov.Add(NaimEdIzmPosle);
@@ -1988,15 +2018,15 @@ namespace AutoOrdersIntake
                         //<Документ><ТаблКСчФ><СведТов><ДопСведТов><НомСредИдентТов[До/После]><НомУпак>
                         if (Item[i, 10].ToString().Contains("10") && CurrDataUKD[2].ToString().Equals("BaseMark"))     //Item[i, 10] - налоговая ставка после (как бы)
                         {
-                            string nomUpakValueDo = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
-                            string nomUpakValuePosle = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после
+                            string nomUpakValueDo = "020" + Item[i, 1] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
+                            string nomUpakValuePosle = "020" + Item[i, 1] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после
                             XElement NomSredIdentDo = new XElement("НомСредИдентТовДо");
                             XElement NomUpakDo = new XElement("НомУпак", nomUpakValueDo);
                             XElement NomSredIdentPosle = new XElement("НомСредИдентТовПосле");
                             XElement NomUpakPosle = new XElement("НомУпак", nomUpakValuePosle);
-                            DopSvedTov.Add(NomSredIdentDo);
+                            SvedTov.Add(NomSredIdentDo);
                             NomSredIdentDo.Add(NomUpakDo);
-                            DopSvedTov.Add(NomSredIdentPosle);
+                            SvedTov.Add(NomSredIdentPosle);
                             NomSredIdentPosle.Add(NomUpakPosle);
                         }
                     }
@@ -2128,8 +2158,7 @@ namespace AutoOrdersIntake
                             string message = "СКБ-Контур. УКД " + fileName + " создан в " + pathUPDEDI;
                             Program.WriteLine(message);
                             //имя файла слишком длинное, обрежим его до дата + гуид, поиск можно будет делать по регулярному выражению .*fileNameSokr
-                            DispOrders.WriteProtocolEDI("УКД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УКД сформирован", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "KONTUR");
-                            DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataUKD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds_V - sumWthNds_G), Convert.ToString(CurrDataUKD[7]), 1);
+                            DispOrders.WriteProtocolEDI("УКД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УКД сформирован", DateTime.Now, Convert.ToString(CurrDataUKD[6]), "KONTUR"); 
                         }
                         catch (Exception e)
                         {
@@ -2142,7 +2171,13 @@ namespace AutoOrdersIntake
                         try
                         {
                             Program.WriteLine("Отправляем УКД в Диадок через Диадок API");
-                            DiadocAuthenticate.SendInvoiceXml(pathUPDEDI, fileName, idPol, idOtpr, BoxIdPol, BoxIdOtpr, "UniversalCorrectionDocument", infoSf[0].ToString(), Convert.ToDateTime(infoSf[1]).ToString(@"dd.MM.yyyy"));  //Отправляем УКД в Диадок через Диадок API
+                            int sendStatus = DiadocAuthenticate.SendInvoiceXml(pathUPDEDI, fileName, idPol, idOtpr, BoxIdPol, BoxIdOtpr, "UniversalCorrectionDocument", infoSf[0].ToString(), Convert.ToDateTime(infoSf[1]).ToString(@"dd.MM.yyyy"));  //Отправляем УКД в Диадок через Диадок API
+                            if (sendStatus == 1)
+                            {
+                                DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataUKD[3]), Convert.ToString(infoSf[0]), "123", Convert.ToString(sumWthNds_V - sumWthNds_G), Convert.ToString(CurrDataUKD[7]), 1);
+                            }
+                            else throw new Exception("Не удалось отправить УКД в Диадок. Код статуса отправки: " + sendStatus.ToString());
+                            
                         }
                         catch (Exception e)
                         {
@@ -2184,6 +2219,7 @@ namespace AutoOrdersIntake
             string idOtpr = ""; //ИдОтпр
             string BoxIdOtpr = ""; //ЯщикОтпр                       
             string IdProvaiderOtpr = "";
+            string sumWthNds = "";
             IdProvaiderOtpr = DispOrders.GetValueOption("СКБ-КОНТУР.ИДЭДО"); //Id провайдера отправителя
 
             string[] PolInfo;
@@ -2224,6 +2260,7 @@ namespace AutoOrdersIntake
                     {
                         Program.WriteLine("Узел СвУчДокОбор в файле не найден");
                     }
+
                     
                     PolInfo = DiadocAuthenticate.OrganizationInfo_forfnsParticipantId(idPol);
                     BoxIdPol = PolInfo[0];
@@ -2258,6 +2295,10 @@ namespace AutoOrdersIntake
                         Program.WriteLine("Узел СФ в файле не найден");
                     }
                     
+                    XmlNode needNode = doc.SelectSingleNode(@"/Файл/Документ/ТаблСчФакт/ВсегоОпл");
+                    if (needNode != null) sumWthNds = needNode.Attributes["СтТовУчНалВсего"].Value;
+                    else Program.WriteLine("Узел СФ <СтТовУчНалВсего> в файле не найден");
+
                     if (NumberSF != "" && DateSF != "")
                     {
                         infoFirm = Verifiacation.GetFirmInfo(Convert.ToDateTime(DateSF).ToString(@"yyyyMMdd")); //0 CrtFrm_Nm, 1 CrtFrm_INN, 2 CrtFrm_KPP, 3 CrtFrm_OKPO            
@@ -2266,18 +2307,46 @@ namespace AutoOrdersIntake
                         OtprInfo = DiadocAuthenticate.OrganizationInfo(infoFirm[1].ToString(), infoFirm[2].ToString(), IdProvaiderOtpr);
                         idOtpr = OtprInfo[0];
                         BoxIdOtpr = OtprInfo[1];
+                        DateSF = Convert.ToDateTime(DateSF).ToString(@"yyyyMMdd");
+                        string SfRcd = "", ZkgRcd = "";
+
+                        SqlConnection sqlConnection = new SqlConnection(Settings.Default.ConnStringISPRO);
+                        string sql = "SELECT sf.SklSf_Rcd, zkg.PrdZkg_Rcd FROM SKLSF sf, TAXSFD tx, SKLNK sn, PRDZKG zkg ";
+                        sql += $"WHERE tx.TaxSfd_SfID = sf.SklSf_Rcd AND sn.SklNk_Rcd = tx.TaxSfd_DocID AND zkg.PrdZkg_Rcd = sn.SklNk_RcdZkg AND sf.SklSf_Nmr = '{NumberSF}' AND sf.SklSf_Dt = '{DateSF}'";
+                        SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
+                        sqlConnection.Open();
+                        SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                        if (sqlDataReader.Read())
+                        {
+                            object[] result = new object[sqlDataReader.VisibleFieldCount];
+                            sqlDataReader.GetValues(result);
+                            SfRcd = result[0].ToString();
+                            ZkgRcd = result[1].ToString();
+                        }
+                        sqlDataReader.Close();
+                        sqlConnection.Close();
+                        
+                        string[] fileNameParts = Path.GetFileName(doc.BaseURI).Split('_');
+                        string fileNameSokr = fileNameParts[0] + "_" + fileNameParts[1] + "_" + fileNameParts[4] + "_" + fileNameParts[5];
 
                         try
                         {
                             Program.WriteLine("Отправляем УПД в Диадок через Диадок API");
-                            DiadocAuthenticate.SendInvoiceXml(pathUPDISPRO, Path.GetFileName(doc.BaseURI), idPol, idOtpr, BoxIdPol, BoxIdOtpr, "UniversalTransferDocument", NumberSF, Convert.ToDateTime(DateSF).ToString(@"dd.MM.yyyy"));  //Отправляем УПД в Диадок через Диадок API
-                            string oldP = Path.GetFullPath(sendfile);
-                            string newP = ArchiveSKBKontur + Path.GetFileName(doc.BaseURI);
-                            Directory.Move(oldP, newP);
+                            int sendStatus = DiadocAuthenticate.SendInvoiceXml(pathUPDISPRO, Path.GetFileName(doc.BaseURI), idPol, idOtpr, BoxIdPol, BoxIdOtpr, "UniversalTransferDocument", NumberSF, DateSF);  //Отправляем УПД в Диадок через Диадок API
+                            if (sendStatus ==  1)
+                            {
+                                DispOrders.WriteEDiSentDoc("8", fileNameSokr, SfRcd, NumberSF, "123", sumWthNds, ZkgRcd, 1);
+                                string oldP = Path.GetFullPath(sendfile);
+                                string newP = ArchiveSKBKontur + Path.GetFileName(doc.BaseURI);
+                                Directory.Move(oldP, newP);
+                            }
+                            else throw new Exception("Не удалось отправить УПД. Код статуса отправки: " + sendStatus.ToString());   
+                            
                         }
                         catch (Exception e)
                         {
                             Program.WriteLine("Ошибка отправки УПД в Диадок через Диадок API");
+                            Program.WriteLine(e.Message + ". Источник: " + e.Source);
                             DispOrders.WriteErrorLog(e.Message);
                         }
                     }
@@ -2285,12 +2354,15 @@ namespace AutoOrdersIntake
             }
         }
 
-        public static void CreateKonturBaseSvod_UPD(List<object> CurrDataSf)  // 0 ProviderOpt, 1 ProviderZkg, 2 NastDoc_Fmt, 3 SklSf_Rcd, 4 SklSf_TpOtg, 5 SklSfA_RcdCor, 6 PrdZkg_NmrExt, 7 PrdZkg_Rcd, 8 PrdZkg_Dt, 9 SklNk_TDrvNm, 10 typeSf, 11 NISF, 12 sklnkDat, 13 sklnkNmr, 14 dtOtgr
+        public static void CreateKonturBaseSvod_UPD(List<object> CurrDataSf)  // 0 ProviderOpt, 1 ProviderZkg, 2 NastDoc_Fmt, 3 SklSf_Rcd, 4 SklSf_TpOtg, 5 SklSfA_RcdCor, 6 SklNk_TDrvNm, 7 typeSf, 8 NISF, 9 sklnkDat, 10 sklnkNmr, 11 dtOtgr
         {
-            string fNameXML = "ON_NSCHFDOPPR_";
-            string XmlText = "empty";
-            string sfGUID = "", IdPoluch = "", IdOtprav = "";
+            string fNameXML;
+            string XmlText = "empty", xmlPath = @"C:\Temp\";
+            string sfGUID = "", IdPoluch = "", IdOtprav = "", BoxIdPol = "";
             int GuidTaked = 0;
+
+            if (CurrDataSf[2].ToString().Equals("BaseMark")) fNameXML = "ON_NSCHFDOPPRMARK_";
+            else fNameXML = "ON_NSCHFDOPPR_";
 
             SqlConnection conn = new SqlConnection(Settings.Default.ConnStringISPRO);
             SqlDataReader dReader = null;
@@ -2302,6 +2374,41 @@ namespace AutoOrdersIntake
             object[] detailInfoSf = Verifiacation.GetDataFromSF(Convert.ToInt64(CurrDataSf[3])); //0 SklSf_Nmr, 1 SklSf_Dt, 2 SklSf_KAgID, 3 SklSf_KAgAdr, 4 SklSf_RcvrID, 5 SklSf_RcvrAdr, 6 SVl_CdISO
             object[] infoKag = Verifiacation.GetDataFromPtnRCD_IP(Convert.ToInt64(detailInfoSf[2]), Convert.ToInt64(detailInfoSf[3])); // 0 Ptn_Cd, 1 Ptn_NmSh, 2 Filia_GLN, 3 Ptn_Inn, 4 Ptn_KPP, 5 ProdCode, 6 Filia_Adr, 7 Filia_Index, 8 Filia_Rgn, 9 Город, 10 Улица, 11 Дом, 12 Полное наименование, 12 Полное наименование
             object[] infoGpl = Verifiacation.GetDataFromPtnRCD_IP(Convert.ToInt64(detailInfoSf[4]), Convert.ToInt64(detailInfoSf[5]));
+            object[] infoFirm = Verifiacation.GetFirmInfo();
+            object[] infoZkg = new object[2] { "", "" };
+
+            // информация о заказе
+            string getPrdZkgInfo = "SELECT TOP 1 PrdZkg_Rcd, PrdZkg_NmrExt FROM PRDZKG zkg \n";   // 0 PrdZkg_Rcd, 1 PrdZkg_NmrExt
+            getPrdZkgInfo += "LEFT JOIN SKLNK nkl ON nkl.SklNk_RcdZkg = zkg.PrdZkg_Rcd \n";
+            getPrdZkgInfo += "LEFT JOIN TAXSFD tax ON tax.TaxSfd_DocID = nkl.SklNk_Rcd \n";
+            getPrdZkgInfo += $"WHERE tax.TaxSfd_SfID = {CurrDataSf[3]}";
+            command = new SqlCommand(getPrdZkgInfo, conn);
+            conn.Open();
+            dReader = command.ExecuteReader();
+            if (dReader.Read()) {  dReader.GetValues(infoZkg);   }
+            conn.Close();
+            command = null;
+            dReader.Close();
+            dReader = null;
+
+            string InnKag = infoKag[3].ToString();
+            string KppKag = infoKag[4].ToString();
+            string[] PolInfo;
+            string[] OtprInfo;
+
+            object[] PtnInfo = Verifiacation.GetIdProviderFromPtnCD(infoKag[0].ToString());  //Информация о плательщике
+
+            string IdProviderOtpr = DispOrders.GetValueOption("СКБ-КОНТУР.ИДЭДО"); //Id провайдера отправителя
+            string IdProviderPol = Convert.ToString(PtnInfo[2]); //Код провайдера ЭДО в карточке контрагента
+
+            if (IdProviderPol.Length > 0)  //Если код справочника заполнен
+            {
+                Program.WriteLine("В карточке контрагента код оператора ЭДО " + IdProviderPol);
+            }
+           
+            Program.WriteLine("Информация об отправителе ИНН " + infoFirm[1].ToString() + " КПП " + infoFirm[2].ToString());
+            OtprInfo = DiadocAuthenticate.OrganizationInfo(infoFirm[1].ToString(), infoFirm[2].ToString(), IdProviderOtpr);
+            string BoxIdOtpr = OtprInfo[1];
 
             conn.Open();
 
@@ -2324,7 +2431,7 @@ namespace AutoOrdersIntake
                         GuidTaked = command.ExecuteNonQuery();
                         conn.Close();
                     }
-                    catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+                    catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source);  Program.WriteLine(ex.Message + " Источник: " + ex.Source); }
                 }
                 else
                 {
@@ -2336,7 +2443,7 @@ namespace AutoOrdersIntake
                 }
                 dReader.Close();
             }
-            catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+            catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); Program.WriteLine(ex.Message + " Источник: " + ex.Source);  }
 
             if (conn.State != ConnectionState.Open) conn.Open();
 
@@ -2357,8 +2464,10 @@ namespace AutoOrdersIntake
                     }
                     else Program.WriteLine("Отсутствует код участника ЭДО у данного контрагента!");
                     dReader.Close();
+                    PolInfo = DiadocAuthenticate.OrganizationInfo_forfnsParticipantId(IdPoluch);
+                    BoxIdPol = PolInfo[0];
                 }
-                catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+                catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source);   Program.WriteLine(ex.Message + " Источник: " + ex.Source); }
 
 
                 try  //-----------------------------------IdOtprav
@@ -2375,7 +2484,7 @@ namespace AutoOrdersIntake
                     }
                     dReader.Close();
                 }
-                catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+                catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source);   Program.WriteLine(ex.Message + " Источник: " + ex.Source); }
 
                 // если получили IdPoluch and IdOtprav то выполняем T-SQL функцию, получаем XML-текст и сохраняем в файл
                 if (!String.IsNullOrEmpty(IdPoluch) && !String.IsNullOrEmpty(IdOtprav))
@@ -2384,7 +2493,7 @@ namespace AutoOrdersIntake
                     {
                         fNameXML += (IdPoluch + "_" + IdOtprav + "_" + DateTime.Now.ToString("yyyyMMdd") + "_" + sfGUID).Trim(' ');
                         string execTableFunction = "SELECT NoErr,ErrDescription,Vers,cast(xDoc as varchar(max)) xx \n";
-                        execTableFunction += $"FROM [dbo].[ItXmlNSCHFDOPPR22]({CurrDataSf[3]},'{CurrDataSf[10]}','{fNameXML}')";
+                        execTableFunction += $"FROM [dbo].[ItXmlNSCHFDOPPR22]({CurrDataSf[3]},'{CurrDataSf[7]}','{fNameXML}')";
 
                         command = new SqlCommand(execTableFunction, conn);
                         dReader = command.ExecuteReader();
@@ -2408,16 +2517,19 @@ namespace AutoOrdersIntake
                         }
                         dReader.Close();
                     }
-                    catch (Exception exception) { DispOrders.WriteErrorLog(exception.Message + " Источник: " + exception.Source); }
+                    catch (Exception exception) { DispOrders.WriteErrorLog(exception.Message + " Источник: " + exception.Source); Program.WriteLine(exception.Message + " Источник: " + exception.Source); }
 
-                    // если XML текст получен, то формируем файл и сохраняем его
+
+                     // если XML текст получен, то формируем файл и сохраняем его
                     if (!(XmlText.Equals("empty")))
                     {
+                        fNameXML += ".xml";
+                        string[] fileNameParts = fNameXML.Split('_');
+                        string fileNameSokr = fileNameParts[0] + "_" + fileNameParts[1] + "_" + fileNameParts[4] + "_" + fileNameParts[5];  // сокращенное имя файла
+
                         try
                         {
-                            string xmlPath = @"C:\Temp\";
                             if (!dReader.IsClosed) dReader.Close();
-
                             // взятие нужного пути для файла
                             string selectDefaultXMLPath = "SELECT UFS_Nm FROM UFLstSpr t LEFT JOIN UFSPR spr ON spr.UFS_Rcd = t.UFS_Rcd AND spr.UFS_CdS = 'Каталог' ";
                             selectDefaultXMLPath += "WHERE t.UFS_CdSpr = 119";
@@ -2432,45 +2544,44 @@ namespace AutoOrdersIntake
                             dReader.Close();
 
                             // создание файла и запись xml-текста в файл
-                            fNameXML = xmlPath + fNameXML + ".xml";
-                            Stream stream = File.OpenWrite(fNameXML);
+                            Stream stream = File.OpenWrite(xmlPath + fNameXML);
                             StreamWriter streamWriter = new StreamWriter(stream, Encoding.GetEncoding("windows-1251"));
                             streamWriter.Write(XmlText);
                             streamWriter.Close();
-
-                            // взятие суммы с НДС для WriteEDISentDoc
-                            string sumWthNds = "0.00";
-                            XmlDocument document = new XmlDocument();
-                            document.Load(fNameXML);
-                            XmlNode needNode = document.SelectSingleNode(@"/Файл/Документ/ТаблСчФакт/ВсегоОпл");
-                            if (needNode != null) sumWthNds = needNode.Attributes["СтТовУчНалВсего"].Value;
-
-                            // иформирование о завершении и запись в протокол и таблицу SentDoc 
-                            string fileNameSokr = DateTime.Now.ToString("yyyyMMdd") + "_" + sfGUID + ".xml";
-                            Program.WriteLine("Сводный УПД сформирован в файл: " + fileNameSokr);
-                            DispOrders.WriteProtocolEDI("УПД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД сформирован", DateTime.Now, Convert.ToString(CurrDataSf[6]), "KONTUR");
-                            DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataSf[3]), Convert.ToString(detailInfoSf[0]), "123", sumWthNds, Convert.ToString(CurrDataSf[7]), 1);
-                            //resultCode = 2;
+                            Program.WriteLine("Сводный УПД сформирован в файл: " + fNameXML);
+                            DispOrders.WriteProtocolEDI("УПД", fileNameSokr, infoKag[0] + " - " + infoKag[1], 0, infoGpl[0] + " - " + infoGpl[1], "УПД сформирован", DateTime.Now, Convert.ToString(infoZkg[1]), "KONTUR");
                         }
-                        catch (Exception ex) { DispOrders.WriteErrorLog(ex.Message + " Источник: " + ex.Source); }
+                        catch (Exception ex) { Program.WriteLine(ex.Message + " Источник: " + ex.Source); }
+
+                        try //Отправляем УПД в Диадок через Диадок API
+                        {
+                            int sendStatus = DiadocAuthenticate.SendInvoiceXml(xmlPath, fNameXML, IdPoluch, IdOtprav, BoxIdPol, BoxIdOtpr, "UniversalTransferDocument", detailInfoSf[0].ToString(), Convert.ToDateTime(detailInfoSf[1]).ToString(@"dd.MM.yyyy"));
+
+                            if (sendStatus == 1)
+                            {
+                                // иформирование о завершении и запись в протокол и таблицу SentDoc 
+                                string sumWthNds = "0.00";  // взятие суммы с НДС для WriteEDISentDoc
+                                XmlDocument document = new XmlDocument();
+                                document.Load(xmlPath + fNameXML);
+                                XmlNode needNode = document.SelectSingleNode(@"/Файл/Документ/ТаблСчФакт/ВсегоОпл");
+                                if (needNode != null) sumWthNds = needNode.Attributes["СтТовУчНалВсего"].Value;     // взятие суммы с НДС для WriteEDISentDoc
+                                Program.WriteLine("Сводный УПД отправлен через Diadoc API успешно.");
+                                DispOrders.WriteEDiSentDoc("8", fileNameSokr, Convert.ToString(CurrDataSf[3]), Convert.ToString(detailInfoSf[0]), "123", sumWthNds, Convert.ToString(infoZkg[0]), 1);
+
+                                // пеермещение в архив
+                                string ArchiveSKBKontur = DispOrders.GetValueOption("СКБ-КОНТУР.АРХИВ");
+                                File.Move(xmlPath + fNameXML, ArchiveSKBKontur + fNameXML);
+                            }
+                            else throw new Exception("Ошибка отправки УПД в Diadoc. Код статуса отправки: " + sendStatus.ToString());
+                            
+                        }
+                        catch (Exception ex) { Program.WriteLine(ex.Message + " Источник: " + ex.Source); }
                     }
                 }
             }
 
             conn.Close();
-            //return resultCode;          // 0 - Ошибка, 1 - удалось сформировать XML-текст, 2 - удалось сохранить XML-файл
-
-            // такая проверка есть в коде скрипта отчета, но по-моему она не нужна вообще
-            /*string SklSf_Type = "1";  
-            SqlCommand checkSklSfType = new SqlCommand($"SELECT SklSf_Type FROM SKLSF WHERE SklSf_Rcd = {CurrDataSf[3]}",conn);
-            dReader = checkSklSfType.ExecuteReader();
-            if (dReader.Read())
-            {
-                object[] result = new object[dReader.VisibleFieldCount];
-                dReader.GetValues(result); 
-                SklSf_Type = result[0].ToString(); 
-            }
-            if (SklSf_Type.Equals("2")) FuncDoc = "СЧФ";*/
+         
 
         }
 

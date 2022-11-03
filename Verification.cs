@@ -1418,48 +1418,52 @@ namespace AutoOrdersIntake
             return result;
         }
 
-        public static object[,] GetItemsFromSF(string docRcd, bool PCE)//rcd документа, bool PCE - маркер ЕИ штука.
+        public static object[,] GetItemsFromSF(string docRcd, int PCE)//rcd документа, int PCE - маркер ЕИ.
         {
             string sql;
             string connString = Settings.Default.ConnStringISPRO;
-            if (PCE == true) //надо все в штуках
+            string qtFields, joinEI, joinNomEi;
+
+            switch (PCE)
             {
-                sql = "SELECT ISNULL(LEFT(BarCode_Code,13),'') BarCode_Code --0  \n"
-                    + "    , SklN_Rcd --1  \n"
-                    + "    , SklN_Cd --2  \n"
-                    + "    , SklN_NmAlt --3  \n"
-                    + "    , TrdS_Qt * (TrdS_QtOsn/TrdS_Qt)/EISht.NmEi_QtOsn Qt  --4 кол-во   \n"
-                    + "    , CONVERT( DECIMAL(18, 2), (TrdS_Cn * EISht.NmEi_QtOsn / TrdS_QtOsn * TrdS_Qt) / CASE WHEN ISNULL(Trx.TaxRate_Val,'0') = '0' THEN 1 ELSE 1 + CAST( RTRIM( LTRIM( Trx.TaxRate_Val ))AS FLOAT ) / 100  END) CnWoNds --5 Цена без НДС	\n"
-                    + "	   , CONVERT( DECIMAL(18, 2), (TrdS_Cn * EISht.NmEi_QtOsn / TrdS_QtOsn * TrdS_Qt)) CnWthNds  --6 Цена с НДС  \n"
-                    + "    , 'PCE' --7  \n"
-                    + "    , EI_OKEI --8  \n"
-                    + "    , ISNULL(TaxRate_Sh,'без НДС') Tax --9  \n"
-                    + "    , 'S' --10  \n"
-                    + "    , CONVERT( DECIMAL(18, 2), TrdS_SumTax) SumNds --11  \n"
-                    + "    , CONVERT( DECIMAL(18, 2), TrdS_SumOpl) SumWthNds --12 \n"
-                    + "    , EI_ShNm --13 \n"
-                    + "    , TrdS_QtOsn --14\n"
-                    + "FROM TRDS      \n"
-                    + "     JOIN SKLN AS Nom ON Nom.SklN_Rcd = TrdS_RcdNom  \n"
-                    + "     LEFT JOIN BarCode AS bc ON bc.BarCode_RcdNom = Nom.SklN_Rcd AND BARCODE_Base = 1  \n"
-                    + "     LEFT JOIN EI ON EI_Rcd = 5  \n"
-                    + "     LEFT JOIN SKLGR ON SklN_RcdGrp = SklGr_Rcd  \n"
-                    + "	    LEFT JOIN DBO.ATRDSTAX AS Tax ON Tax.ATrdSTax_RcdS = TRDS.TrdS_Rcd AND Tax.ATrdSTax_RcdAs = 0\n"
-                    + "     LEFT JOIN DBO.TAXRATE AS Trx ON Trx.TaxRate_Rcd = Tax.TrdSTax_RateCd AND Trx.TaxRate_RcdTax = Tax.TrdSTax_Cd\n"
-                    + "	    LEFT JOIN SKLNOMEI AS EISht ON Nom.SklN_Rcd = EISht.NmEi_RcdNom AND EISht.NmEi_Cd = 5 \n"
-                    + "WHERE trds_rcdhdr = " + docRcd + "\n"
-                    + "  AND TrdS_TypHdr = 5\n"
-                    + "  AND Trds_Qt > 0 AND TrdS_QtOsn > 0";
+                case 1:  // штуки
+                    {
+                        qtFields = "    , TrdS_Qt * (TrdS_QtOsn / TrdS_Qt) / EISht.NmEi_QtOsn Qt--4 кол - во   \n";
+                        qtFields += "    , CONVERT( DECIMAL(18, 2), (TrdS_Cn * EISht.NmEi_QtOsn / TrdS_QtOsn * TrdS_Qt) / CASE WHEN ISNULL(Trx.TaxRate_Val,'0') = '0' THEN 1 ELSE 1 + CAST( RTRIM( LTRIM( Trx.TaxRate_Val ))AS FLOAT ) / 100  END) CnWoNds --5 Цена без НДС	\n";
+                        qtFields += "    , CONVERT( DECIMAL(18, 2), (TrdS_Cn * EISht.NmEi_QtOsn / TrdS_QtOsn * TrdS_Qt)) CnWthNds  --6 Цена с НДС  \n";
+                        qtFields += "    , 'PCE' --7  \n";
+                        joinEI = "     LEFT JOIN EI ON EI_Rcd = 5  \n";
+                        joinNomEi = "     LEFT JOIN SKLNOMEI AS EISht ON Nom.SklN_Rcd = EISht.NmEi_RcdNom AND EISht.NmEi_Cd = 5 \n";
+                        break;
+                    }
+                case 2:  // edo-kg
+                    {
+                        qtFields = "    , CONVERT( DECIMAL(18, 2), TrdS_QtOsn) Qt --4 кол-во \n";
+                        qtFields += "    , CONVERT( DECIMAL(18, 2), (TrdS_Cn * (1 / EISht.NmEi_QtOsn)) / (1 + (CAST(TaxRate_Val AS FLOAT)/100))) CnWoNds --5 Цена без НДС \n";
+                        qtFields += "    , CONVERT( DECIMAL(18, 2), TrdS_Cn * (1 / EISht.NmEi_QtOsn)) CntWthNds  --6 Цена с НДС  \n";
+                        qtFields += "    , 'KG' --7  \n";
+                        joinEI = "     LEFT JOIN EI ON EI_Rcd = 1  \n";
+                        joinNomEi = "     LEFT JOIN SKLNOMEI AS EISht ON Nom.SklN_Rcd = EISht.NmEi_RcdNom AND EISht.NmEi_Cd = 5 \n";
+                        break;
+                    }
+                default:  // по TrdS_EiCn, т.е. по ЕИ, за которую указана цена
+                    {
+                        qtFields = "    , TrdS_QtCn Qt  --4 кол-во   \n";
+                        qtFields += "    , CONVERT( DECIMAL(18, 2), TrdS_Cn / CASE WHEN ISNULL(Trx.TaxRate_Val,'0') = '0' THEN 1 ELSE 1 + CAST( RTRIM( LTRIM( Trx.TaxRate_Val ))AS FLOAT ) / 100  END) CnWoNds --5 Цена без НДС	\n";
+                        qtFields += "    , CONVERT( DECIMAL(18, 2), TrdS_Cn ) CnWthNds  --6 Цена с НДС  \n";
+                        qtFields += "    , CASE WHEN EI_Rcd = 1 THEN 'KG' WHEN EI_Rcd = 5 THEN 'PCE' WHEN EI_Rcd = 39 THEN 'CT' ELSE '' END --7  \n";
+                        joinEI = "     LEFT JOIN EI ON EI_Rcd = TrdS_EiCn  \n";
+                        joinNomEi= "     --LEFT JOIN SKLNOMEI AS EISht ON Nom.SklN_Rcd = EISht.NmEi_RcdNom AND EISht.NmEi_Cd = 5 \n";
+                        break;
+                    }
+
             }
-            else
-                sql = "SELECT ISNULL(LEFT(BarCode_Code,13),'') BarCode_Code --0  \n"
+
+            sql = "SELECT ISNULL(LEFT(BarCode_Code,13),'') BarCode_Code --0  \n"
                     + "    , SklN_Rcd --1  \n"
                     + "    , SklN_Cd --2  \n"
                     + "    , SklN_NmAlt --3  \n"
-                    + "    , TrdS_QtCn Qt  --4 кол-во   \n"
-                    + "    , CONVERT( DECIMAL(18, 2), TrdS_Cn / CASE WHEN ISNULL(Trx.TaxRate_Val,'0') = '0' THEN 1 ELSE 1 + CAST( RTRIM( LTRIM( Trx.TaxRate_Val ))AS FLOAT ) / 100  END) CnWoNds --5 Цена без НДС	\n"
-                    + "	   , CONVERT( DECIMAL(18, 2), TrdS_Cn ) CnWthNds  --6 Цена с НДС  \n"
-                    + "    , CASE WHEN EI_Rcd = 1 THEN 'KG' WHEN EI_Rcd = 5 THEN 'PCE' WHEN EI_Rcd = 39 THEN 'CT' ELSE '' END --7  \n"
+                    + qtFields
                     + "    , EI_OKEI --8  \n"
                     + "    , ISNULL(TaxRate_Sh,'без НДС') Tax --9  \n"
                     + "    , 'S' --10  \n"
@@ -1470,14 +1474,15 @@ namespace AutoOrdersIntake
                     + "FROM TRDS      \n"
                     + "     JOIN SKLN AS Nom ON Nom.SklN_Rcd = TrdS_RcdNom  \n"
                     + "     LEFT JOIN BarCode AS bc ON bc.BarCode_RcdNom = Nom.SklN_Rcd AND BARCODE_Base = 1  \n"
-                    + "     LEFT JOIN EI ON EI_Rcd = TrdS_EiCn  \n"
+                    + joinEI
                     + "     LEFT JOIN SKLGR ON SklN_RcdGrp = SklGr_Rcd  \n"
                     + "	    LEFT JOIN DBO.ATRDSTAX AS Tax ON Tax.ATrdSTax_RcdS = TRDS.TrdS_Rcd AND Tax.ATrdSTax_RcdAs = 0\n"
                     + "     LEFT JOIN DBO.TAXRATE AS Trx ON Trx.TaxRate_Rcd = Tax.TrdSTax_RateCd AND Trx.TaxRate_RcdTax = Tax.TrdSTax_Cd\n"
-                    + "	    --LEFT JOIN SKLNOMEI AS EISht ON Nom.SklN_Rcd = EISht.NmEi_RcdNom AND EISht.NmEi_Cd = 5 \n"
+                    + joinNomEi
                     + "WHERE trds_rcdhdr = " + docRcd + "\n"
                     + "  AND TrdS_TypHdr = 5\n"
                     + "  AND Trds_Qt > 0 AND TrdS_QtOsn > 0";
+
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connString;
             try
@@ -1622,7 +1627,7 @@ namespace AutoOrdersIntake
                     + "DECLARE @KorrSfId BIGINT\n"
                     + "\n"
                     + "/*Получаем время и маркет текущего КоррСФ*/\n"
-                    + "SELECT @KorrSfDt = SklNk_Dat + CONVERT(TIME,SklNk_Tim), @KorrSfId = SKLNK.bookmark\n"
+                    + "SELECT @KorrSfDt = SklNk_Dat + SklNk_Tim, @KorrSfId = SKLNK.bookmark\n"
                     + "FROM SKLSF\n"
                     + "	 JOIN TAXSFD ON TaxSfd_SfID = SklSf_Rcd\n"
                     + "	 JOIN SKLNK ON SklNk_Rcd = TaxSfd_DocID\n"
@@ -1642,7 +1647,7 @@ namespace AutoOrdersIntake
                     + "       JOIN TAXSFD ON TaxSfd_SfID = DopKorrSf.SklSf_Rcd\n"
                     + "	      JOIN SKLNK ON SklNk_Rcd = TaxSfd_DocID\n"
                     + "  WHERE DopKorrSf.SklSf_Rcd <> @KorrSfRcd\n"
-                    + "    AND SklNk_Dat + CONVERT(TIME,SklNk_Tim) <= @KorrSfDt\n"
+                    + "    AND SklNk_Dat + SklNk_Tim <= @KorrSfDt\n"
                     + "    AND SklNk.bookmark < @KorrSfId\n"
                     + "\n";
                 if (PCE == true) //надо все в штуках
@@ -1801,7 +1806,7 @@ namespace AutoOrdersIntake
                     + "DECLARE @KorrSfId BIGINT\n"
                     + "\n"
                     + "/*Получаем время и маркет текущего КоррСФ*/\n"
-                    + "SELECT @KorrSfDt = SklNk_Dat + CONVERT(TIME,SklNk_Tim), @KorrSfId = SKLNK.bookmark\n"
+                    + "SELECT @KorrSfDt = SklNk_Dat + SklNk_Tim, @KorrSfId = SKLNK.bookmark\n"
                     + "FROM SKLSF\n"
                     + "	 JOIN TAXSFD ON TaxSfd_SfID = SklSf_Rcd\n"
                     + "	 JOIN SKLNK ON SklNk_Rcd = TaxSfd_DocID\n"
@@ -1814,7 +1819,7 @@ namespace AutoOrdersIntake
                     + "       JOIN TAXSFD ON TaxSfd_SfID = DopKorrSf.SklSf_Rcd\n"
                     + "	   JOIN SKLNK ON SklNk_Rcd = TaxSfd_DocID\n"
                     + "  WHERE DopKorrSf.SklSf_Rcd <> @KorrSfRcd\n"
-                    + "    AND SklNk_Dat + CONVERT(TIME,SklNk_Tim) <= @KorrSfDt\n"
+                    + "    AND SklNk_Dat + SklNk_Tim <= @KorrSfDt\n"
                     + "    AND SklNk.bookmark < @KorrSfId\n";
 
             SqlCommand command = new SqlCommand(sql, conn);
@@ -1859,7 +1864,7 @@ namespace AutoOrdersIntake
                     + "DECLARE @KorrSfId BIGINT\n"
                     + "\n"
                     + "/*Получаем время и маркет текущего КоррСФ*/\n"
-                    + "SELECT @KorrSfDt = SklNk_Dat + CONVERT(DATETIME,SklNk_Tim), @KorrSfId = SKLNK.bookmark\n"
+                    + "SELECT @KorrSfDt = SklNk_Dat + SklNk_Tim, @KorrSfId = SKLNK.bookmark\n"
                     + "FROM SKLSF\n"
                     + "	 JOIN TAXSFD ON TaxSfd_SfID = SklSf_Rcd\n"
                     + "	 JOIN SKLNK ON SklNk_Rcd = TaxSfd_DocID\n"
@@ -1872,7 +1877,7 @@ namespace AutoOrdersIntake
                     + "       JOIN TAXSFD ON TaxSfd_SfID = DopKorrSf.SklSf_Rcd\n"
                     + "	   JOIN SKLNK ON SklNk_Rcd = TaxSfd_DocID\n"
                     + "  WHERE DopKorrSf.SklSf_Rcd <> @KorrSfRcd\n"
-                    + "    AND SklNk_Dat + CONVERT(DATETIME,SklNk_Tim) <= @KorrSfDt\n"
+                    + "    AND SklNk_Dat + SklNk_Tim <= @KorrSfDt\n"
                     + "    AND SklNk.bookmark < @KorrSfId\n"
                     + "  ORDER BY SklNk_Dat, SklNk_Tim, SklNk.bookmark DESC\n";
 
@@ -2326,12 +2331,13 @@ namespace AutoOrdersIntake
         }
 
 
-        public static DateTime GetEdoSvodDate(string SklSfRcd)
+        public static object[] CheckSfMarker(string SklSfRcd, string Marker)
         {
-            string getSvodDate = "SELECT tar.PtnTr_Date FROM PTNTARK tar\n";
-            getSvodDate += "LEFT JOIN PTNRK ptn ON ptn.Ptn_Rcd = tar.Ptn_Rcd\n";
-            getSvodDate += "LEFT JOIN SKLSF sf ON sf.SklSf_KAgID = ptn.Ptn_Rcd\n";
-            getSvodDate += $"WHERE tar.PtnTr_Type = 'edo-svod' AND sf.SklSf_Rcd = {SklSfRcd}\n";
+            Object[] result = new object[3];
+
+            string getSvodDate = "SELECT tar.PtnTr_Date, tar.PtnTr_Type, tar.PtnTr_Val FROM PTNTARK tar\n";
+            getSvodDate += "LEFT JOIN SKLSF sf ON sf.SklSf_KAgID = tar.Ptn_Rcd\n";
+            getSvodDate += $"WHERE tar.PtnTr_Type = '{Marker}' AND sf.SklSf_Rcd = {SklSfRcd}\n";
 
             SqlConnection conn = new SqlConnection(Settings.Default.ConnStringISPRO);
             SqlCommand command = new SqlCommand(getSvodDate, conn);
@@ -2340,12 +2346,12 @@ namespace AutoOrdersIntake
             SqlDataReader reader = command.ExecuteReader();
             if (reader.Read())
             {
-                object[] results = new object[reader.VisibleFieldCount];
-                reader.GetValues(results);
-                return Convert.ToDateTime(results[0]);
+                reader.GetValues(result);
             }
-
-            return DateTime.MinValue;
+            else result = null;
+            reader.Close();
+            conn.Close();
+            return result;
         }
 
     }

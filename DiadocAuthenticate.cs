@@ -61,10 +61,10 @@ namespace AutoOrdersIntake
 
 			string FnsParticipantId = "";
 			string BoxId = "";
-			var OrganizationList = diadocApi.GetOrganizationsByInnKpp(InnGpl, KppGpl);
-			foreach (var organization in OrganizationList.Organizations)
+			var organizationList = diadocApi.GetOrganizationsByInnKpp(InnGpl, KppGpl);
+			foreach (var organization in organizationList.Organizations)
             {
-				if(organization.FnsParticipantId.Substring(0,3)== IdProvaider)  //Ищем организации, соответствующие провайдеру плательщика
+				if(organization.FnsParticipantId.Substring(0,3).ToLower() == (IdProvaider.ToLower()))  //Ищем организации, соответствующие провайдеру плательщика
 				{
 					Program.WriteLine("FnsParticipantId " + organization.FnsParticipantId);
 					Program.WriteLine("FullName " + organization.FullName);
@@ -79,9 +79,49 @@ namespace AutoOrdersIntake
 					FnsParticipantId = organization.FnsParticipantId;
 				}
 			}
+			/*if (organizationList.Organizations.Count > 1)          // почему-то в цикле выше вторая организация не проверяется
+			{
+				var secondOrganization = organizationList.Organizations[1];
+				if (secondOrganization.FnsParticipantId.Substring(0, 3).Equals(IdProvaider))
+				{
+					for (int i = 0; i < secondOrganization.Boxes.Count; i++)
+					{
+						BoxId = secondOrganization.Boxes[i].BoxId;
+					}
+					FnsParticipantId = secondOrganization.FnsParticipantId;
+				}
+			}*/
 			string[] result = new string[2];
 			result[0] = FnsParticipantId;
 			result[1] = BoxId;
+
+			/*if ((result[0] == "") && (result[1] == ""))
+            {
+				string diadocAPIProviderInfos = "DiadocAPI: ";
+				string diadocAPIOrgFNames = "DiadocAPI Orgs: ";
+				string IsproOrgInfo = "ISPRO Org: ";
+				foreach(var item in organizationList.Organizations)
+                {
+					diadocAPIProviderInfos += item.FnsParticipantId.Substring(0, 3) + " ";
+					diadocAPIOrgFNames += item.FullName + " ИНН:" + item.Inn + " КПП:" + item.Kpp;
+                }
+				SqlConnection sqlConnection = new SqlConnection(Settings.Default.ConnStringISPRO);
+				sqlConnection.Open();
+				string SqlQuery = "SELECT Ptn_Cd, Ptn_NmSh FROM PTNRK WHERE Ptn_Inn = '" + InnGpl + "'";
+				SqlCommand sqlCommand = new SqlCommand(SqlQuery, sqlConnection);
+				SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+				if (sqlDataReader.Read())
+                {
+					object[] results = new object[2];
+					sqlDataReader.GetValues(results);
+					IsproOrgInfo += results[0].ToString() + " " + results[1].ToString() + " ";
+                }
+				IsproOrgInfo += " ИНН: " + InnGpl + " КПП: " + KppGpl;
+				sqlDataReader.Close();
+				sqlConnection.Close();
+				DispOrders.WriteProtocolEDI("Счет фактура",IsproOrgInfo,diadocAPIOrgFNames,2, "[ошибка данных получателя]", diadocAPIProviderInfos + ", ISPRO: " + IdProvaider, DateTime.Now, "---", "KONTUR"); 
+            }*/
+
 			return result;	
 
 		}
@@ -126,10 +166,12 @@ namespace AutoOrdersIntake
 
 
 		//Отправка счета-фактуры
-		public static void SendInvoiceXml(string pathUPDEDI, string fileName, string idPol, string idOtpr, string BoxIdPol, string BoxIdOtpr, string typeNamedId, string documentNumber, string documentDate)
+		public static int SendInvoiceXml(string pathUPDEDI, string fileName, string idPol, string idOtpr, string BoxIdPol, string BoxIdOtpr, string typeNamedId, string documentNumber, string documentDate)
 		{
 			Program.WriteLine("Начинаем отправку " + documentNumber);
 			Program.WriteLine("Файл " + fileName);
+
+			int sentStatus = 0;   // статус отправки. 1 - отправлено, 2 - ошибка при чтении и отправки, 3 - ошибка авторизации, 0 - любая другая ошибка отправки
 
 			string NonformalizedDocumentPath = pathUPDEDI + fileName;
 			
@@ -152,6 +194,7 @@ namespace AutoOrdersIntake
 			{
 				Program.WriteLine("Ошибка при аутентификации по логину и паролю.");
 				Program.WriteLine(e.Message);
+				sentStatus = 3;
 			}
 			
 			Program.WriteLine("Путь " + NonformalizedDocumentPath);			
@@ -181,7 +224,7 @@ namespace AutoOrdersIntake
 					FromBoxId = BoxIdOtpr,
 					ToBoxId = BoxIdPol,
 					IsDraft = true //флаг, показывающий, что данное сообщение является черновиком				
-				};				
+				};
 
 				// Добавим информацию о документе в MessageToPost:
 				messageToPost.DocumentAttachments.Add(documentAttachment);				
@@ -192,15 +235,18 @@ namespace AutoOrdersIntake
 				// и сохранить для последующей обработки идентификатор сообщения)
 				Program.WriteLine("Документ был успешно загружен.");
 				Program.WriteLine("MessageID: " + response.MessageId);
+				sentStatus = 1;
 				//return response;
 
 			}
 			catch (Exception e)
 			{
 				Program.WriteLine("Ошибка чтения и отправки файла");
-				Program.WriteLine(e.Message);				
+				Program.WriteLine(e.Message);
+				sentStatus = 2;
 			}
-			
+
+			return sentStatus;
 		}
 	}
 }

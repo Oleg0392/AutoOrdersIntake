@@ -25,7 +25,7 @@ namespace AutoOrdersIntake {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=OPTIMUM-MGN;Initial Catalog=Mobile_Optimum;Persist Security Info=True" +
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=OPTIMUM-MGN.m74.local;Initial Catalog=Mobile_Optimum;Persist Security Info=True" +
             ";User ID=sa;Password=456123")]
         public string ConnStringOptimum {
             get {
@@ -38,7 +38,7 @@ namespace AutoOrdersIntake {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ISPRO7srv-mgn;Initial Catalog=dfirm002_gmk;Persist Security Info=True" +
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ISPRO7SRV-MGN.m74.local;Initial Catalog=dfirm002_gmk;Persist Security Info=True" +
             ";User ID=sa;Password=456123")]
         public string ConnStringISPRO {
             get {
