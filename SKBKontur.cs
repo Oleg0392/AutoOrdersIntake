@@ -9,6 +9,7 @@ using System.IO;
 using System.Configuration;
 using System.Diagnostics;
 using System.Data.SqlClient;
+//using Microsoft.Data;
 using System.Data;
 
 namespace AutoOrdersIntake
@@ -20,6 +21,7 @@ namespace AutoOrdersIntake
             Program.WriteLine(" --- SKBKontur.IntakeOrders.");
             bool error;
             int i = 0;
+            int DocCounter = 1;
             int VolumeDoc = 0;
             string number_order;
 
@@ -31,7 +33,7 @@ namespace AutoOrdersIntake
             XmlDocument doc = new XmlDocument();
             foreach (string parsefile in files)
             {
-                Program.WriteLine("Проверка файла-заказа: " + parsefile);
+                Program.WriteLine("Проверка файла-заказа: " + parsefile + " [" + DocCounter + "]");
                 string EI;
                 error = false;//по умолчанию ошибок нет
                 doc.Load(parsefile);
@@ -153,7 +155,7 @@ namespace AutoOrdersIntake
                                                         //quantity = n.SelectSingleNode("requestedQuantity").InnerText;
                                                         i++;
                                                         object[] PriceList = Verifiacation.GetPriceList(res_verf_deliv[0], Convert.ToInt32(res_verf_item[5]));
-                                                        Program.WriteLine("Проверка заказа завершена. Вставка заказа во временную таблицу U_ChTmpZkg...");
+                                                        Program.WriteLine("Вставка позиции заказа во временную таблицу U_ChTmpZkg...");
                                                         DispOrders.RecordToTmpZkg(Convert.ToString(res_verf_buyer[0]), Convert.ToString(res_verf_deliv[0]), date_delivery, Convert.ToString(res_verf_item[1]), Convert.ToString(res_verf_item[4]), quantity, date_order, number_order, Convert.ToString(PriceList[0]), Convert.ToInt16(res_verf_item[5]), Path.GetFileName(doc.BaseURI), Convert.ToString(PriceList[1]), "0", PriceOrder);
                                                         try
                                                         {
@@ -263,6 +265,8 @@ namespace AutoOrdersIntake
                             break;
                     }
                 }
+                DocCounter++;
+                if (DocCounter == 31) break;
             }
             Program.WriteLine("Запись RecordCountEDoc");
             ReportEDI.RecordCountEDoc("СКБ-Контур", "Orders", VolumeDoc);
@@ -555,6 +559,7 @@ namespace AutoOrdersIntake
 
             //Запрос данных накладной по рсд заказа
             object[] infoNk = Verifiacation.GetNkDataFromZkg(Convert.ToInt64(CurrDataUPD[7])); //0 SklNk_Nmr, 1 SklNk_Dat
+            if (infoNk[0] == null) infoNk = Verifiacation.GetNkDataFromZkg(0, Convert.ToInt64(CurrDataUPD[3]));
             Program.WriteLine("Номер ТН " + infoNk[0].ToString());
 
             //Запрос номера и даты заказа по рсд заказа
@@ -657,15 +662,17 @@ namespace AutoOrdersIntake
             object[] PtnInfo = Verifiacation.GetIdProviderFromPtnCD(infoKag[0].ToString());  //Информация о плательщике
             
             string IdProviderPlat = ""; //Код провайдера ЭДО в карточке контрагента
+            string IdUserPlat = PtnInfo[6].ToString();
             IdProviderPlat = Convert.ToString(PtnInfo[2]);
             if (IdProviderPlat.Length > 0)  //Если код справочника заполнен
             {
                 Program.WriteLine("В карточке контрагента код оператора ЭДО " + IdProviderPlat);
                 IdProvaiderPol = IdProviderPlat;
+                Program.WriteLine("В карточке контрагента код участника ЭДО " + IdUserPlat);
             }
 
             Program.WriteLine("Информация о получателе ИНН " + InnKag + " КПП " + KppKag);
-            PolInfo = DiadocAuthenticate.OrganizationInfo(InnKag, KppKag, IdProvaiderPol);
+            PolInfo = DiadocAuthenticate.OrganizationInfo(InnKag, KppKag, IdUserPlat);
             idPol = PolInfo[0];
             BoxIdPol = PolInfo[1];
 
@@ -1171,8 +1178,9 @@ namespace AutoOrdersIntake
                             XElement SumNalSum = new XElement("СумНал", Math.Round(Convert.ToDecimal(Item[i, 11]), 2));
                             SumNal.Add(SumNalSum);
                         }
-                        
+
                         //<Документ><ТаблСчФакт><СведТов><ДопСведТов>
+                        
                         XElement DopSvedTov = new XElement("ДопСведТов");
                         XAttribute PrTovRav = new XAttribute("ПрТовРаб", "1");
                         XAttribute NaimEdIzm = new XAttribute("НаимЕдИзм", Item[i, 13]);
@@ -1180,7 +1188,11 @@ namespace AutoOrdersIntake
                         DopSvedTov.Add(PrTovRav);
                         DopSvedTov.Add(NaimEdIzm);
 
-                        if (CurrDataUPD[2].ToString().Equals("BaseMark") && Item[i, 9].ToString().Equals("10%"))
+                        //<Документ><ТаблСчФакт><СведТов><ДопСведТов><НомСредИдентТов><НомУпак>  маркировка
+                        string tnVedCode = Verifiacation.ExecuteQueryOneObject("SELECT ISNULL(SklN_TNVED,'') FROM SKLN WHERE SklN_Rcd = " + Item[i, 1].ToString()).ToString();
+                        decimal nomWeight = Convert.ToDecimal(Verifiacation.ExecuteQueryOneObject("SELECT NmEi_QtNett FROM SKLNOMEI WHERE NmEi_RcdNom = " + Item[i, 1].ToString() + " AND NmEi_Cd = 5"));
+                        bool tnVedCheck = !tnVedCode.Equals("1806310000") && (nomWeight > 0.033m);
+                        if (CurrDataUPD[2].ToString().Equals("BaseMark") && Item[i, 9].ToString().Equals("10%") && tnVedCheck)
                         {
                             // TODO:  (отправка маркировки)
                             /*
@@ -2015,8 +2027,13 @@ namespace AutoOrdersIntake
                         DopSvedTov.Add(NaimEdIzmDo);
                         DopSvedTov.Add(NaimEdIzmPosle);
 
+                        //Проверка кода ТН ВЭД, в случаи если = 1806310000 и вес товара < 0.033 кг то маркировка не ставится
+                        string tnVedCode = Verifiacation.ExecuteQueryOneObject("SELECT ISNULL(SklN_TNVED,'') FROM SKLN WHERE SklN_Rcd = " + Item[i, 0].ToString()).ToString();
+                        decimal nomWeight = Convert.ToDecimal(Verifiacation.ExecuteQueryOneObject("SELECT NmEi_QtNett FROM SKLNOMEI WHERE NmEi_RcdNom = " + Item[i, 0].ToString() + " AND NmEi_Cd = 5"));
+                        bool tnVedCheck = !tnVedCode.Equals("1806310000") && (nomWeight > 0.033m);
+
                         //<Документ><ТаблКСчФ><СведТов><ДопСведТов><НомСредИдентТов[До/После]><НомУпак>
-                        if (Item[i, 10].ToString().Contains("10") && CurrDataUKD[2].ToString().Equals("BaseMark"))     //Item[i, 10] - налоговая ставка после (как бы)
+                        if ((Item[i, 10].ToString().Contains("10")) && (CurrDataUKD[2].ToString().Equals("BaseMark")) && tnVedCheck)     //Item[i, 10] - налоговая ставка после (как бы)
                         {
                             string nomUpakValueDo = "020" + Item[i, 1] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
                             string nomUpakValuePosle = "020" + Item[i, 1] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после
@@ -2311,8 +2328,14 @@ namespace AutoOrdersIntake
                         string SfRcd = "", ZkgRcd = "";
 
                         SqlConnection sqlConnection = new SqlConnection(Settings.Default.ConnStringISPRO);
-                        string sql = "SELECT sf.SklSf_Rcd, zkg.PrdZkg_Rcd FROM SKLSF sf, TAXSFD tx, SKLNK sn, PRDZKG zkg ";
-                        sql += $"WHERE tx.TaxSfd_SfID = sf.SklSf_Rcd AND sn.SklNk_Rcd = tx.TaxSfd_DocID AND zkg.PrdZkg_Rcd = sn.SklNk_RcdZkg AND sf.SklSf_Nmr = '{NumberSF}' AND sf.SklSf_Dt = '{DateSF}'";
+                        string sql = "SELECT ISNULL(sf.SklSf_Rcd,\n";
+                        sql += $"(SELECT SklSf_Rcd FROM SKLSF WHERE SklSf_Nmr = '{NumberSF}' AND SklSf_Dt = '{DateSF}')) SklSf_Rcd,\n";
+                        sql += "ISNULL(zkg.PrdZkg_Rcd,0) PrdZkg_Rcd FROM SKLSF sf\n";
+                        sql += "LEFT JOIN TAXSFD tx ON tx.TaxSfd_SfID = sf.SklSf_Rcd\n";
+                        sql += "LEFT JOIN SKLNK sn ON sn.SklNk_Rcd = tx.TaxSfd_DocID\n";
+                        sql += "LEFT JOIN PRDZKG zkg ON zkg.PrdZkg_Rcd = sn.SklNk_RcdZkg\n";
+                        sql += $"WHERE sf.SklSf_Nmr = '{NumberSF}' AND sf.SklSf_Dt = '{DateSF}'";
+
                         SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
                         sqlConnection.Open();
                         SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();

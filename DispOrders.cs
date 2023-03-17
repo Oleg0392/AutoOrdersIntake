@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Data.SqlClient;
+//using Microsoft.Data;
 using System.Data;
 using System.IO;
 using System.Collections;
@@ -202,47 +203,46 @@ namespace AutoOrdersIntake
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connString;
             SqlCommand command = new SqlCommand(verification, conn);
+            command.CommandTimeout = 60;
 
             string RCD = string.Empty;
             SqlDataReader dr = null;
             conn.Open();
-
-            for (int tryNumber = 3; tryNumber > 0; tryNumber--)
+            using (conn)
             {
-                try
+                for (int tryNumber = 3; tryNumber > 0; tryNumber--)
                 {
-                    if (tryNumber < 3) Thread.Sleep(500);
-                    if (conn.State == ConnectionState.Closed) conn.Open();
-                    if (dr != null) dr.Close();
-                    dr = command.ExecuteReader();//не работает! 
-                }
-                catch (SqlException e)
-                {
-                    exceptionFlag = true;
-                    Program.WriteLine("Ошибка генератора Rcd: " + e.Message + "; Source: " + e.Source);
-                    Program.WriteLine("Осталось повторных попыток: " + tryNumber + " из 3.");
-                    dr.Close();
-                    command.CommandTimeout = 60;
+                    try
+                    {
+                        if (tryNumber < 3) Thread.Sleep(500);
+                        if (conn.State == ConnectionState.Closed) conn.Open();
+                        if (dr != null) dr.Close();
+                        dr = command.ExecuteReader();//не работает!     
+                    }
+                    catch (SqlException e)
+                    {
+                        exceptionFlag = true;
+                        Program.WriteLine("Ошибка генератора Rcd: " + e.Message + "; Source: " + e.Source);
+                        Program.WriteLine("Осталось повторных попыток: " + tryNumber + " из 3.");
+                        dr.Close();
+                    }
+
+                    if (!exceptionFlag) break;
                 }
 
-                if (!exceptionFlag) break;
-            }
-
-            if (!exceptionFlag)
-            {
-                object[] result = new object[dr.VisibleFieldCount];
-                while (dr.Read())
+                if (!exceptionFlag)
                 {
-                    dr.GetValues(result);
+                    object[] result = new object[dr.VisibleFieldCount];
+                    while (dr.Read())
+                    {
+                        dr.GetValues(result);
+                    }
+                    RCD = Convert.ToString(result[0]);
                 }
-                RCD = Convert.ToString(result[0]);
-            }
-
+            }              
             conn.Close();
             exceptionFlag = false;
-
             return RCD;
-
         }
         
         public static object[] GetArticulFromTMPZKG(int TypeSkln)
@@ -461,7 +461,8 @@ namespace AutoOrdersIntake
          
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connString;    
-            SqlCommand command = new SqlCommand(Insert, conn);     
+            SqlCommand command = new SqlCommand(Insert, conn);
+            command.CommandTimeout = 60;
             SqlDataReader dr = null;
             
             conn.Open();
@@ -470,11 +471,14 @@ namespace AutoOrdersIntake
             {
                 try
                 {
-                    Program.WriteLine("!!!ForDEBUGG: Инициализация и запуск SqlDataReader. - SqlCommand.ExecuteReader()");
-                    if (tryNumber < 3) Thread.Sleep(500);
+                    Program.WriteLine("Запуск SqlDataReader. - SqlCommand.ExecuteReader()");
                     if (conn.State == ConnectionState.Closed) conn.Open();
-                    if (dr != null) dr.Close();
-                    dr = command.ExecuteReader();
+                    using (conn)
+                    {
+                        //if (tryNumber < 3) Thread.Sleep(500);
+                        if (dr != null) dr.Close();
+                        dr = command.ExecuteReader();
+                    }  
                 }
                 catch (SqlException exception)
                 {
@@ -484,7 +488,7 @@ namespace AutoOrdersIntake
                     Program.WriteLine("Повторная попытка записи...");
                     Program.WriteLine("Осталось попыток: " + tryNumber + " из 3.");
                     if (dr != null) dr.Close();
-                    command.CommandTimeout = 60;
+                    //command.CommandTimeout = 60;
                 }
                 
                 conn.Close();
@@ -554,18 +558,19 @@ namespace AutoOrdersIntake
             Program.WriteLine(Name_ParseFile);
             foreach (int ts in DstSkln)
             {
-                Program.WriteLine("Создание и резерв RCD для заказа...");
+                Program.WriteLine("Создание и резерв RCD для заказа " + NumOreder + "... ");
                 string PrdZkg_Rcd = DispOrders.Reserved_Rcd("PrdZkg", "PrdZkg_Rcd");//резервируем rcd в таблице PrdZkg           
                 if (PrdZkg_Rcd != null)
                 {
+                    Program.WriteLine("RCD: " + PrdZkg_Rcd);
                     object[] ArtList = DispOrders.GetArticulFromTMPZKG(ts);
                     int count = ArtList.Count();
+                    Program.WriteLine("Создание и резерв RCD для позиций заказа " + NumOreder + "... ");
                     for (int i = 0; i < count; i++)
                     {
-                        Program.WriteLine("Создание и резерв RCD для позиций заказа...");
                         string TrdS_Rcd = DispOrders.Reserved_Rcd("TrdS", "TrdS_Rcd");//резервируем rcd в таблице TrdS
+                        Program.WriteLine("[" + i + "] RCD: " + TrdS_Rcd);
                         DispOrders.CreateItemPosition(TrdS_Rcd, PrdZkg_Rcd, Convert.ToString(ArtList[i]));
-
                     }
 
                     object[] dTMPZKG = DispOrders.GetDataFromTMPZKG(ts);//0-дата документа 1 - rcd прайслиста
@@ -977,6 +982,10 @@ namespace AutoOrdersIntake
             }
             conn.Close();
             return result;*/
+            object[] resultRow = null;
+            List<object[]> resultList = new List<object[]>();
+            object[,] result = null;
+            int fieldCount = 1;
             try
             {
                 conn.Open();
@@ -989,12 +998,30 @@ namespace AutoOrdersIntake
             SqlCommand command = new SqlCommand(CMDGetSF, conn);
             SqlDataReader dr = command.ExecuteReader();
 
-            dr.Close();
-            dr = command.ExecuteReader();   
+            //dr.Close();
+            //dr = command.ExecuteReader();
+            
+            if (dr.HasRows) fieldCount = dr.FieldCount;
 
-            int recordCount = 0;
-            while (dr.Read()) recordCount++;
-            object[,] result = new object[recordCount, dr.FieldCount];
+            //int recordCount = 0;
+
+            while (dr.Read())
+            {
+                resultRow = new object[fieldCount];
+                for (int j = 0; j < fieldCount; j++) resultRow[j] = dr.GetValue(j);
+                resultList.Add(resultRow);
+            }
+
+            if (resultList.Count > 0)
+            {
+                result = new object[resultList.Count, fieldCount];
+                for (i = 0; i < resultList.Count; i++)
+                {
+                    for (int j = 0; j < fieldCount; j++) result[i, j] = resultList[i][j];
+                }
+            }
+            else result = new object[0, 0];
+            /*result = new object[recordCount, dr.FieldCount];
 
             dr.Close();
 
@@ -1004,7 +1031,7 @@ namespace AutoOrdersIntake
             {
                 for (int j = 0; j < dr.FieldCount; j++) result[i, j] = dr.GetValue(j);
                 i++;
-            }
+            }*/
             conn.Close();
             return result;
 
@@ -1722,7 +1749,9 @@ namespace AutoOrdersIntake
             //count = 2;//test
             string connString = Settings.Default.ConnStringISPRO;
             string CMDGetSF;
-            object[,] result;
+            object[,] result = null;
+            object[] resultRow = null;
+            List<object[]> resultList = new List<object[]>();
 
             switch (typeFunc)
             {
@@ -1749,19 +1778,54 @@ namespace AutoOrdersIntake
                 SqlCommand command = new SqlCommand(CMDGetSF, conn);
                 SqlDataReader dr = command.ExecuteReader();
 
-                int recordCount = 0;
-                while (dr.Read()) recordCount++;
+                //int recordCount = 0;
+                int fieldCount = dr.FieldCount;
+
+                while (dr.Read())
+                {
+                    resultRow = new object[fieldCount];
+                    for (int j = 0; j < fieldCount; j++) resultRow[j] = dr.GetValue(j);
+                    resultList.Add(resultRow);
+                }
+
+                if (resultList.Count > 0)
+                {
+                    result = new object[resultList.Count, fieldCount];
+                    for (i = 0; i < resultList.Count; i++)
+                    {
+                        for (int j = 0; j < fieldCount; j++) result[i, j] = resultList[i][j];
+                    }
+                }
+                else result = new object[0,0];
+
+                
+                
+                /*if (dr.Read())
+                {
+                    recordCount = dr.VisibleFieldCount;
+                    result = new object[recordCount, dr.FieldCount];
+                    dr.GetValues(result);
+                    while (dr.Read())
+                    {
+                        for (int j = 0; j < dr.FieldCount; j++) result[i, j] = dr.GetValue(j);
+                        i++;
+                    }
+                }*/
+
+                /*while (dr.Read()) recordCount++;
                 result = new object[recordCount, dr.FieldCount];
 
                 dr.Close();
-
                 dr = command.ExecuteReader();
+                
 
                 while (dr.Read())
                 {
                     for (int j = 0; j < dr.FieldCount; j++) result[i, j] = dr.GetValue(j);
                     i++;
-                }
+                }*/
+
+
                 conn.Close();
             }
             catch (Exception e)
@@ -2682,7 +2746,6 @@ namespace AutoOrdersIntake
 
         public static int GetRouteSchedule(string PtnCd)  // возвращает номер текущего маршрута согласно графику маршрутов в карточке контрагента
         {
-            Program.WriteLine(" ---- DispOrders.GetRouteSchedule //взятие номера маршрута согласно графику маршрутов у к/а");
             string connString = Settings.Default.ConnStringISPRO;      // запрос на график маршрутов
             string schedulesQuery = "SELECT prv.UF_RkValS "
                                   + "FROM UFPRV prv "
@@ -2694,7 +2757,6 @@ namespace AutoOrdersIntake
             conn.ConnectionString = connString;
             conn.Open();
             SqlCommand command = new SqlCommand(schedulesQuery, conn);
-            Program.WriteLine("Запрос на график маршрутов...");
             SqlDataReader dataReader = command.ExecuteReader();
             int result = 199999;
             DateTime DateExp = new DateTime();
@@ -2711,7 +2773,6 @@ namespace AutoOrdersIntake
                 {
                     string getDocDateExp = "SELECT TOP 1 DocDateExp FROM U_CHTMPZKG";   // запрос на дату отгрузки заказа
                     command = new SqlCommand(getDocDateExp, conn);
-                    Program.WriteLine("Запрос на дату отгрузки заказа...");
                     SqlDataReader dateExpReader = command.ExecuteReader();
                     if (dateExpReader.Read())
                     {
@@ -2756,7 +2817,6 @@ namespace AutoOrdersIntake
                 
 
             }
-            Program.WriteLine(" ---- DispOrders.GetRouteSchedule завершён.");
             return result;
         }
 

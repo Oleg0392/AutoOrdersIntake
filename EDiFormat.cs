@@ -1838,8 +1838,12 @@ namespace AutoOrdersIntake
                 DopSvedTov.Add(PrTovRav);
                 DopSvedTov.Add(NaimEdIzm);
 
+
                 //<Документ><ТаблСчФакт><СведТов><ДопСведТов><НомСредИдентТов><НомУпак>     маркировка
-                if (Item[i, 9].ToString().Contains("10") && CurrDataUPD[2].ToString().Equals("X5Mark"))
+                string tnVedCode = Verifiacation.ExecuteQueryOneObject("SELECT ISNULL(SklN_TNVED,'') FROM SKLN WHERE SklN_Rcd = " + Item[i, 1].ToString()).ToString();
+                decimal nomWeight = Convert.ToDecimal(Verifiacation.ExecuteQueryOneObject("SELECT NmEi_QtNett FROM SKLNOMEI WHERE NmEi_RcdNom = " + Item[i, 1].ToString() + " AND NmEi_Cd = 5"));
+                bool tnVedCheck = !tnVedCode.Equals("1806310000") && nomWeight > 0.033m;
+                if (Item[i, 9].ToString().Contains("10") && CurrDataUPD[2].ToString().Equals("X5Mark") && tnVedCheck)
                 {
                     string nomUpakValue = "020" + Item[i, 0] + "37";
                     nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]))).ToString();
@@ -2102,7 +2106,7 @@ namespace AutoOrdersIntake
             string InfoPrevSf = Verifiacation.GetPrevSfToKSF(Convert.ToString(CurrDataUKD[3]), Convert.ToString(CurrDataUKD[5]));
 
             //запрос данных спецификации
-            object[,] Item = Verifiacation.GetItemsFromKSF(Convert.ToString(CurrDataUKD[3]), Convert.ToString(CurrDataUKD[5]), true); //0 BarCode_Code, 1 SklN_Rcd, 2 SklN_Cd, 3 SklN_NmAlt, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
+            object[,] Item = Verifiacation.GetItemsFromKSF(Convert.ToString(CurrDataUKD[3]), Convert.ToString(CurrDataUKD[5]), true); //0 SklN_Rcd, 1 BarCode_Code, 2 SklN_Cd, 3 SklN_NmAlt, 4 Кол-во, 5 Цена без НДC, 6 Цена с НДС, 7 Код ЕИ EDI, 8 ОКЕЙ, 9 Ставка, 10 'S', 11 Сумма НДС, 12 Сумма с НДС, 13 шифр ЕИ, 14 Вес
 
             //Запрос данных покупателя
             object[] infoKag = Verifiacation.GetDataFromPtnRCD(Convert.ToInt64(infoSf[2]), Convert.ToInt64(infoSf[3])); // 0 Ptn_Cd, 1 Ptn_NmSh, 2 Filia_GLN, 3 Ptn_Inn, 4 Ptn_KPP, 5 ProdCode, 6 Filia_Adr, 7 Filia_Index, 8 Filia_Rgn, 9 Город, 10 Улица, 11 Дом, 12 Полное наименование
@@ -2617,11 +2621,16 @@ namespace AutoOrdersIntake
                 DopInfo.Add(NmEiBefore);
                 DopInfo.Add(NmEiAfter);
 
+                //Проверка кода ТН ВЭД, в случаи если = 1806310000 и вес товара < 0.033 кг то маркировка не ставится
+                string tnVedCode = Verifiacation.ExecuteQueryOneObject("SELECT ISNULL(SklN_TNVED,'') FROM SKLN WHERE SklN_Rcd = " + Item[i, 0].ToString()).ToString();
+                decimal nomWeight = Convert.ToDecimal(Verifiacation.ExecuteQueryOneObject("SELECT NmEi_QtNett FROM SKLNOMEI WHERE NmEi_RcdNom = " + Item[i, 0].ToString() + " AND NmEi_Cd = 5"));
+                bool tnVedCheck = !tnVedCode.Equals("1806310000") && (nomWeight > 0.033m);
+
                 //<Документ><ТаблКСчФ><СведТов><ДопСведТов><НомСредИдентТов[До/После]><НомУпак>
-                if (Item[i, 10].ToString().Contains("10") && CurrDataUKD[2].ToString().Equals("X5Mark"))     //Item[i, 10] - налоговая ставка после (как бы)
+                if ((Item[i, 10].ToString().Contains("10")) && (CurrDataUKD[2].ToString().Equals("X5Mark")) && tnVedCheck)     //Item[i, 10] - налоговая ставка после (как бы)
                 {
-                    string nomUpakValueDo = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
-                    string nomUpakValuePosle = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после
+                    string nomUpakValueDo = "020" + Item[i, 1] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
+                    string nomUpakValuePosle = "020" + Item[i, 1] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после
                     XElement NomSredIdentDo = new XElement("НомСредИдентТовДо");
                     XElement NomUpakDo = new XElement("НомУпак", nomUpakValueDo);
                     XElement NomSredIdentPosle = new XElement("НомСредИдентТовПосле");
@@ -3301,7 +3310,10 @@ namespace AutoOrdersIntake
                 DopSvedTov.Add(NaimEdIzm);
 
                 //<Документ><ТаблСчФакт><СведТов><ДопСведТов><НомСредИдентТов><НомУпак>     маркировка
-                if (Item[i, 9].ToString().Contains("10") && CurrDataUPD[2].ToString().Equals("LentaMark"))
+                string tnVedCode = Verifiacation.ExecuteQueryOneObject("SELECT ISNULL(SklN_TNVED,'') FROM SKLN WHERE SklN_Rcd = " + Item[i, 1].ToString()).ToString();
+                decimal nomWeight = Convert.ToDecimal(Verifiacation.ExecuteQueryOneObject("SELECT NmEi_QtNett FROM SKLNOMEI WHERE NmEi_RcdNom = " + Item[i, 1].ToString() + " AND NmEi_Cd = 5"));
+                bool tnVedCheck = !tnVedCode.Equals("1806310000") && nomWeight > 0.033m;
+                if (Item[i, 9].ToString().Contains("10") && CurrDataUPD[2].ToString().Equals("LentaMark") && tnVedCheck)
                 {
                     string nomUpakValue = "020" + Item[i, 0] + "37";
                     nomUpakValue += (Math.Round(Convert.ToDecimal(Item[i, 4]))).ToString();
@@ -4073,8 +4085,13 @@ namespace AutoOrdersIntake
                 DopInfo.Add(NmEiBefore);
                 DopInfo.Add(NmEiAfter);
 
+                //Проверка кода ТН ВЭД, в случаи если = 1806310000 и вес товара < 0.033 кг то маркировка не ставится
+                string tnVedCode = Verifiacation.ExecuteQueryOneObject("SELECT ISNULL(SklN_TNVED,'') FROM SKLN WHERE SklN_Rcd = " + Item[i, 1].ToString()).ToString();
+                decimal nomWeight = Convert.ToDecimal(Verifiacation.ExecuteQueryOneObject("SELECT NmEi_QtNett FROM SKLNOMEI WHERE NmEi_RcdNom = " + Item[i, 1].ToString() + " AND NmEi_Cd = 5"));
+                bool tnVedCheck = !tnVedCode.Equals("1806310000") && (nomWeight > 0.033m);
+
                 //<Документ><ТаблКСчФ><СведТов><ДопСведТов><НомСредИдентТов[До/После]><НомУпак>
-                if (Item[i, 20].ToString().Contains("10") && CurrDataUKD[2].ToString().Equals("LentaMark"))    //Item[i, 20] - ставка НДС после
+                if ((Item[i, 20].ToString().Contains("10")) && (CurrDataUKD[2].ToString().Equals("LentaMark")) && tnVedCheck)    //Item[i, 20] - ставка НДС после
                 {
                     string nomUpakValueDo = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 8]))).ToString();             //Item[i, 8] - количество до
                     string nomUpakValuePosle = "020" + Item[i, 0] + "37" + (Math.Round(Convert.ToDecimal(Item[i, 18]))).ToString();         //Item[i, 18] - количество после

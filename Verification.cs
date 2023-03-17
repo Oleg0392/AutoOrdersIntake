@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 using System.Data.SqlClient;
+//using Microsoft.Data;
 using System.Data;
 //using Microsoft.Office.Core;
 using System.IO;
@@ -2155,10 +2156,13 @@ namespace AutoOrdersIntake
         }
 
 
-        public static object[] GetNkDataFromZkg(Int64 prdZkgRcd) //Возвращает заголовок накладной по рсд заказа
+        public static object[] GetNkDataFromZkg(Int64 prdZkgRcd, Int64 sfRcd = 0) //Возвращает заголовок накладной по рсд заказа
         {
             string connString = Settings.Default.ConnStringISPRO;
-            string verification = "SELECT SklNk_Nmr, SklNk_Dat FROM SKLNK WHERE SklNk_CdDoc = 46 AND SklNk_Mov = 0 AND SklNk_RcdZkg = " + prdZkgRcd.ToString();
+            
+            string verification;
+            if (prdZkgRcd.Equals(0)) verification = "SELECT SklNk_Nmr, SklNk_Dat FROM SKLNK JOIN TAXSFD ON TaxSfd_DocId = SklNk_Rcd AND TaxSfd_SfId = " + sfRcd.ToString();
+            else verification = "SELECT SklNk_Nmr, SklNk_Dat FROM SKLNK WHERE SklNk_CdDoc = 46 AND SklNk_Mov = 0 AND SklNk_RcdZkg = " + prdZkgRcd.ToString();
 
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connString;
@@ -2231,10 +2235,12 @@ namespace AutoOrdersIntake
                                    + "     , Ptn_Inn "
                                    + "     , Ptn_KPP "
                                    + "     , PTNRK.Ptn_Rcd "
+                                   + "     , edoCd.UF_RkValS "
                                    + " FROM PTNRK "
                                    + "     JOIN UFPRV ON UFPRV.UF_TblRcd = PTNRK.Ptn_Rcd AND UFPRV.UF_TblId = 1126 "
                                    + "     LEFT JOIN ufprv AS FILIALFROM ON FILIALFROM.UF_TblRcd = PTNRK.Ptn_Rcd AND FILIALFROM.UF_TblId = 1126 AND  FILIALFROM.UF_RkRcd = ( SELECT UFR_RkRcd FROM ufrkv WHERE UFR_Id = 'U_FILIAL_FROM' )"
                                    + "     JOIN UFRKV ON UFRKV.UFR_DbRcd = UFPRV.UF_TblId AND UFRKV.UFR_RkRcd = UFPRV.UF_RkRcd  AND UFRKV.UFR_Id = 'U_IdOperEDO'  "
+                                   + "     LEFT JOIN UFPRV edoCd ON edoCd.UF_TblRcd = PTNRK.Ptn_Rcd AND edoCd.UF_RkRcd = (SELECT UFR_RkRcd FROM UFRKV WHERE UFR_Id = 'U_IdUserEDO') AND edoCd.UF_TblId = 1126"
                                    + " WHERE PTNRK.Ptn_Cd = '" + Ptn_Cd + "'";
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connString;
@@ -2344,10 +2350,22 @@ namespace AutoOrdersIntake
 
             conn.Open();
             SqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                reader.GetValues(result);
-            }
+            if (reader.Read()) reader.GetValues(result);           
+            else result = null;
+            reader.Close();
+            conn.Close();
+            return result;
+        }
+
+        public static object ExecuteQueryOneObject(string query)
+        {
+            object result = null;
+            SqlConnection conn = new SqlConnection(Settings.Default.ConnStringISPRO);
+            SqlCommand command = new SqlCommand(query, conn);
+
+            conn.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            if (reader.Read()) result = reader.GetValue(0);
             else result = null;
             reader.Close();
             conn.Close();

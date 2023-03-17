@@ -7,6 +7,7 @@ using System.IO;
 using System.Configuration;
 using System.Diagnostics;
 using System.Data.SqlClient;
+//using Microsoft.Data;
 using System.Data;
 using ICSharpCode.SharpZipLib;
 using System.Data.OleDb;
@@ -148,6 +149,7 @@ namespace AutoOrdersIntake
                     DispOrders.ClearTmpZkg();//очищаем временную таблицу с заказом от конкретной предыдущей точки 
                     for (int j = 0; j < CurrentItems.GetLength(0); j++)
                     {
+                        // deliv[0], CurentItems[0, 6], CurrentItems[j, 1], CurrentItems[j, 4], CurrentItems[j, 3]
                         object[] InfoItem = Verifiacation.GetDataOrderFromArt(Convert.ToString(CurrentItems[j, 1]));
                         object[] PL = Verifiacation.GetPriceList(Convert.ToString(buyer[0]), Convert.ToInt32(InfoItem[5]));
                         string quantity = (Convert.ToString(CurrentItems[j, 4])).Replace(",", ".");
@@ -211,6 +213,95 @@ namespace AutoOrdersIntake
                 DBF_file.Dispose();
             }
             
+        }
+
+        public static bool Limited(string GplCd, string DtOtg, string NomArt, string EI, string qt)
+        {
+            bool result = true;
+            SqlConnection connection = new SqlConnection(Settings.Default.ConnStringISPRO);
+            SqlCommand command = connection.CreateCommand();
+            SqlDataReader dataReader;
+
+            string queryString = "SELECT LimDc_Rcd, LimDc_RcdPtn, LimDc_DtEnd, LimDc_DtBeg \n";           
+            queryString += ", (SELECT MAX(LimTrnHst_Dt) FROM dbo.U_ChLimTrnHst WHERE LimTrnHst_RcdDc = LimDc_Rcd) AS LimDcMaxDtClc \n";
+            queryString += ", (SELECT Opt_Val FROM dbo.U_CHOPTIONS WHERE Opt_RcdMdl = 506 and Opt_Rcd = 41) AS UseReserve ";
+            queryString += "FROM dbo.U_ChLimDc JOIN dbo.PTNRK ON Ptn_Rcd = LimDc_RcdPtn WHERE Ptn_Cd = '" + GplCd + "' AND ('" + DtOtg + "' BETWEEN LimDc_DtBeg AND LimDc_DtEnd)\n";
+            queryString += "AND LimDc_Stt > 1";
+            command.CommandText = queryString;
+            
+            object[] LimInfo; object[] Limits;
+            connection.Open();
+            dataReader = command.ExecuteReader();
+            if (dataReader.Read())
+            {
+                LimInfo = new object[dataReader.VisibleFieldCount];
+                dataReader.GetValues(LimInfo);
+
+                dataReader.Close();
+                command.CommandText = "SELECT Ptn_Rcd FROM PTNRK WHERE Ptn_Cd = '" + GplCd + "'";
+                dataReader = command.ExecuteReader();
+                string PtnRcd = dataReader.GetString(0);
+
+                if (LimInfo[5].ToString().Equals("1"))
+                {
+                    queryString = "SELECT LimSpc_QtOsn - LimSpc_QtOtg + LimSpc_QtRet QtLimit, SUM(ISNULL(TrdS_QtOsn,0)) QtReserve\n";
+                    queryString += "FROM dbo.U_ChLimSpc \n";
+                    queryString += "JOIN dbo.SKLN ON SklN_Rcd = LimSpc_RcdNom AND SklN_Cd = '" + NomArt + "'\n";
+                    queryString += "LEFT JOIN dbo.PRDZKG WITH (NOLOCK) ON PrdZkg_RcvrID = " + PtnRcd + " AND PrdZkg_DtOtg > '20221223' AND PrdZkg_Dt <= '20221231' AND PrdZkg_Rcd <> 1\n";
+                    queryString += "LEFT JOIN dbo.TRDS WITH (NOLOCK) ON TrdS_RcdHdr = PrdZkg_Rcd AND TrdS_Mov = 0 and TrdS_TypHdr = 17 AND LimSpc_RcdNom = TrdS_RcdNom \n";
+                    queryString += "WHERE LimSpc_RcdDc = " + LimInfo[0].ToString() + " \n";
+                    queryString += "GROUP BY LimSpc_QtOsn,LimSpc_QtOtg,LimSpc_QtRet";
+                }
+                else
+                {
+                    queryString = "SELECT LimSpc_QtOsn - LimSpc_QtOtg + LimSpc_QtRet QtLimit \n";
+                    queryString += "FROM dbo.U_ChLimSpc \n";
+                    queryString += "JOIN dbo.SKLN ON SklN_Rcd = LimSpc_RcdNom AND SklN_Cd = '" + NomArt + "'\n";
+                    queryString += "WHERE LimSpc_RcdDc = " + LimInfo[0].ToString() + "\n";
+                    queryString += "GROUP BY LimSpc_QtOsn,LimSpc_QtOtg,LimSpc_QtRet\n";
+                }
+
+                dataReader.Close();
+                command.CommandText = queryString;
+                dataReader = command.ExecuteReader();
+                if (dataReader.Read())
+                {
+                    Limits = new object[dataReader.VisibleFieldCount];
+                    dataReader.GetValues(Limits);
+
+                    decimal limit = Convert.ToDecimal(Limits[0]);
+                    decimal quantity = Convert.ToDecimal(qt);
+                    
+                    if (!EI.Equals("кг"))
+                    {
+                        dataReader.Close();
+                        queryString = "SELECT NmEi_QtOsn * " + quantity + " FROM SKLNOMEI\n";
+                        queryString += "JOIN EI ON EI_Rcd = NmEi_Cd\n";
+                        queryString += "WHERE Ei_ShNm = '" + EI + "' AND NmEi_RcdNom = (SELECT SklN_Rcd FROM SKLN WHERE SklN_Cd = '" + NomArt + "') ";
+                        command.CommandText = queryString;
+                        dataReader = command.ExecuteReader();
+                        if (dataReader.Read()) quantity = Convert.ToDecimal(dataReader.GetValue(0));
+                    }
+                    
+                    if (LimInfo[5].ToString().Equals("1"))
+                    {
+                        decimal qtReserv = Convert.ToDecimal(Limits[1]);
+                        limit = limit - qtReserv;
+                    }
+
+                    if (quantity > limit)
+                    {
+                        Program.WriteLine("!!!Превышение лимита");
+                        result = false;
+                    }
+
+                    dataReader.Close();
+                }
+
+            }
+            connection.Close();
+
+            return result;
         }
 
         public class BDFBulkReader : IDataReader //интерфейс для чтения dbf

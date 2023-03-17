@@ -20,6 +20,7 @@ namespace AutoOrdersIntake
             Program.WriteLine(" --- EDISOFT.IntakeOrders начат.");
             bool error;
             int i = 0;
+            int DocCounter = 1;
             int VolumeDoc = 0;
 
             string _path = DispOrders.GetValueOption("EDI-СОФТ.ЗАКАЗ");
@@ -29,6 +30,7 @@ namespace AutoOrdersIntake
             XmlDocument doc = new XmlDocument();
             foreach (string parsefile in files)
             {
+                Program.WriteLine("Проверка файла-заказа: " + parsefile + " [" + DocCounter + "]");
                 error = false;//по умолчанию ошибок нет
                 doc.Load(parsefile);
                 DispOrders.ClearTmpZkg();//очищаем временную таблицу с заказом от конкретной точки 
@@ -119,7 +121,7 @@ namespace AutoOrdersIntake
                                             buyer_code = n.ChildNodes[0].SelectSingleNode("BuyerItemCode").InnerText;
                                             i++;
                                             object[] PriceList = Verifiacation.GetPriceList(res_verf_deliv[0], Convert.ToInt32(res_verf_item[5]));////выдает тольтко одно значение - проверить в понедельник.
-                                            Program.WriteLine("Запись во временную таблицу...");
+                                            Program.WriteLine("Запись позиции во временную таблицу...");
                                             DispOrders.RecordToTmpZkg(Convert.ToString(res_verf_buyer[0]), Convert.ToString(res_verf_deliv[0]), date_delivery, Convert.ToString(res_verf_item[1]), Convert.ToString(res_verf_item[4]), OrderedQuantity, date_order, number_order, Convert.ToString(PriceList[0]), Convert.ToInt16(res_verf_item[5]), Path.GetFileName(doc.BaseURI), Convert.ToString(PriceList[1]), "0", PriceOrder);
                                             try
                                             {
@@ -224,8 +226,8 @@ namespace AutoOrdersIntake
                         Directory.Move(oldP, ReserveNewP);
                     }
                 }
-                
-
+                DocCounter++;
+                if (DocCounter == 31) break;
             }
             Program.WriteLine("Запись в RecordCountEDoc...");
             ReportEDI.RecordCountEDoc("EDI-Софт", "Orders", VolumeDoc);
@@ -270,6 +272,7 @@ namespace AutoOrdersIntake
                             try
                             {
                                 Directory.Move(oldP, newP);
+                                Program.WriteLine("Заказ " + parsefile + " успешно прошел все проверки и был перемещён.");
                             }
                             catch
                             {
@@ -302,7 +305,6 @@ namespace AutoOrdersIntake
                         Directory.Move(oldP, ReserveNewP);
                     }
                 }
-
             }
         }
 

@@ -64,7 +64,7 @@ namespace AutoOrdersIntake
 			var organizationList = diadocApi.GetOrganizationsByInnKpp(InnGpl, KppGpl);
 			foreach (var organization in organizationList.Organizations)
             {
-				if(organization.FnsParticipantId.Substring(0,3).ToLower() == (IdProvaider.ToLower()))  //Ищем организации, соответствующие провайдеру плательщика
+				if(organization.FnsParticipantId.ToLower().Contains(IdProvaider.ToLower()))  //Ищем организации, соответствующие провайдеру плательщика
 				{
 					Program.WriteLine("FnsParticipantId " + organization.FnsParticipantId);
 					Program.WriteLine("FullName " + organization.FullName);

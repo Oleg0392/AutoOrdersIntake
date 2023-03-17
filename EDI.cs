@@ -1380,7 +1380,10 @@ namespace AutoOrdersIntake
                     LineItem.Add(vATAmount);
                     LineItem.Add(amount);
 
-                    if (Convert.ToString(DelivInfo[10]).Contains("Mark") && Convert.ToInt32(Item[i, 9]) == 10)
+                    string tnVedCode = Verifiacation.ExecuteQueryOneObject("SELECT SklN_TNVED FROM SKLN WHERE SklN_Cd = '" + Item[i, 2] + "'").ToString();
+                    decimal nomWeight = Convert.ToDecimal(Verifiacation.ExecuteQueryOneObject("SELECT NmEi_QtNett FROM SKLNOMEI WHERE NmEi_RcdNom = (SELECT SklN_Rcd FROM SKLN WHERE SklN_Cd = '" + Item[i, 2] + "') AND NmEi_Cd = 5"));
+                    bool tnVedCheck = !tnVedCode.Equals("1806310000") && (nomWeight > 0.033m);
+                    if (Convert.ToString(DelivInfo[10]).Contains("Mark") && Convert.ToInt32(Item[i, 9]) == 10 && tnVedCheck)
                     {
                         XElement controlIdentificationMarks;
                         XAttribute controlIdentificationMarks_type;
@@ -3878,7 +3881,10 @@ namespace AutoOrdersIntake
                     LineItem.Add(amountIncrease);
                     LineItem.Add(amountDecrease);
 
-                    if (Convert.ToString(DelivInfo[10]).Contains("Mark") && Convert.ToInt32(Item[i,9]) == 10)
+                    string tnVedCode = Verifiacation.ExecuteQueryOneObject("SELECT SklN_TNVED FROM SKLN WHERE SklN_Cd = '" + Item[i, 2] + "'").ToString();
+                    decimal nomWeight = Convert.ToDecimal(Verifiacation.ExecuteQueryOneObject("SELECT NmEi_QtNett FROM SKLNOMEI WHERE NmEi_RcdNom = (SELECT SklN_Rcd FROM SKLN WHERE SklN_Cd = '" + Item[i, 2] + "') AND NmEi_Cd = 5"));
+                    bool tnVedCheck = !tnVedCode.Equals("1806310000") && (nomWeight > 0.033m);
+                    if (Convert.ToString(DelivInfo[10]).Contains("Mark") && Convert.ToInt32(Item[i,9]) == 10 && tnVedCheck)
                     {
                         int quantityItemBefore = Convert.ToInt32(prevItem[0, 4]);
                         int quantityItemAfter = Convert.ToInt32(prevItem[0, 4]) + Convert.ToInt32(Item[i, 4]);
@@ -3888,13 +3894,11 @@ namespace AutoOrdersIntake
                         XAttribute controlIdentificationMarksAfter_type;
                         controlIdentificationMarksBefore = new XElement("controlIdentificationMarksBefore", "020" + EAN_F + "37" + Convert.ToString(quantityItemBefore));
                         controlIdentificationMarksBefore_type = new XAttribute("type", "Group");
-                        if (!(DelivInfo[10].ToString() == "LentaMark" && (Convert.ToInt32(prevItem[0, 4]) + Convert.ToInt32(Item[i, 4])) <= 0))
-                        {
-                            controlIdentificationMarksAfter = new XElement("controlIdentificationMarksAfter", "020" + EAN_F + "37" + Convert.ToString(quantityItemAfter));
-                            controlIdentificationMarksAfter_type = new XAttribute("type", "Group");
-                            LineItem.Add(controlIdentificationMarksAfter);
-                            controlIdentificationMarksAfter.Add(controlIdentificationMarksAfter_type);
-                        }
+                        //if (!(DelivInfo[10].ToString() == "LentaMark" && (Convert.ToInt32(prevItem[0, 4]) + Convert.ToInt32(Item[i, 4])) <= 0)) {
+                        controlIdentificationMarksAfter = new XElement("controlIdentificationMarksAfter", "020" + EAN_F + "37" + Convert.ToString(quantityItemAfter));
+                        controlIdentificationMarksAfter_type = new XAttribute("type", "Group");
+                        LineItem.Add(controlIdentificationMarksAfter);
+                        controlIdentificationMarksAfter.Add(controlIdentificationMarksAfter_type);  // }                       
                         LineItem.Add(controlIdentificationMarksBefore);
                         controlIdentificationMarksBefore.Add(controlIdentificationMarksBefore_type);
                         
@@ -5507,14 +5511,14 @@ namespace AutoOrdersIntake
                 for (int i = 0; i < ListSF.GetLength(0); i++)
                 {                    
                     
-                    if (ListSF[i, 1].ToString() == "KONTUR")
+                    if (ListSF[i, 1].ToString() == "KONTUR")  //&& ListSF[i, 3].ToString().Equals("6410847")
                     {
                         Program.WriteLine("Подготовка к отправке SklSf_Rcd " + Convert.ToString(ListSF[i, 3]) + " провайдер заказа " + Convert.ToString(ListSF[i, 1]));
                         List<object> CurrDataSF = new List<object>();
 
                         for (int j = 0; j < ListSF.GetLength(1); j++) CurrDataSF.Add(ListSF[i, j]);
 
-                        if (ListSF[i, 4].ToString() == "0") //УПД            for debug concrete sf && (Convert.ToInt32(ListSF[i, 3]) == 6324411)
+                        if (ListSF[i, 4].ToString() == "0") //УПД            for debug concrete sf && (Convert.ToInt32(ListSF[i, 3]) == 6478930)
                         {
                             if (ListSF[i, 2].ToString().Contains("Base"))
                             {
